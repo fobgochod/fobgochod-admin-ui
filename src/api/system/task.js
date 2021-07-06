@@ -4,46 +4,46 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/tasks',
+            url: '/tasks',
             data: data,
         })
     },
     delData(id) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/tasks/' + id,
+            url: '/tasks/' + id,
         })
     },
     modData(data) {
         return axios({
             method: 'put',
-            url: '/api/dmc/v2/tasks',
+            url: '/tasks',
             data: data,
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/tasks/search',
+            url: '/tasks/search',
             data: data,
         })
     },
     doTask(id) {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/tasks/run/' + id,
+            url: '/tasks/run/' + id,
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/tasks/drop',
+            url: '/tasks/drop',
         })
     },
     refreshTask() {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/tasks/refresh',
+            url: '/tasks/refresh',
         })
     },
 }

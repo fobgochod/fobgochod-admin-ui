@@ -4,84 +4,84 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/users',
+            url: '/users',
             data: data,
         })
     },
     delData(id) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/users/' + id,
+            url: '/users/' + id,
         })
     },
     modData(data) {
         return axios({
             method: 'put',
-            url: '/api/dmc/v2/users',
+            url: '/users',
             data: data,
         })
     },
     getById(id) {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/users/' + id,
+            url: '/users/' + id,
         })
     },
     getData() {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/users',
+            url: '/users',
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/users/search',
+            url: '/users/search',
             data: data,
         })
     },
     getOptions() {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/users/option',
+            url: '/users/option',
         })
     },
     getByName(username) {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/users/name/' + username,
+            url: '/users/name/' + username,
         })
     },
     changeName(data) {
         return axios({
             method: 'put',
-            url: '/api/dmc/v2/users/name',
+            url: '/users/name',
             data: data,
         })
     },
     checkPassword(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/users/password/check',
+            url: '/users/password/check',
             data: data,
         })
     },
     changePassword(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/users/password/change',
+            url: '/users/password/change',
             data: data,
         })
     },
     resetPassword(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/users/password/reset',
+            url: '/users/password/reset',
             data: data,
         })
     },
     refreshToken(tenantId) {
-        return axios.post('/api/dmc/v1/auth/token/refresh', {
+        return axios.post('/auth/token/refresh', {
             tenantId: tenantId,
         })
     },

@@ -4,19 +4,19 @@ export default {
     delFileForce(fileId) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/file/delete/force/' + fileId,
+            url: '/file/delete/force/' + fileId,
         })
     },
     delFile(fileId) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/file/delete/' + fileId,
+            url: '/file/delete/' + fileId,
         })
     },
     shareFile(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/file/share',
+            url: '/file/share',
             data: data,
         })
     },
@@ -24,14 +24,14 @@ export default {
     shareFile1(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v1/buckets/ShareFiles',
+            url: '/buckets/ShareFiles',
             data: data,
         })
     },
     shareFileDays(data, days) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v1/buckets/ShareFiles/d/' + days,
+            url: '/buckets/ShareFiles/d/' + days,
             data: data,
         })
     },
@@ -39,14 +39,14 @@ export default {
     batchDelFileForce(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/file/delete/force',
+            url: '/file/delete/force',
             data: data,
         })
     },
     batchDelFile(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/file/delete',
+            url: '/file/delete',
             data: data,
         })
     },

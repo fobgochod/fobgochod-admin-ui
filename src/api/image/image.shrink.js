@@ -4,27 +4,27 @@ export default {
     delData(id) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/shrink/' + id,
+            url: '/shrink/' + id,
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/shrink/search',
+            url: '/shrink/search',
             data: data,
         })
     },
     getImageByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/image/search',
+            url: '/image/search',
             data: data,
         })
     },
     shrinkImage(shrink) {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/buckets/images/' + shrink.fileId,
+            url: '/buckets/images/' + shrink.fileId,
             params: {
                 width: shrink.width,
                 height: shrink.height,

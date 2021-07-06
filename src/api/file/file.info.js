@@ -5,34 +5,34 @@ export default {
     modData(data) {
         return axios({
             method: 'put',
-            url: '/api/dmc/v2/fileinfo',
+            url: '/fileinfo',
             data: data,
         })
     },
     changeName(fileId, fileName) {
         return axios({
             method: 'post',
-            url: `/api/dmc/v1/buckets/${store.state.bucket}/files/${fileId}/rename/${fileName}/`,
+            url: `/buckets/${store.state.bucket}/files/${fileId}/rename/${fileName}/`,
             data: {},
         })
     },
     completed(fileId, completed) {
         return axios({
             method: 'put',
-            url: `/api/dmc/v2/fileinfo/${fileId}/${completed}`,
+            url: `/fileinfo/${fileId}/${completed}`,
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/fileinfo/search',
+            url: '/fileinfo/search',
             data: data,
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/fileinfo/drop',
+            url: '/fileinfo/drop',
         })
     },
 }

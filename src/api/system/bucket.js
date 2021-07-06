@@ -4,41 +4,41 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/buckets',
+            url: '/buckets',
             data: data,
         })
     },
     delData(id) {
         return axios({
             method: 'delete',
-            url: '/api/dmc/v2/buckets/' + id,
+            url: '/buckets/' + id,
         })
     },
     modData(data) {
         return axios({
             method: 'put',
-            url: '/api/dmc/v2/buckets',
+            url: '/buckets',
             data: data,
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/buckets/search',
+            url: '/buckets/search',
             data: data,
         })
     },
     apply(data) {
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/buckets/apply',
+            url: '/buckets/apply',
             data: data,
         })
     },
     getOptions() {
         return axios({
             method: 'get',
-            url: '/api/dmc/v2/buckets/task',
+            url: '/buckets/task',
         })
     },
 }

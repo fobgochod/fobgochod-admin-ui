@@ -16,7 +16,7 @@ export default {
         reader.onload = (e) => {
             axios({
                 method: 'post',
-                url: '/api/dmc/v1/buckets/files',
+                url: '/buckets/files',
                 headers: {
                     'digi-middleware-drive-arg': encodeURIComponent(JSON.stringify(this.formData)),
                 },
@@ -52,7 +52,7 @@ export default {
         )
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/file/upload',
+            url: '/file/upload',
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -92,7 +92,7 @@ export default {
         )
         return axios({
             method: 'post',
-            url: '/api/dmc/v2/file/upload/multi',
+            url: '/file/upload/multi',
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

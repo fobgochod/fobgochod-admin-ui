@@ -6,6 +6,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "build:prod": "vue-cli-service build --mode production",
+        "build:k8s": "vue-cli-service build --mode k8s",
         "lint": "vue-cli-service lint"
     },
     "dependencies": {

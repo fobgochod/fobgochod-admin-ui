@@ -28,7 +28,7 @@
             <el-submenu index='9'>
                 <template slot='title'>
                     {{userName}}
-                    <el-avatar :src='user.avatar' shape='square'></el-avatar>
+                    <el-avatar :src='user.avatar' :key='user.avatar' shape='square'></el-avatar>
                 </template>
                 <el-menu-item index='9-1' @click="to('/admin/user')">
                     <i class='el-icon-user'></i>
@@ -68,7 +68,7 @@ export default {
                 head_active_text_color: this.$cookies.get('setting').head_active_text_color
             },
             user: {
-                avatar: 'avatar.jpg'
+                avatar: '/avatar.jpg'
             },
             asideState: false,
             fullscreen: false,

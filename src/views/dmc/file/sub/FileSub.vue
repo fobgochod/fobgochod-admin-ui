@@ -64,7 +64,7 @@
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='文件ID' property='id' width='180'>
                 <template slot-scope='scope'>
-                    <a :href='`${baseUri}/api/dmc/v2/file/preview/${scope.row.id}`'
+                    <a :href='`${baseUri}/file/preview/${scope.row.id}`'
                        target='_blank'>{{scope.row.id}}</a>
                 </template>
             </el-table-column>
