@@ -3,4 +3,5 @@ export default {
     AsideMenu: () => import('@/components/system/aside/AsideMenu'),
     HeadMenu: () => import('@/components/system/head/HeadMenu'),
     TinyMce: () => import('@/components/tools/TinyMce'),
+    DropCollection: () => import('@/components/comm/DropCollection.vue'),
 }

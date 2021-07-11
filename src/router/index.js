@@ -90,7 +90,7 @@ const routes = baseRoutes.concat(demoRoutes)
 
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.VUE_APP_CONTEXT_PATH,
+    base: process.env.VUE_APP_BASE_API,
     routes: routes,
 })
 

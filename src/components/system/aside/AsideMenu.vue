@@ -105,6 +105,10 @@
                     <i :style='{ color: aside.aside_icon_color }' class='el-icon-place'></i>
                     <span>任务计划</span>
                 </el-menu-item>
+                <el-menu-item index='/system/stats'>
+                    <i :style='{ color: aside.aside_icon_color }' class='el-icon-data-analysis'></i>
+                    <span>系统统计</span>
+                </el-menu-item>
             </el-submenu>
             <aside-demo-menu />
         </el-menu>

@@ -1,8 +1,6 @@
 module.exports = {
-    publicPath: process.env.VUE_APP_CONTEXT_PATH,
-    // 构建时的输出目录
+    publicPath: process.env.VUE_APP_BASE_API,
     outputDir: 'dist',
-    // 放置静态资源的目录
     assetsDir: 'static',
     transpileDependencies: [
         /* string or regex */

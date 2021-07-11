@@ -42,7 +42,7 @@ function dataToTree(data) {
     let tree = []
     let i = 0
     while (data.length !== 0) {
-        if (data[i].parentId === '00000000-0000-0000-0000-000000000000') {
+        if (data[i].parentId === '0') {
             tree.push({
                 id: data[i].id,
                 label: data[i].name,
@@ -79,7 +79,7 @@ function dataToTree(data) {
     }
     let top = []
     top.push({
-        id: '00000000-0000-0000-0000-000000000000',
+        id: '0',
         label: '虚拟根目录(Root)',
         parentId: '0',
         children: tree,

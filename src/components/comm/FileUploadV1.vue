@@ -31,13 +31,12 @@ export default {
             this.uploadByStream(file.raw)
         },
         uploadByStream(file) {
-            this.fileName = file.name
+            this.name = file.name
             this.uploadVisible = true
 
             this.formData = {
-                fileName: file.name,
+                name: file.name,
                 displayName: null,
-                description: null,
                 tag: '文件',
                 expireDate: new Date(2038, 1, 19, 11, 14, 7).format('Y-m-d H:i:s'),
                 directoryId: this.directoryId,
@@ -60,12 +59,12 @@ export default {
                 .then(() => {
                     this.percentage = 0
                     this.uploadVisible = false
-                    this.$message.success('文件' + this.fileName + '上传成功')
+                    this.$message.success('文件' + this.name + '上传成功')
                     this.success()
                 })
                 .catch(() => {
                     this.uploadVisible = false
-                    this.$message.error('文件' + this.fileName + '上传失败')
+                    this.$message.error('文件' + this.name + '上传失败')
                     this.$emit('fail')
                 })
             }

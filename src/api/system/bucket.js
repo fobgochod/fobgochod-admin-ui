@@ -28,17 +28,23 @@ export default {
             data: data,
         })
     },
-    apply(data) {
+    dropData() {
         return axios({
-            method: 'post',
-            url: '/buckets/apply',
-            data: data,
+            method: 'delete',
+            url: '/buckets/drop',
         })
     },
     getOptions() {
         return axios({
             method: 'get',
             url: '/buckets/task',
+        })
+    },
+    apply(data) {
+        return axios({
+            method: 'post',
+            url: '/buckets/apply',
+            data: data,
         })
     },
 }

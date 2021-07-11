@@ -55,11 +55,11 @@ export default {
                 },
                 {
                     headerIcon: 'el-icon-coin',
-                    headerTitle: 'Bucket',
+                    headerTitle: 'Tenant',
                     headerCycle: '年',
                     headerCycleBackColor: '#F56C6C',
                     mainNum: 0,
-                    footerTitle: 'Bucket总数',
+                    footerTitle: 'Tenant总数',
                     footerNum: 0,
                     footerIcon: 'el-icon-coin'
                 },
@@ -82,11 +82,11 @@ export default {
     methods: {
         getCounts() {
             Stats.getCount().then(res => {
-                let mongo = res.data.data
+                let mongo = res.data
 
                 let fileCount = mongo.fileCount == null ? 0 : mongo.fileCount
                 let totalSize = Utils.byteSwitch(mongo.totalSize)
-                let bucketCount = mongo.bucketCount == null ? 0 : mongo.bucketCount
+                let tenantCount = mongo.tenantCount == null ? 0 : mongo.tenantCount
                 let userCount = mongo.userCount == null ? 0 : mongo.userCount
 
                 this.cardData[0].mainNum = fileCount
@@ -95,8 +95,8 @@ export default {
                 this.cardData[1].mainNum = totalSize
                 this.cardData[1].footerNum = totalSize
 
-                this.cardData[2].mainNum = bucketCount
-                this.cardData[2].footerNum = bucketCount
+                this.cardData[2].mainNum = tenantCount
+                this.cardData[2].footerNum = tenantCount
 
                 this.cardData[3].mainNum = userCount
                 this.cardData[3].footerNum = userCount

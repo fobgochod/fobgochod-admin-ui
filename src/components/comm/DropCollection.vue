@@ -6,8 +6,12 @@
 </template>
 
 <script>
+import User from '@/api/system/user'
+import Tenant from '@/api/system/tenant'
+import Bucket from '@/api/system/bucket'
 import Task from '@/api/system/task'
 import FileInfo from '@/api/file/file.info'
+import FileShare from '@/api/file/file.share'
 
 export default {
     props: {
@@ -22,11 +26,43 @@ export default {
     },
     methods: {
         dropData() {
-            if (this.table === 'Task') {
+            if (this.table === 'User') {
+                this.dropUser()
+            } else if (this.table === 'Tenant') {
+                this.dropTenant()
+            } else if (this.table === 'Bucket') {
+                this.dropBucket()
+            } else if (this.table === 'Task') {
                 this.dropTask()
             } else if (this.table === 'FileInfo') {
                 this.dropFileInfo()
+            } else if (this.table === 'Share') {
+                this.dropShare()
             }
+        },
+        dropUser() {
+            User.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropTenant() {
+            Tenant.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropBucket() {
+            Bucket.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
         },
         dropTask() {
             Task.dropData().then(() => {
@@ -38,6 +74,14 @@ export default {
         },
         dropFileInfo() {
             FileInfo.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropShare() {
+            FileShare.dropData().then(() => {
                 this.success()
                 this.$message.success('清空成功')
             }).catch(() => {

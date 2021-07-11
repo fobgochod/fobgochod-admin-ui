@@ -2,7 +2,7 @@
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
             <el-form-item label='原文件ID' prop='sourceId'>
-                <el-input v-model='pageData.filters.targetId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filters.sourceId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='压缩文件ID' prop='sourceId'>
                 <el-input v-model='pageData.filters.targetId' @change='searchData'></el-input>
@@ -15,9 +15,9 @@
 
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
-            <el-table-column label='ID' property='id' width='320'></el-table-column>
-            <el-table-column label='原文件ID' property='sourceId' width='320'></el-table-column>
-            <el-table-column label='压缩文件ID' property='targetId' width='320'></el-table-column>
+            <el-table-column label='ID' property='id' width='150'></el-table-column>
+            <el-table-column label='原文件ID' property='sourceId' width='150'></el-table-column>
+            <el-table-column label='压缩文件ID' property='targetId' width='150'></el-table-column>
             <el-table-column label='宽' property='property.width' width='100' align='center'></el-table-column>
             <el-table-column label='高' property='property.height' width='100' align='center'></el-table-column>
 
@@ -26,7 +26,6 @@
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
             <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
             <el-table-column label='租户' property='tenant' width='100'></el-table-column>
-            <el-table-column align='center' label='Bucket' property='bucket' width='120'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='80'>
                 <template slot-scope='scope'>
@@ -70,8 +69,8 @@ export default {
         },
         getByPage() {
             ImageShrink.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 this.$message.success('查询图片压缩站成功')
             }).catch(() => {
                 this.$message.error('查询图片压缩站失败')
@@ -80,6 +79,11 @@ export default {
         searchData() {
             this.pageData.pageNum = 1
             this.getByPage()
+        },
+        clearData(formName) {
+            this.$refs[formName].resetFields()
+            this.searchData()
+            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1

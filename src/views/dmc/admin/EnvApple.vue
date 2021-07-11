@@ -33,6 +33,7 @@
 <script>
 import {mapMutations, mapState} from 'vuex'
 import User from '@/api/system/user'
+import Login from '@/api/home/login'
 import Tenant from '@/api/system/tenant'
 
 export default {
@@ -47,7 +48,7 @@ export default {
     methods: {
         ...mapMutations(['setBucket', 'setTenantId', 'setUserToken']),
         changeTenantId(val) {
-            User.refreshToken(val).then(res => {
+            Login.refresh(val).then(res => {
                 this.setUserToken(res.data.userToken)
             })
             this.setTenantId(val)
@@ -55,7 +56,7 @@ export default {
         },
         async getTenant() {
             Tenant.getOptions().then(res => {
-                this.tenants = res.data.data
+                this.tenants = res.data
             }).catch(() => {
                 this.tenants = []
             })

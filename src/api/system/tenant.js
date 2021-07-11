@@ -27,17 +27,17 @@ export default {
             url: '/tenants/' + id,
         })
     },
-    getData() {
-        return axios({
-            method: 'get',
-            url: '/tenants',
-        })
-    },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/tenants/search',
             data: data,
+        })
+    },
+    dropData() {
+        return axios({
+            method: 'delete',
+            url: '/tenants/drop',
         })
     },
     getOptions() {

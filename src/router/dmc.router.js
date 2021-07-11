@@ -153,6 +153,16 @@ const routes = [
             roles: ['Admin'],
         },
     },
+    {
+        path: '/system/stats',
+        name: 'BucketStatsTotal',
+        component: (resolve) => require(['@/views/dmc/system/StatsApple.vue'], resolve),
+        meta: {
+            title: '系统统计',
+            loginState: true,
+            roles: ['Admin'],
+        },
+    },
 ]
 
 export default routes

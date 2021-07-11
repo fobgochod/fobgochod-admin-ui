@@ -8,6 +8,12 @@ export default {
             data: data,
         })
     },
+    delData(dirId) {
+        return axios({
+            method: 'delete',
+            url: '/directory' + dirId,
+        })
+    },
     modData(data) {
         return axios({
             method: 'put',
@@ -16,10 +22,7 @@ export default {
         })
     },
     getData() {
-        return axios({
-            method: 'get',
-            url: '/directory',
-        })
+        return this.getByPage()
     },
     getByPage(data) {
         return axios({
@@ -31,7 +34,7 @@ export default {
     getDirInfo(dirId) {
         return axios({
             method: 'get',
-            url: '/buckets/directorys/' + dirId + '/list',
+            url: '/directory/list/' + dirId,
         })
     },
 }

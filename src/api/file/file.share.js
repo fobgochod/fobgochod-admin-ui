@@ -8,10 +8,10 @@ export default {
             data: data,
         })
     },
-    delData(id) {
+    delData(shareId) {
         return axios({
             method: 'delete',
-            url: '/share/' + id,
+            url: '/share/' + shareId,
         })
     },
     modData(data) {
@@ -28,11 +28,17 @@ export default {
             data: data,
         })
     },
-    batchDelSharedFile(data) {
+    batchDelData(data) {
         return axios({
             method: 'post',
-            url: '/file/share/delete',
+            url: '/share/delete',
             data: data,
+        })
+    },
+    dropData() {
+        return axios({
+            method: 'delete',
+            url: '/share/drop',
         })
     },
 }
