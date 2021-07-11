@@ -7,7 +7,7 @@
 <script>
 export default {
     components: {
-        FileSpace: () => import('@/views/dmc/file/sub/FileSub')
+        FileSpace: () => import('@/views/file/sub/FileSub')
     },
 };
 </script>

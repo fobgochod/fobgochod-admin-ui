@@ -88,7 +88,7 @@ export default {
             this.formData.name = this.userId;
             this.formData.pwdHash = Secret.encode(this.formData.oldPassword);
             User.checkPassword(this.formData).then((res) => {
-                this.checkOld = res.data.data;
+                this.checkOld = res.data;
             });
         },
         onSubmit() {

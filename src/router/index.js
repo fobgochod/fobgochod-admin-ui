@@ -76,7 +76,7 @@ const baseRoutes = [
     {
         path: '/home',
         name: 'Home',
-        component: () => import('@/views/dmc/home/Home.vue'),
+        component: () => import('@/views/home/Home.vue'),
         meta: {
             title: '主页',
             loginState: true,

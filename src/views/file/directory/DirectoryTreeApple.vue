@@ -122,7 +122,7 @@ import Dir from '@/api/file/dir.info'
 export default {
     mixins: [formMixin],
     components: {
-        FileSub: () => import('@/views/dmc/file/sub/FileSub.vue'),
+        FileSub: () => import('@/views/file/sub/FileSub.vue'),
         FileUpload: () => import('@/components/comm/FileUpload.vue'),
         FileDownload: () => import('@/components/comm/FileDownload')
     },
