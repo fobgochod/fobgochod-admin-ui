@@ -5,14 +5,22 @@
         </div>
         <div id='form_space'>
             <div align='center'>
-                <h1>{{ loginTitle }}</h1>
-                <p>{{ loginSubTitle }}</p>
+                <h1>{{loginTitle}}</h1>
+                <p>{{loginSubTitle}}</p>
             </div>
             <div style='padding: 20px'>
                 <el-form ref='form' :model='loginForm'>
                     <el-form-item>
-                        <el-input tabindex='1' v-model='tenantId' prefix-icon='el-icon-pear'
-                                  @keydown.native.enter='nextFocus($event,2)'></el-input>
+                        <el-select v-model='$store.state.tenantId' clearable placeholder='请选择租户' size='medium'
+                                   style='width: 100%'>
+                            <el-option v-for='item in tenants' :key='item.value' :label='item.label'
+                                       :value='item.value'>
+                                <span style='float: left'>{{item.value}}</span>
+                                <span style='float: right; color: #8492a6; font-size: 13px'>{{item.label}}</span>
+                            </el-option>
+                        </el-select>
+                        <!--                        <el-input tabindex='1' v-model='tenantId' prefix-icon='el-icon-pear'-->
+                        <!--                                  @keydown.native.enter='nextFocus($event,2)'></el-input>-->
                     </el-form-item>
                     <el-form-item>
                         <el-input tabindex='2' v-model='loginForm.username' prefix-icon='el-icon-user'
@@ -43,6 +51,7 @@ import {COLOR} from '@/assets/js/dmc.data.js'
 import Secret from '@/assets/js/secret.js'
 import {mapMutations, mapState} from 'vuex'
 import Login from '@/api/home/login'
+import Tenant from '@/api/system/tenant'
 
 export default {
     data() {
@@ -50,14 +59,15 @@ export default {
         let password = localStorage.getItem('password')
 
         return {
-            loginTitle: 'Admin | 登录',
+            loginTitle: 'Scarecrow | 登录',
             loginSubTitle: '',
             loginForm: {
                 username: username == null ? null : Secret.decrypt(username),
                 password: password == null ? null : Secret.decrypt(password)
             },
             remember: false,
-            hashLogin: false
+            hashLogin: false,
+            tenants: []
         }
     },
     computed: {
@@ -99,6 +109,11 @@ export default {
         },
         to(link) {
             this.$router.push(link)
+        },
+        getTenants() {
+            Tenant.getOptions().then(res => {
+                this.tenants = res.data
+            })
         }
     },
     mounted() {
@@ -106,6 +121,7 @@ export default {
         if (this.$cookies.get('setting') == null) {
             this.$cookies.set('setting', JSON.stringify(COLOR))
         }
+        this.getTenants()
     }
 }
 </script>

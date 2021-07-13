@@ -46,4 +46,10 @@ export default {
             url: '/tenants/option',
         })
     },
+    getOptionGroups() {
+        return axios({
+            method: 'get',
+            url: '/tenants/option/group',
+        })
+    },
 }

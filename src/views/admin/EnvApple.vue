@@ -32,7 +32,6 @@
 
 <script>
 import {mapMutations, mapState} from 'vuex'
-import User from '@/api/system/user'
 import Login from '@/api/home/login'
 import Tenant from '@/api/system/tenant'
 
@@ -55,7 +54,7 @@ export default {
             this.$message.success('设置登录租户成功')
         },
         async getTenant() {
-            Tenant.getOptions().then(res => {
+            Tenant.getOptionGroups().then(res => {
                 this.tenants = res.data
             }).catch(() => {
                 this.tenants = []
