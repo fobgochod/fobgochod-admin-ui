@@ -117,12 +117,12 @@
 import formMixin from '@/mixin/form.mixin'
 import Utils from '@/assets/js/utils'
 import File from '@/api/file/file'
-import Dir from '@/api/file/directory'
+import Dir from '@/api/file/dir.info'
 
 export default {
     mixins: [formMixin],
     components: {
-        FileSub: () => import('@/views/dmc/file/sub/FileSub.vue'),
+        FileSub: () => import('@/views/file/sub/FileSub.vue'),
         FileUpload: () => import('@/components/comm/FileUpload.vue'),
         FileDownload: () => import('@/components/comm/FileDownload')
     },
@@ -193,7 +193,7 @@ export default {
         },
         getData() {
             Dir.getData().then(res => {
-                this.treeData = Utils.dataToTree(res.data.data)
+                this.treeData = Utils.dataToTree(res.data.list)
                 this.$message.success('查询目录成功')
             }).catch(() => {
                 this.$message.success('查询目录失败')

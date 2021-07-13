@@ -76,7 +76,7 @@ const baseRoutes = [
     {
         path: '/home',
         name: 'Home',
-        component: () => import('@/views/dmc/home/Home.vue'),
+        component: () => import('@/views/home/Home.vue'),
         meta: {
             title: '主页',
             loginState: true,
@@ -90,7 +90,7 @@ const routes = baseRoutes.concat(demoRoutes)
 
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.VUE_APP_CONTEXT_PATH,
+    base: process.env.VUE_APP_BASE_API,
     routes: routes,
 })
 

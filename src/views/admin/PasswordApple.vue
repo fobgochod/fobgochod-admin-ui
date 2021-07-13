@@ -14,8 +14,8 @@
 <script>
 export default {
     components: {
-        PasswordSub: () => import('@/views/dmc/admin/sub/PasswordSub'),
-        EncryptSub: () => import('@/views/dmc/admin/sub/EncryptSub')
+        PasswordSub: () => import('@/views/admin/sub/PasswordSub'),
+        EncryptSub: () => import('@/views/admin/sub/EncryptSub')
     }
 };
 </script>

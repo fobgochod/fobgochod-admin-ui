@@ -13,7 +13,7 @@
                    :visible.sync='uploadVisible'
                    title='上传进度'
                    width='25%'>
-            <h1>[{{this.fileName}}] 文件正在上传中...</h1>
+            <h1>[{{this.name}}] 文件正在上传中...</h1>
             <el-progress :percentage='percentage' :stroke-width='20' :text-inside='true'></el-progress>
         </el-dialog>
     </div>

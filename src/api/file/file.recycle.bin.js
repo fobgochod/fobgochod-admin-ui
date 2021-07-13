@@ -1,12 +1,6 @@
 import axios from '@/config/http'
 
 export default {
-    getData() {
-        return axios({
-            method: 'get',
-            url: '/recycle',
-        })
-    },
     getByPage(data) {
         return axios({
             method: 'post',
@@ -14,22 +8,29 @@ export default {
             data: data,
         })
     },
-    delData(id) {
+    delData(recycleId) {
         return axios({
             method: 'delete',
-            url: '/file/recycle/delete/' + id,
-        })
-    },
-    recoveryData(id) {
-        return axios({
-            method: 'post',
-            url: '/file/recycle/restore/' + id,
+            url: '/file/recycle/delete/' + recycleId,
         })
     },
     emptyData() {
         return axios({
             method: 'delete',
             url: '/file/recycle/clear',
+        })
+    },
+    restore(recycleId) {
+        return axios({
+            method: 'post',
+            url: '/file/recycle/restore/' + recycleId,
+        })
+    },
+    batchRestore(data) {
+        return axios({
+            method: 'post',
+            url: '/file/recycle/restore',
+            data: data,
         })
     },
 }

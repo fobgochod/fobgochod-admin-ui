@@ -1,24 +1,10 @@
-# euiadmin
+# Admin
 
-## Project setup
-```
-npm install
-```
+## About
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+此项目是 vue + element-ui 构建的后台管理系统。
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## License
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Spring Boot is Open Source software released under
+the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).

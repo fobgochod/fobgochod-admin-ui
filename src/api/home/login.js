@@ -7,6 +7,11 @@ export default {
             pwdhash: pwdhash,
         })
     },
+    refresh(tenantId) {
+        return axios.post('/auth/token/refresh', {
+            tenantId: tenantId,
+        })
+    },
     getRole(username) {
         return axios({
             method: 'get',

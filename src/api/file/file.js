@@ -1,41 +1,25 @@
 import axios from '@/config/http'
 
 export default {
-    delFileForce(fileId) {
-        return axios({
-            method: 'delete',
-            url: '/file/delete/force/' + fileId,
-        })
-    },
     delFile(fileId) {
         return axios({
             method: 'delete',
             url: '/file/delete/' + fileId,
         })
     },
-    shareFile(data) {
+    batchDelFile(data) {
         return axios({
             method: 'post',
-            url: '/file/share',
+            url: '/file/delete',
             data: data,
         })
     },
-
-    shareFile1(data) {
+    delFileForce(fileId) {
         return axios({
-            method: 'post',
-            url: '/buckets/ShareFiles',
-            data: data,
+            method: 'delete',
+            url: '/file/delete/force/' + fileId,
         })
     },
-    shareFileDays(data, days) {
-        return axios({
-            method: 'post',
-            url: '/buckets/ShareFiles/d/' + days,
-            data: data,
-        })
-    },
-
     batchDelFileForce(data) {
         return axios({
             method: 'post',
@@ -43,10 +27,10 @@ export default {
             data: data,
         })
     },
-    batchDelFile(data) {
+    shareFile(data) {
         return axios({
             method: 'post',
-            url: '/file/delete',
+            url: '/file/share',
             data: data,
         })
     },

@@ -112,9 +112,6 @@
                             <el-dropdown-item icon='el-icon-share' @click.native='shareFile(scope.row)'>
                                 永久分享
                             </el-dropdown-item>
-                            <el-dropdown-item icon='el-icon-share' @click.native='shareFile1(scope.row)'>
-                                永久分享V1
-                            </el-dropdown-item>
                             <el-dropdown-item icon='el-icon-share' @click.native='shareDialog(scope.row)'>
                                 分享
                             </el-dropdown-item>
@@ -210,16 +207,6 @@
                         <el-button type='success' @click='shareFileExpire'>分享</el-button>
                     </el-col>
                 </el-row>
-                <el-row :gutter='20'>
-                    <el-col :span='16'>
-                        <el-form-item label='分享时间'>
-                            <el-input-number v-model='shareDays' :max='1000' :min='1'></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='8'>
-                        <el-button type='info' @click='shareFileDays'>分享V1</el-button>
-                    </el-col>
-                </el-row>
             </el-form>
             <span slot='footer' class='dialog-footer'>
             </span>
@@ -251,7 +238,6 @@ export default {
     mixins: [formMixin],
     props: ['directoryId'],
     components: {
-        DropCollection: () => import('@/components/comm/DropCollection.vue'),
         FileUpload: () => import('@/components/comm/FileUpload'),
         FileUploadV1: () => import('@/components/comm/FileUploadV1'),
         FileUploadMulti: () => import('@/components/comm/FileUploadMulti'),
@@ -332,8 +318,8 @@ export default {
         },
         getByPage() {
             FileInfo.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 // 修改文件大小显示方式
                 this.realData.forEach(function(item, index, arr) {
                     arr[index].sizeShow = Utils.byteSwitch(item.size)
@@ -403,23 +389,6 @@ export default {
         shareFileExpire() {
             this.batchData.expireDate = Utils.dateToStr(this.batchData.expireDate)
             File.shareFile(this.batchData).then(() => {
-                this.$message.success('分享' + this.formData.name + '成功')
-            }).catch(() => {
-                this.$message.error('分享' + this.formData.name + '失败')
-            })
-            this.shareDialogVisible = false
-        },
-        shareFile1(row) {
-            let ids = [row.id]
-            File.shareFile1(ids).then(() => {
-                this.$message.success('分享' + row.name + '成功')
-            }).catch(() => {
-                this.$message.error('分享' + row.name + '失败')
-            })
-        },
-        shareFileDays() {
-            let ids = [this.batchData.fileId]
-            File.shareFileDays(ids, this.shareDays).then(() => {
                 this.$message.success('分享' + this.formData.name + '成功')
             }).catch(() => {
                 this.$message.error('分享' + this.formData.name + '失败')

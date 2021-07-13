@@ -51,15 +51,15 @@ export default {
                     const href = window.URL.createObjectURL(blob)
                     const el = document.createElement('a')
                     el.href = href
-                    el.download = this.file.fileName
+                    el.download = this.file.name
                     document.body.appendChild(el)
                     el.click()
                     document.body.removeChild(el)
                     window.URL.revokeObjectURL(href)
-                    this.$message.success('下载' + this.file.fileName + '成功')
+                    this.$message.success('下载' + this.file.name + '成功')
                     this.success()
                 }).catch(() => {
-                    this.$message.error('下载' + this.file.fileName + '失败')
+                    this.$message.error('下载' + this.file.name + '失败')
                 })
             }
         }

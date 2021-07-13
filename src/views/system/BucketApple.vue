@@ -16,6 +16,7 @@
             </el-form-item>
         </el-form>
         <el-button icon='el-icon-plus' size='small' type='success' @click='addDialog'>新增</el-button>
+        <drop-collection table='Bucket' :success='getByPage' />
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
@@ -214,8 +215,8 @@ export default {
         },
         getByPage() {
             Bucket.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 this.$message.success('查询Bucket成功')
             }).catch(() => {
                 this.$message.error('查询Bucket失败')
@@ -243,7 +244,7 @@ export default {
         },
         getTasks() {
             Bucket.getOptions().then(res => {
-                this.policies = res.data.data.map(v => ({value: v.code, label: v.title}))
+                this.policies = res.data.map(v => ({value: v.code, label: v.title}))
                 this.$message.success('查询策略成功')
             }).catch(() => {
                 this.$message.error('查询策略失败')
@@ -251,7 +252,7 @@ export default {
         },
         getUsers() {
             User.getOptions().then(res => {
-                this.users = res.data.data
+                this.users = res.data
                 this.$message.success('查询用户成功')
             }).catch(() => {
                 this.$message.error('查询用户失败')

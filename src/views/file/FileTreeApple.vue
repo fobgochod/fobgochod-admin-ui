@@ -97,7 +97,7 @@
 
 <script>
 import formMixin from '@/mixin/form.mixin'
-import Dir from '@/api/file/directory'
+import DirInfo from '@/api/file/dir.info'
 import Utils from '@/assets/js/utils'
 import FileDownload from '@/api/file/file.download'
 import FileInfo from '@/api/file/file.info'
@@ -115,8 +115,8 @@ export default {
             dirSize: 0,
             fileSize: 0,
             paths: [],
-            rootDir: '00000000-0000-0000-0000-000000000000',
-            directoryId: '00000000-0000-0000-0000-000000000000',
+            rootDir: '0',
+            directoryId: '0',
             formData: {},
             addDirTitle: '新建文件夹',
             addDirVisible: false,
@@ -176,7 +176,7 @@ export default {
             this.addDirVisible = true
         },
         addDir() {
-            Dir.addData(this.formData).then(() => {
+            DirInfo.addData(this.formData).then(() => {
                 this.getDirInfo(this.directoryId)
                 this.$message.success('新增' + this.formData.name + '成功')
             }).catch(() => {
@@ -218,9 +218,9 @@ export default {
         },
         getDirInfo(dirId) {
             this.realData = []
-            Dir.getDirInfo(dirId).then(res => {
-                let files = res.data.fileInfos
-                let dirs = res.data.dirInfos
+            DirInfo.getDirInfo(dirId).then(res => {
+                let files = res.data.files
+                let dirs = res.data.dirs
                 this.fileSize = files.length
                 this.dirSize = dirs.length
                 this.realData.push.apply(this.realData, dirs.map(v => ({
@@ -238,7 +238,7 @@ export default {
                 this.realData.push.apply(this.realData, files.map(v => ({
                     type: 'File',
                     id: v.id,
-                    name: v.fileName,
+                    name: v.name,
                     displayName: v.displayName,
                     extension: v.extension,
                     expireDate: v.expireDate,

@@ -28,16 +28,16 @@ export default {
             data: data,
         })
     },
-    doTask(id) {
-        return axios({
-            method: 'get',
-            url: '/tasks/run/' + id,
-        })
-    },
     dropData() {
         return axios({
             method: 'delete',
             url: '/tasks/drop',
+        })
+    },
+    doTask(id) {
+        return axios({
+            method: 'get',
+            url: '/tasks/run/' + id,
         })
     },
     refreshTask() {

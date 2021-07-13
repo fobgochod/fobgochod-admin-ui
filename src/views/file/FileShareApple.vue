@@ -18,10 +18,7 @@
         <el-row>
             <el-button :disabled='selectionButtonState' icon='el-icon-finished' size='small' type='danger'
                        @click='consoleSelection'>
-                {{selectionButtonTitle}}
-            </el-button>
-            <el-button icon='el-icon-plus' size='small' type='success' @click='addDialog' disabled>
-                新增
+                {{ selectionButtonTitle }}
             </el-button>
             <el-popconfirm title='确定删除吗？' @onConfirm='batchDelSharedFile'>
                 <el-button slot='reference' icon='el-icon-delete' size='small' style='margin-left: 10px;'
@@ -29,10 +26,7 @@
                     批量删除
                 </el-button>
             </el-popconfirm>
-            <el-button icon='el-icon-mouse' size='small' style='margin-left: 10px;' type='success' disabled
-                       @click='batchUpload'>
-                修复数据
-            </el-button>
+            <drop-collection table='Share' :success='getByPage' />
         </el-row>
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
@@ -45,7 +39,7 @@
             <el-table-column label='文件名称' property='fileName' width='180'></el-table-column>
             <el-table-column label='分享地址' property='url' width='500'>
                 <template slot-scope='scope'>
-                    <a :href='scope.row.url' target='_blank'>{{scope.row.url}}</a>
+                    <a :href='scope.row.url' target='_blank'>{{ scope.row.url }}</a>
                 </template>
             </el-table-column>
             <el-table-column align='center' label='分享给所有人' width='160'>
@@ -100,20 +94,6 @@
         </el-pagination>
 
 
-        <el-dialog :title='addDialogTitle' :visible.sync='addDialogVisible' center>
-            <el-form ref='form' :model='formData' label-width='80px'>
-                <el-form-item label='分享者'>
-                    <el-input v-model='formData.userName'></el-input>
-                </el-form-item>
-                <el-form-item label='文件名称'>
-                    <el-input v-model='formData.fileName'></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot='footer' class='dialog-footer'>
-                <el-button type='success' @click='addData'> 确认新增</el-button>
-            </span>
-        </el-dialog>
-
         <el-dialog :title='modDialogTitle' :visible.sync='modDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='100px'>
                 <el-row>
@@ -158,8 +138,6 @@
 <script>
 import formMixin from '@/mixin/form.mixin'
 import FileShare from '@/api/file/file.share'
-import Goods from '@/assets/js/goods'
-import store from '@/store'
 
 export default {
     mixins: [formMixin],
@@ -176,15 +154,6 @@ export default {
         }
     },
     methods: {
-        addData() {
-            FileShare.addData(this.formData).then(() => {
-                this.getByPage()
-                this.$message.success('新增' + this.formData.fileName + '成功')
-            }).catch(() => {
-                this.$message.error('新增' + this.formData.fileName + '失败')
-            })
-            this.addDialogVisible = false
-        },
         delData(row) {
             FileShare.delData(row.id).then(() => {
                 this.getByPage()
@@ -195,7 +164,7 @@ export default {
         },
         modDialog(row) {
             this.formData = row
-            this.modDialogTitle = '修改（' + this.formData.name + '）'
+            this.modDialogTitle = '修改（' + this.formData.fileName + '）'
             this.modDialogVisible = true
         },
         modData() {
@@ -216,8 +185,8 @@ export default {
         },
         getByPage() {
             FileShare.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 this.$message.success('查询分享记录成功')
             }).catch(() => {
                 this.$message.success('查询分享记录失败')
@@ -249,7 +218,7 @@ export default {
                 return
             }
             this.batchData.shareIds = this.selectionIds()
-            FileShare.batchDelSharedFile(this.batchData).then(() => {
+            FileShare.batchDelData(this.batchData).then(() => {
                 this.searchData()
                 this.$message.success('批量删除[' + this.selectionData.length + ']个文件分享成功')
             }).catch(() => {
@@ -273,44 +242,12 @@ export default {
                 this.$message.error('下载失败')
             })
         },
-        async batchUpload() {
-            let goods = Goods
-            let result = []
-            for (let i = 0, len = goods.length; i < len; i++) {
-                const res = await this.upload0(goods[i])
-                let fix = 'https://dmc-test.digiwincloud.com/api/dmc/v2/file/digiwincloud/preview/'
-                result[i] = 'update omc.goods set logoimage = \'' + fix + res.data.id + '\' where code = \'' + goods[i].code + '\';'
-            }
-            let go = JSON.stringify(result)
-            localStorage.setItem('goods', go)
-            sessionStorage.setItem('goods', go)
-            this.$message.success(go)
-        },
-        async upload0(data) {
-            const res = await this.download0(data)
-            return this.$axios({
-                method: 'post',
-                url: store.state.baseUri + '/api/dmc/v1/buckets/' + store.state.bucket + '/files',
-                headers: {
-                    'digi-middleware-drive-arg': this.getFileInfo(data)
-                },
-                data: res.data
-            })
-        },
         download0(data) {
             return this.$axios({
                 method: 'get',
-                url: data.logoimage,
+                url: data.url,
                 responseType: 'blob'
             })
-        },
-        getFileInfo(row) {
-            this.formData = {}
-            this.formData.fileName = row.fileName
-            this.formData.displayName = null
-            this.formData.description = null
-            this.formData.directoryId = '1e5b3e00-b06e-484d-85a3-78c0cd34b6ae'
-            return encodeURIComponent(JSON.stringify(this.formData))
         }
     },
     mounted() {

@@ -27,17 +27,17 @@ export default {
             url: '/users/' + id,
         })
     },
-    getData() {
-        return axios({
-            method: 'get',
-            url: '/users',
-        })
-    },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/users/search',
             data: data,
+        })
+    },
+    dropData() {
+        return axios({
+            method: 'delete',
+            url: '/users/drop',
         })
     },
     getOptions() {
@@ -79,10 +79,5 @@ export default {
             url: '/users/password/reset',
             data: data,
         })
-    },
-    refreshToken(tenantId) {
-        return axios.post('/auth/token/refresh', {
-            tenantId: tenantId,
-        })
-    },
+    }
 }

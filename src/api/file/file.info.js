@@ -1,5 +1,4 @@
 import axios from '@/config/http'
-import store from '@/store'
 
 export default {
     modData(data) {
@@ -7,19 +6,6 @@ export default {
             method: 'put',
             url: '/fileinfo',
             data: data,
-        })
-    },
-    changeName(fileId, fileName) {
-        return axios({
-            method: 'post',
-            url: `/buckets/${store.state.bucket}/files/${fileId}/rename/${fileName}/`,
-            data: {},
-        })
-    },
-    completed(fileId, completed) {
-        return axios({
-            method: 'put',
-            url: `/fileinfo/${fileId}/${completed}`,
         })
     },
     getByPage(data) {
@@ -33,6 +19,21 @@ export default {
         return axios({
             method: 'delete',
             url: '/fileinfo/drop',
+        })
+    },
+    changeName(fileId, fileName) {
+        return axios({
+            method: 'post',
+            url: `/fileinfo/name/${fileId}`,
+            data: {
+                name: fileName,
+            },
+        })
+    },
+    completed(fileId, completed) {
+        return axios({
+            method: 'post',
+            url: `/fileinfo/${fileId}/${completed}`,
         })
     },
 }

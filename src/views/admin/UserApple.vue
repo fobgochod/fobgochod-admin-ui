@@ -61,7 +61,7 @@ export default {
         ...mapMutations(['setUserName']),
         getData() {
             User.getByName(this.userId).then((res) => {
-                this.formData = res.data.data
+                this.formData = res.data
             })
         },
         onSubmit() {

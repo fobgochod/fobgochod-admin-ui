@@ -5,8 +5,8 @@
         </div>
         <div id='form_space'>
             <div align='center'>
-                <h1>{{loginTitle}}</h1>
-                <p>{{loginSubTitle}}</p>
+                <h1>{{ loginTitle }}</h1>
+                <p>{{ loginSubTitle }}</p>
             </div>
             <div style='padding: 20px'>
                 <el-form ref='form' :model='loginForm'>
@@ -92,26 +92,10 @@ export default {
         async loginOk() {
             const resRole = await Login.getRole(this.loginForm.username)
             sessionStorage.setItem('loginMark', 'login')
-            sessionStorage.setItem('loginRole', resRole.data.data.role)
-            this.setUserName(resRole.data.data.name)
+            sessionStorage.setItem('loginRole', resRole.data.role)
+            this.setUserName(resRole.data.name)
 
-            const resBucket = await Login.getByOwner()
-            this.setBucket2(resBucket.data.data[0].options)
             await this.$router.push('/home')
-        },
-        setBucket2(buckets) {
-            if (buckets.length > 0) {
-                if (this.bucket) {
-                    let temp = buckets.find(key => key.value === this.bucket)
-                    if (!temp) {
-                        this.setBucket(buckets[0].value)
-                    }
-                } else {
-                    this.setBucket(buckets[0].value)
-                }
-            } else {
-                this.setBucket('')
-            }
         },
         to(link) {
             this.$router.push(link)

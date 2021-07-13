@@ -1,7 +1,7 @@
 <template>
     <el-card class="card" shadow="never">
         <div slot="header" class="clearfix">
-            <span>文档中心数据统计</span>
+            <span>数据统计</span>
         </div>
         <div>
             <el-row :gutter="20">
@@ -25,9 +25,9 @@ export default {
     data() {
         return {
             realData: [],
-            bucketSizes: [],
+            tenantSizes: [],
             sizes: [],
-            bucketFiles: [],
+            tenantFiles: [],
             files: [],
             limit: 6
         };
@@ -38,11 +38,11 @@ export default {
     methods: {
         getData() {
             Stats.getTotal(this.limit).then(res => {
-                this.realData = res.data.data;
+                this.realData = res.data;
 
-                this.bucketSizes = this.realData.bucketSizes;
+                this.tenantSizes = this.realData.tenantSizes;
                 this.sizes = this.realData.sizes;
-                this.bucketFiles = this.realData.bucketFiles;
+                this.tenantFiles = this.realData.tenantFiles;
                 this.files = this.realData.files;
                 this.drawBar();
                 this.drawPie()
@@ -52,18 +52,18 @@ export default {
             let chart1 = this.$echarts.init(document.getElementById("chart1"), 'light');
             chart1.setOption({
                 title: {
-                    text: 'Bucket文件个数前' + this.limit + '统计',
+                    text: '租户文件个数前' + this.limit + '统计',
                 },
                 tooltip: {
                     trigger: "axis",
                     formatter: "{a} <br/>{b} : {c} (个)",
                 },
                 legend: {
-                    data: ['Bucket文件个数']
+                    data: ['租户文件个数']
                 },
                 xAxis: {
                     type: "category",
-                    data: this.bucketFiles,
+                    data: this.tenantFiles,
                     axisLabel: {
                         interval: 0,
                         rotate: 15,
@@ -73,7 +73,7 @@ export default {
                     type: "value",
                 },
                 series: [{
-                    name: 'Bucket文件个数',
+                    name: '租户文件个数',
                     type: "bar",
                     data: this.files
                 }]
@@ -83,7 +83,7 @@ export default {
             let chart2 = this.$echarts.init(document.getElementById("chart2"), 'light');
             chart2.setOption({
                 title: {
-                    text: 'Bucket用量前' + this.limit + '统计',
+                    text: '租户文件用量前' + this.limit + '统计',
                     left: "center",
                 },
                 tooltip: {
@@ -93,11 +93,11 @@ export default {
                 legend: {
                     orient: 'vertical',
                     left: 'right',
-                    data: this.bucketSizes
+                    data: this.tenantSizes
                 },
                 series: [
                     {
-                        name: "Bucket占比",
+                        name: "租户占比",
                         type: "pie",
                         radius: "55%",
                         center: ["40%", "60%"],

@@ -153,14 +153,9 @@
 import pageMixin from '@/mixin/form.mixin'
 import {TASKS} from '@/assets/js/dmc.data'
 import Task from '@/api/system/task'
-import DropCollection from '@/components/comm/DropCollection'
 
 export default {
-    components: {DropCollection},
     mixins: [pageMixin],
-    comments: {
-        DropCollection: () => import('@/components/comm/DropCollection.vue')
-    },
     data() {
         return {
             formData: {
@@ -217,7 +212,7 @@ export default {
         getByPage() {
             this.pageData.orders = {code: 1}
             Task.getByPage(this.pageData).then(res => {
-                this.realDataCache = res.data.data.list
+                this.realDataCache = res.data.list
                 this.pageData.total = this.realDataCache.length
                 this.pageHandler()
                 this.$message.success('查询策略成功')
@@ -237,7 +232,7 @@ export default {
             for (let task of TASKS) {
                 Task.addData(task).then(() => {
                     count++
-                    if (count === 7) {
+                    if (count === 6) {
                         this.getByPage()
                     }
                 })

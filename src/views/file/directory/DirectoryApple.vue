@@ -134,7 +134,7 @@
 
 <script>
 import formMixin from '@/mixin/form.mixin'
-import Dir from '@/api/file/directory'
+import DirInfo from '@/api/file/dir.info'
 import File from '@/api/file/file'
 import Utils from '@/assets/js/utils'
 
@@ -158,7 +158,7 @@ export default {
     },
     methods: {
         addData() {
-            Dir.addData(this.formData).then(() => {
+            DirInfo.addData(this.formData).then(() => {
                 this.getByPage()
                 this.$message.success('新增' + this.formData.name + '成功')
             }).catch(() => {
@@ -198,7 +198,7 @@ export default {
             this.modDialogVisible = false
         },
         update(data) {
-            Dir.modData(data).then(() => {
+            DirInfo.modData(data).then(() => {
                 this.getByPage()
                 this.$message.warning('修改' + data.name + '成功')
             }).catch(() => {
@@ -206,9 +206,9 @@ export default {
             })
         },
         getByPage() {
-            Dir.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+            DirInfo.getByPage(this.pageData).then(res => {
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 this.$message.success('查询文件成功')
             }).catch(() => {
                 this.$message.error('查询文件失败')

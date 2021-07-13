@@ -12,8 +12,8 @@
 <script>
 export default {
     components: {
-        TopSpace: () => import("@/views/dmc/home/sub/TopSub"),
-        MainSpace: () => import("@/views/dmc/home/sub/MainSub")
+        TopSpace: () => import("@/views/home/sub/TopSub"),
+        MainSpace: () => import("@/views/home/sub/MainSub")
     }
 };
 </script>

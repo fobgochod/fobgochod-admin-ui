@@ -1,0 +1,88 @@
+<template>
+    <frame-space>
+        <el-table :data='realData' border stripe>
+            <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
+            <el-table-column align='center' label='年份' property='year' width='100'></el-table-column>
+            <el-table-column align='center' label='月份' property='month' width='100'></el-table-column>
+            <el-table-column align='center' label='用户数量' property='userCount' width='140'></el-table-column>
+            <el-table-column align='center' label='租户数量' property='tenantCount' width='140'></el-table-column>
+            <el-table-column align='center' label='文件数量' property='fileCount' width='140'></el-table-column>
+            <el-table-column align='center' label='磁盘空间大小' property='totalSizeReadable' width='200'></el-table-column>
+            <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+
+            <el-table-column align='center' label='操作' width='80'>
+                <template slot-scope='scope'>
+                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                        <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'>
+                        </el-button>
+                    </el-popconfirm>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination :current-page='pageData.pageNum'
+                       :page-size='pageData.pageSize'
+                       :page-sizes='[10, 20, 50, 100]'
+                       :total='pageData.total'
+                       hide-on-single-page
+                       layout='total, sizes, prev, pager, next, jumper'
+                       style='margin-top:10px'
+                       @size-change='pageSizeChange'
+                       @current-change='pageNumChange'>
+        </el-pagination>
+    </frame-space>
+</template>
+
+<script>
+import pageMixin from '@/mixin/form.mixin'
+import Stats from '@/api/system/stats'
+
+export default {
+    mixins: [pageMixin],
+    data() {
+        return {
+            formData: {
+                name: ''
+            }
+        }
+    },
+    methods: {
+        delData(row) {
+            Stats.delData(row.id).then(() => {
+                this.getData()
+                this.$message.success('删除' + row.title + '成功')
+            }).catch(() => {
+                this.$message.error('删除' + row.title + '失败')
+            })
+        },
+        getData() {
+            Stats.getByPage(this.pageData).then(res => {
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
+                this.$message.success('查询成功')
+            }).catch(() => {
+                this.$message.error('查询失败')
+            })
+        },
+        pageSizeChange(pageSize) {
+            this.pageData.pageNum = 1
+            this.pageData.pageSize = pageSize
+            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
+            this.getData()
+        },
+        pageNumChange(pageNum) {
+            this.pageData.pageNum = pageNum
+            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
+            this.getData()
+        }
+    },
+    mounted() {
+        this.getData()
+    }
+}
+</script>
+
+<style scoped>
+
+</style>
