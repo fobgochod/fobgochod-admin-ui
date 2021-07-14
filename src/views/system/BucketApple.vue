@@ -163,6 +163,7 @@
 import pageMixin from '@/mixin/form.mixin'
 import Bucket from '@/api/system/bucket'
 import User from '@/api/system/user'
+import Task from '@/api/system/task'
 
 export default {
     mixins: [pageMixin],
@@ -243,15 +244,16 @@ export default {
             this.getByPage()
         },
         getTasks() {
-            Bucket.getOptions().then(res => {
-                this.policies = res.data.map(v => ({value: v.code, label: v.title}))
+            Task.getOptions().then(res => {
+                // this.policies = res.data.list.map(v => ({value: v.code, label: v.name}))
+                this.policies = res.data
                 this.$message.success('查询策略成功')
             }).catch(() => {
                 this.$message.error('查询策略失败')
             })
         },
         getUsers() {
-            User.getOptions().then(res => {
+            User.getOptionGroups().then(res => {
                 this.users = res.data
                 this.$message.success('查询用户成功')
             }).catch(() => {

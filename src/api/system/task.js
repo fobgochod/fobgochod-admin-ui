@@ -34,6 +34,12 @@ export default {
             url: '/tasks/drop',
         })
     },
+    getOptions() {
+        return axios({
+            method: 'get',
+            url: '/tasks/option',
+        })
+    },
     doTask(id) {
         return axios({
             method: 'get',

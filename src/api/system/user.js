@@ -40,10 +40,10 @@ export default {
             url: '/users/drop',
         })
     },
-    getOptions() {
+    getOptionGroups() {
         return axios({
             method: 'get',
-            url: '/users/option',
+            url: '/users/option/group',
         })
     },
     getByName(username) {

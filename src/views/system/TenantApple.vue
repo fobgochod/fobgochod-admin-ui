@@ -226,7 +226,7 @@ export default {
             this.getByPage()
         },
         getUsers() {
-            User.getOptions().then(res => {
+            User.getOptionGroups().then(res => {
                 this.users = res.data
                 this.$message.success('查询用户成功')
             }).catch(() => {
