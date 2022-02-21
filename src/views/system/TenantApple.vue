@@ -26,7 +26,7 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='租户ID' property='code' width='100'></el-table-column>
             <el-table-column label='租户名' property='name' width='120'></el-table-column>
-            <el-table-column label='Email' property='email' width='180'></el-table-column>
+            <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
             <el-table-column label='所有者' property='owner' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>

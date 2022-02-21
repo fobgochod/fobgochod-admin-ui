@@ -31,9 +31,9 @@
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
-            <el-table-column label='ID' property='id' width='180'></el-table-column>
+            <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='类型' property='type' width='80' align='center'></el-table-column>
-            <el-table-column label='分享者ID' property='userId' width='120'></el-table-column>
+            <el-table-column label='分享者ID' property='userId' width='150'></el-table-column>
             <el-table-column label='分享者' property='userName' width='120'></el-table-column>
             <el-table-column label='文件ID' property='fileId' width='180'></el-table-column>
             <el-table-column label='文件名称' property='fileName' width='180'></el-table-column>

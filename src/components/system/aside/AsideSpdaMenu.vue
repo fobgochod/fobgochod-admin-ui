@@ -1,18 +1,17 @@
 <template>
-    <el-submenu index='102'>
+    <el-submenu index='101'>
         <template slot='title'>
             <i :style='{ color: aside.aside_icon_color }' class='el-icon-thumb'></i>
-            <span>使用范例</span>
+            <span>药品管理</span>
         </template>
 
-        <el-menu-item index='/demo/transfer'>
-            <i :style='{ color: aside.aside_icon_color }' class='el-icon-position'></i>
-            <span>参数传输</span>
+        <el-menu-item index='/spda/medicine'>
+            <i :style='{ color: aside.aside_icon_color }' class='el-icon-place'></i>
+            <span>按时吃药</span>
         </el-menu-item>
-
-        <el-menu-item index='/demo/editor'>
-            <i :style='{ color: aside.aside_icon_color }' class='el-icon-tickets'></i>
-            <span>富文本</span>
+        <el-menu-item index='/spda/medicine/record'>
+            <i :style='{ color: aside.aside_icon_color }' class='el-icon-place'></i>
+            <span>吃药记录</span>
         </el-menu-item>
     </el-submenu>
 </template>

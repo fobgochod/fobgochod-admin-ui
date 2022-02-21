@@ -29,10 +29,10 @@
         </el-row>
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
-            <el-table-column label='ID' property='id' width='180'></el-table-column>
+            <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>
             <el-table-column label='描述' property='displayName' width='200'></el-table-column>
-            <el-table-column label='父ID' property='parentId' width='180'></el-table-column>
+            <el-table-column label='父ID' property='parentId' width='150'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>

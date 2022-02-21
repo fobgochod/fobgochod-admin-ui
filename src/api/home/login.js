@@ -2,13 +2,13 @@ import axios from '@/config/http'
 
 export default {
     login(username, pwdhash) {
-        return axios.post('/auth/login', {
+        return axios.post('/login', {
             username: username,
             pwdhash: pwdhash,
         })
     },
     refresh(tenantId) {
-        return axios.post('/auth/token/refresh', {
+        return axios.post('/token/refresh', {
             tenantId: tenantId,
         })
     },

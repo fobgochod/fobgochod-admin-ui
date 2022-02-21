@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import demoRoutes from '@/router/demo.router'
 import dmcRoutes from '@/router/dmc.router'
+import spdaRoutes from '@/router/spda.router'
 import RoleInterceptor from '@/router/auth/role'
 
 Vue.use(VueRouter)
@@ -83,6 +84,7 @@ const baseRoutes = [
             roles: ['Admin', 'Owner'],
         },
     },
+    ...spdaRoutes,
     ...dmcRoutes,
 ]
 

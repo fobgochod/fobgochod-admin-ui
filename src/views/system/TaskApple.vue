@@ -17,7 +17,7 @@
                 <el-table-column label='编号' property='code' width='100'></el-table-column>
                 <el-table-column label='标题' property='name' width='200'></el-table-column>
                 <el-table-column label='类型' property='type' width='80'></el-table-column>
-                <el-table-column align='center' label='cron表达式' property='cron' width='120'></el-table-column>
+                <el-table-column align='center' label='cron表达式' property='cron' width='140'></el-table-column>
                 <el-table-column label='bean' property='className' width='280'></el-table-column>
                 <el-table-column align='center' label='禁用' width='60'>
                     <template slot-scope='scope'>

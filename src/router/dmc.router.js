@@ -11,6 +11,16 @@ const routes = [
         },
     },
     {
+        path: '/file/directory/tree',
+        name: 'DirectoryTree',
+        component: (resolve) => require(['@/views/file/directory/DirectoryTreeApple.vue'], resolve),
+        meta: {
+            title: '目录树',
+            loginState: true,
+            roles: ['Admin', 'Owner'],
+        },
+    },
+    {
         path: '/file/info',
         name: 'FileInfo',
         component: (resolve) => require(['@/views/file/FileInfoApple.vue'], resolve),
@@ -21,11 +31,21 @@ const routes = [
         },
     },
     {
-        path: '/file/share',
-        name: 'FileShare',
-        component: (resolve) => require(['@/views/file/FileShareApple.vue'], resolve),
+        path: '/file/tree',
+        name: 'FileTree',
+        component: (resolve) => require(['@/views/file/FileTreeApple.vue'], resolve),
         meta: {
-            title: '分享信息',
+            title: '文件树',
+            loginState: true,
+            roles: ['Admin', 'Owner'],
+        },
+    },
+    {
+        path: '/file/image',
+        name: 'Image',
+        component: (resolve) => require(['@/views/file/image/ImageApple.vue'], resolve),
+        meta: {
+            title: '图片库',
             loginState: true,
             roles: ['Admin', 'Owner'],
         },
@@ -41,42 +61,21 @@ const routes = [
         },
     },
     {
+        path: '/file/share',
+        name: 'FileShare',
+        component: (resolve) => require(['@/views/file/FileShareApple.vue'], resolve),
+        meta: {
+            title: '分享信息',
+            loginState: true,
+            roles: ['Admin', 'Owner'],
+        },
+    },
+    {
         path: '/file/recycle',
         name: 'RecycleBin',
         component: (resolve) => require(['@/views/file/RecycleBinApple.vue'], resolve),
         meta: {
             title: '回收站',
-            loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
-    },
-    // ************************************文件管理************************************
-    {
-        path: '/file/tree',
-        name: 'FileTree',
-        component: (resolve) => require(['@/views/file/FileTreeApple.vue'], resolve),
-        meta: {
-            title: '文件树',
-            loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
-    },
-    {
-        path: '/file/directory/tree',
-        name: 'DirectoryTree',
-        component: (resolve) => require(['@/views/file/directory/DirectoryTreeApple.vue'], resolve),
-        meta: {
-            title: '目录树',
-            loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
-    },
-    {
-        path: '/file/image',
-        name: 'Image',
-        component: (resolve) => require(['@/views/file/image/ImageApple.vue'], resolve),
-        meta: {
-            title: '图片库',
             loginState: true,
             roles: ['Admin', 'Owner'],
         },
@@ -162,7 +161,7 @@ const routes = [
             loginState: true,
             roles: ['Admin'],
         },
-    },
+    }
 ]
 
 export default routes

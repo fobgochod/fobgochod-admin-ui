@@ -94,9 +94,17 @@ function dateToStr(date) {
     return date
 }
 
+function dateTo(date) {
+    if (date && date instanceof Date) {
+        return date.format('Y-m-d')
+    }
+    return date
+}
+
 export default {
     byteSwitch,
     toTreeData,
     dataToTree,
     dateToStr,
+    dateTo,
 }

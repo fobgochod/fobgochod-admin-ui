@@ -30,8 +30,9 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='用户ID' property='code' width='100'></el-table-column>
             <el-table-column label='用户名' property='name' width='120'></el-table-column>
-            <el-table-column label='Email' property='email' width='180'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
+            <el-table-column label='微信' property='wechat' width='160'></el-table-column>
+            <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='角色' width='100'>
                 <template slot-scope='scope'>
                     <el-tag :type="scope.row != null && scope.row.role==='Admin'?'danger':'success'">

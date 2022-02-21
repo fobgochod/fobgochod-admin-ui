@@ -12,6 +12,8 @@ import Bucket from '@/api/system/bucket'
 import Task from '@/api/system/task'
 import FileInfo from '@/api/file/file.info'
 import FileShare from '@/api/file/file.share'
+import Medicine from '@/api/system/medicine'
+import MedicineRecord from '@/api/system/medicine.record'
 
 export default {
     props: {
@@ -32,6 +34,10 @@ export default {
                 this.dropTenant()
             } else if (this.table === 'Bucket') {
                 this.dropBucket()
+            } else if (this.table === 'Medicine') {
+                this.dropMedicine()
+            } else if (this.table === 'MedicineRecord') {
+                this.dropMedicineRecord()
             } else if (this.table === 'Task') {
                 this.dropTask()
             } else if (this.table === 'FileInfo') {
@@ -58,6 +64,22 @@ export default {
         },
         dropBucket() {
             Bucket.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropMedicine() {
+            Medicine.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropMedicineRecord() {
+            MedicineRecord.dropData().then(() => {
                 this.success()
                 this.$message.success('清空成功')
             }).catch(() => {

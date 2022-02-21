@@ -131,8 +131,8 @@ export default {
         },
         getByPage() {
             Shrink.getImageByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.data.total
-                this.realData = res.data.data.list
+                this.pageData.total = res.data.total
+                this.realData = res.data.list
                 this.$message.success('查询图片成功')
             }).catch(() => {
                 this.$message.error('查询图片失败')
