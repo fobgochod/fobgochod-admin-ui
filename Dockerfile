@@ -1,3 +1,9 @@
+FROM node:10
+COPY ./ /app
+WORKDIR /app
+RUN npm install && npm run build:prod
+
 FROM nginx
-COPY dist/ /usr/share/nginx/html/
-COPY default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir /app
+COPY --from=0 /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
