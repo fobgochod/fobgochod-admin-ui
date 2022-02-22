@@ -115,16 +115,21 @@
                             <el-input v-model='formData.name'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12'>
-                        <el-form-item label='实现类'>
-                            <el-input v-model='formData.className'></el-input>
+                    <el-col :span='6'>
+                        <el-form-item label='编号'>
+                            <el-input v-model='formData.code' disabled></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='6'>
+                        <el-form-item label='cron'>
+                            <el-input v-model='formData.cron'></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span='12'>
-                        <el-form-item label='cron'>
-                            <el-input v-model='formData.cron'></el-input>
+                        <el-form-item label='实现类'>
+                            <el-input v-model='formData.className'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='6'>

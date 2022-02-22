@@ -30,6 +30,7 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='用户ID' property='code' width='100'></el-table-column>
             <el-table-column label='用户名' property='name' width='120'></el-table-column>
+            <el-table-column align='center' label='生日' property='birth' width='120'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
             <el-table-column label='微信' property='wechat' width='160'></el-table-column>
             <el-table-column label='Email' property='email' width='210'></el-table-column>
@@ -71,7 +72,6 @@
                        @current-change='pageNumChange'>
         </el-pagination>
 
-
         <el-dialog :title='addDialogTitle' :visible.sync='addDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='80px'>
                 <el-row>
@@ -88,6 +88,30 @@
                 </el-row>
                 <el-row>
                     <el-col :span='12'>
+                        <el-form-item label='生日'>
+                            <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='12'>
+                        <el-form-item label='手机'>
+                            <el-input v-model='formData.telephone' placeholder='请输入用户手机'></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span='12'>
+                        <el-form-item label='微信'>
+                            <el-input v-model='formData.wechat' placeholder='请输入用户手机'></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='12'>
+                        <el-form-item label='Email'>
+                            <el-input v-model='formData.email' placeholder='请输入用户Email'></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span='12'>
                         <el-form-item label='用户密码'>
                             <el-input v-model='formData.password' placeholder='请输入用户密码' show-password></el-input>
                         </el-form-item>
@@ -99,18 +123,6 @@
                                 <el-radio label='Owner'>Owner</el-radio>
                                 <el-radio label='Admin'>Admin</el-radio>
                             </el-radio-group>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span='12'>
-                        <el-form-item label='Email'>
-                            <el-input v-model='formData.email' placeholder='请输入用户Email'></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='12'>
-                        <el-form-item label='手机'>
-                            <el-input v-model='formData.telephone' placeholder='请输入用户手机'></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -134,9 +146,30 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label='Email'>
-                    <el-input v-model='formData.email' placeholder='请输入用户昵称'></el-input>
-                </el-form-item>
+                <el-row>
+                    <el-col :span='12'>
+                        <el-form-item label='生日'>
+                            <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='12'>
+                        <el-form-item label='手机'>
+                            <el-input v-model='formData.telephone' placeholder='请输入用户手机'></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span='12'>
+                        <el-form-item label='微信'>
+                            <el-input v-model='formData.wechat' placeholder='请输入用户手机'></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='12'>
+                        <el-form-item label='Email'>
+                            <el-input v-model='formData.email' placeholder='请输入用户Email'></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 <el-form-item label='角色'>
                     <el-radio-group v-model='formData.role'>
                         <el-radio label='None'>None</el-radio>
@@ -178,8 +211,11 @@ export default {
             formData: {
                 code: '',
                 name: '',
-                email: '',
+                birth: null,
                 telephone: '',
+                wechat: '',
+                qq: '',
+                email: '',
                 password: '',
                 role: '',
                 pwdHash: ''
