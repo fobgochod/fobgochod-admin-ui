@@ -28,8 +28,8 @@
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='用户ID' property='code' width='100'></el-table-column>
-            <el-table-column label='用户名' property='name' width='120'></el-table-column>
+            <el-table-column label='账号' property='code' width='100'></el-table-column>
+            <el-table-column label='姓名' property='name' width='120'></el-table-column>
             <el-table-column align='center' label='生日' property='birth' width='120'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
             <el-table-column label='微信' property='wechat' width='160'></el-table-column>
@@ -76,12 +76,12 @@
             <el-form ref='form' :model='formData' label-width='80px'>
                 <el-row>
                     <el-col :span='12'>
-                        <el-form-item label='用户ID'>
+                        <el-form-item label='账号'>
                             <el-input v-model='formData.code' placeholder='请输入用户ID'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12'>
-                        <el-form-item label='用户名'>
+                        <el-form-item label='姓名'>
                             <el-input v-model='formData.name' placeholder='请输入用户名'></el-input>
                         </el-form-item>
                     </el-col>
@@ -136,12 +136,12 @@
             <el-form ref='form' :model='formData' label-width='80px'>
                 <el-row>
                     <el-col :span='12'>
-                        <el-form-item label='用户ID'>
+                        <el-form-item label='账号'>
                             <el-input disabled v-model='formData.code' placeholder='请输入用户ID'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12'>
-                        <el-form-item label='用户名'>
+                        <el-form-item label='姓名'>
                             <el-input v-model='formData.name' placeholder='请输入用户名'></el-input>
                         </el-form-item>
                     </el-col>

@@ -1,10 +1,10 @@
 import axios from '@/config/http'
 
 export default {
-    login(username, pwdhash) {
+    login(username, password) {
         return axios.post('/login', {
             username: username,
-            pwdhash: pwdhash,
+            password: password,
         })
     },
     refresh(tenantId) {

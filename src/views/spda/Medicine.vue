@@ -164,8 +164,8 @@
 
 <script>
 import pageMixin from '@/mixin/form.mixin'
-import Medicine from '@/api/system/medicine'
-import MedicineRecord from '@/api/system/medicine.record'
+import Medicine from '@/api/spda/medicine'
+import MedicineRecord from '@/api/spda/medicine.record'
 
 export default {
     mixins: [pageMixin],
@@ -258,7 +258,7 @@ export default {
             this.medicineRecordDialogVisible = true
         },
         eatMedicine() {
-            MedicineRecord.eat()
+            MedicineRecord.eat('chentt')
         }
     },
     mounted() {

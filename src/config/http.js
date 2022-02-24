@@ -5,7 +5,7 @@ import store from '@/store'
 axios.defaults.baseURL = process.env.VUE_APP_ADMIN_API
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 
-let whiteList = ['/redis', '/mariadb', '/websocket', '/auth/login']
+let whiteList = ['/redis', '/mariadb', '/websocket', '/login']
 
 axios.interceptors.request.use(
     (config) => {

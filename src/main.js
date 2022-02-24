@@ -11,6 +11,7 @@ import VueClipboard from 'vue-clipboard2'
 import components from '@/plugins/component' //加载公共组件
 import axios from '@/config/http'
 import '@/assets/css/common.css'
+import 'element-ui/lib/theme-chalk/display.css'
 
 Vue.prototype.$qs = qs
 Vue.prototype.$axios = axios

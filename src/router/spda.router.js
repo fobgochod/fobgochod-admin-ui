@@ -1,5 +1,15 @@
 const routes = [
     {
+        path: '/m',
+        name: 'M',
+        component: (resolve) => require(['@/views/spda/M.vue'], resolve),
+        meta: {
+            title: '我的药',
+            loginState: false,
+            roles: [],
+        },
+    },
+    {
         path: '/spda/medicine',
         name: 'Medicine',
         component: (resolve) => require(['@/views/spda/Medicine.vue'], resolve),

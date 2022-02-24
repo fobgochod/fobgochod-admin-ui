@@ -12,8 +12,8 @@ import Bucket from '@/api/system/bucket'
 import Task from '@/api/system/task'
 import FileInfo from '@/api/file/file.info'
 import FileShare from '@/api/file/file.share'
-import Medicine from '@/api/system/medicine'
-import MedicineRecord from '@/api/system/medicine.record'
+import Medicine from '@/api/spda/medicine'
+import MedicineRecord from '@/api/spda/medicine.record'
 
 export default {
     props: {

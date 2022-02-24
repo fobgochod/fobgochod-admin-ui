@@ -115,7 +115,7 @@
 
 <script>
 import pageMixin from '@/mixin/form.mixin'
-import MedicineRecord from '@/api/system/medicine.record'
+import MedicineRecord from '@/api/spda/medicine.record'
 
 export default {
     mixins: [pageMixin],
