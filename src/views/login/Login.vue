@@ -59,7 +59,7 @@ export default {
         let password = localStorage.getItem('password')
 
         return {
-            loginTitle: 'Scarecrow | 登录',
+            loginTitle: 'fobgochod',
             loginSubTitle: '',
             loginForm: {
                 username: username == null ? null : Secret.decrypt(username),

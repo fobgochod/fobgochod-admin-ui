@@ -37,8 +37,29 @@
             <el-table-column label='角色' width='100'>
                 <template slot-scope='scope'>
                     <el-tag :type="scope.row != null && scope.row.role==='Admin'?'danger':'success'">
-                        {{scope.row == null ? '' : scope.row.role}}
+                        {{ scope.row == null ? '' : scope.row.role }}
                     </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label='联系人' width='140'>
+                <template slot-scope='scope'>
+                    <el-dropdown trigger='click' v-if='scope.row.contacts && scope.row.contacts.length>0'>
+                        <span class='el-dropdown-link'>
+                            <el-badge :value='scope.row.contacts.length' class='item'>
+                                <el-button size='small'>
+                                    {{ scope.row.contacts[0] }}
+                                    <!--
+                                    <i v-if='scope.row.contacts.length>1' class='el-icon-caret-bottom el-icon--right' />
+                                    -->
+                                </el-button>
+                            </el-badge>
+                        </span>
+                        <el-dropdown-menu slot='dropdown'>
+                            <el-dropdown-item class='clearfix' :key='tag' v-for='tag in scope.row.contacts'>
+                                {{ tag }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </template>
             </el-table-column>
             <el-table-column label='密码' property='password' width='440'></el-table-column>
@@ -50,7 +71,7 @@
                 <template slot-scope='scope'>
                     <el-button icon='el-icon-edit-outline' title='编辑' type='text' @click='modDialog(scope.row)'>
                     </el-button>
-                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'>
                         </el-button>
                     </el-popconfirm>
@@ -177,6 +198,26 @@
                         <el-radio label='Admin'>Admin</el-radio>
                     </el-radio-group>
                 </el-form-item>
+                <el-row>
+                    <el-form-item label='联系人'>
+                        <el-tag :key='tag'
+                                v-for='tag in dynamicTags'
+                                closable
+                                :disable-transitions='false'
+                                @close='handleClose(tag)'>
+                            {{ tag }}
+                        </el-tag>
+                        <el-input class='input-new-tag'
+                                  v-if='inputVisible'
+                                  v-model='inputValue'
+                                  ref='saveTagInput'
+                                  size='small'
+                                  @keyup.enter.native='handleInputConfirm'
+                                  @blur='handleInputConfirm'>
+                        </el-input>
+                        <el-button v-else class='button-new-tag' size='small' @click='showInput'>+ New Tag</el-button>
+                    </el-form-item>
+                </el-row>
             </el-form>
             <span slot='footer' class='dialog-footer'>
                 <el-button type='success' @click='modData'>确认修改</el-button>
@@ -216,12 +257,16 @@ export default {
                 wechat: '',
                 qq: '',
                 email: '',
+                contacts: [],
                 password: '',
                 role: '',
                 pwdHash: ''
             },
             resetDialogTitle: '重置密码',
-            resetDialogVisible: false
+            resetDialogVisible: false,
+            dynamicTags: [],
+            inputVisible: false,
+            inputValue: ''
         }
     },
     methods: {
@@ -244,11 +289,17 @@ export default {
             })
         },
         modDialog(row) {
+            if (row.contacts) {
+                this.dynamicTags = row.contacts
+            } else {
+                this.dynamicTags = []
+            }
             this.formData = row
             this.modDialogTitle = '修改（' + this.formData.name + '）'
             this.modDialogVisible = true
         },
         modData() {
+            this.formData.contacts = this.dynamicTags
             this.update(this.formData)
             this.modDialogVisible = false
         },
@@ -304,6 +355,24 @@ export default {
                 this.$message.error('重置' + this.formData.name + '密码失败')
             })
             this.resetDialogVisible = false
+        },
+
+        handleClose(tag) {
+            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+        },
+        showInput() {
+            this.inputVisible = true
+            this.$nextTick(() => {
+                this.$refs.saveTagInput.$refs.input.focus()
+            })
+        },
+        handleInputConfirm() {
+            let inputValue = this.inputValue
+            if (inputValue) {
+                this.dynamicTags.push(inputValue)
+            }
+            this.inputVisible = false
+            this.inputValue = ''
         }
     },
     mounted() {
@@ -313,5 +382,25 @@ export default {
 </script>
 
 <style scoped>
+.el-tag + .el-tag {
+    margin-left: 10px;
+}
 
+.button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.input-new-tag {
+    width: 120px;
+    margin-left: 10px;
+    vertical-align: bottom;
+}
+
+.item {
+    margin-top: 10px;
+}
 </style>;

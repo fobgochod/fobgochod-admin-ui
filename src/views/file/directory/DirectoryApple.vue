@@ -53,7 +53,7 @@
                             <el-dropdown-item icon='el-icon-delete' @click.native='delData(scope.row)'>
                                 删除
                             </el-dropdown-item>
-                            <el-popconfirm icon-color='red' title='确定删除吗？' @onConfirm='delFileForce(scope.row)'>
+                            <el-popconfirm icon-color='red' title='确定删除吗？' @confirm='delFileForce(scope.row)'>
                                 <el-dropdown-item slot='reference' icon='el-icon-delete'>
                                     永久删除
                                 </el-dropdown-item>

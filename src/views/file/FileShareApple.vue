@@ -20,7 +20,7 @@
                        @click='consoleSelection'>
                 {{ selectionButtonTitle }}
             </el-button>
-            <el-popconfirm title='确定删除吗？' @onConfirm='batchDelSharedFile'>
+            <el-popconfirm title='确定删除吗？' @confirm='batchDelSharedFile'>
                 <el-button slot='reference' icon='el-icon-delete' size='small' style='margin-left: 10px;'
                            type='primary'>
                     批量删除
@@ -71,7 +71,7 @@
                     <el-button icon='el-icon-edit-outline' title='编辑' type='text'
                                @click='modDialog(scope.row)'>
                     </el-button>
-                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'>
                         </el-button>
                     </el-popconfirm>

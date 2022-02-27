@@ -40,7 +40,6 @@ import "tinymce/plugins/fullpage";
 import "tinymce/plugins/toc";
 //必须引用
 import "tinymce/icons/default/icons.min.js";
-import "@/assets/js/langs/zh_CN.js";
 import "tinymce/skins/ui/oxide/skin.css";
 
 export default {

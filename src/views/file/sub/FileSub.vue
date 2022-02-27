@@ -46,7 +46,7 @@
                 批量分享
             </el-button>
 
-            <el-popconfirm title='确定删除吗？' @onConfirm='batchDelFileForce'>
+            <el-popconfirm title='确定删除吗？' @confirm='batchDelFileForce'>
                 <el-button slot='reference' icon='el-icon-delete' size='small' style='margin-left: 10px;'>
                     批量删除
                 </el-button>
@@ -101,7 +101,7 @@
                             <el-dropdown-item icon='el-icon-delete' @click.native='delFile(scope.row)'>
                                 删除
                             </el-dropdown-item>
-                            <el-popconfirm icon-color='red' title='确定删除吗？' @onConfirm='delFileForce(scope.row)'>
+                            <el-popconfirm icon-color='red' title='确定删除吗？' @confirm='delFileForce(scope.row)'>
                                 <el-dropdown-item slot='reference' icon='el-icon-delete'>
                                     永久删除
                                 </el-dropdown-item>
@@ -270,7 +270,7 @@ export default {
         },
         tagInput() {
             this.tagInputVisible = true
-            this.$nextTick(_ => {
+            this.$nextTick(() => {
                 this.$refs.saveTagInput.$refs.input.focus()
             })
         },

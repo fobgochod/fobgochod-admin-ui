@@ -1,8 +1,8 @@
 const routes = [
     {
-        path: '/m',
-        name: 'M',
-        component: (resolve) => require(['@/views/spda/M.vue'], resolve),
+        path: '/:userId',
+        name: 'MyMedicine',
+        component: (resolve) => require(['@/views/spda/MyMedicine.vue'], resolve),
         meta: {
             title: '我的药',
             loginState: false,

@@ -2,7 +2,7 @@
     <div class='body'>
         <el-container class='hidden-xs-only'>
             <el-header>
-                <el-tag>{{userName}}</el-tag>
+                <el-tag>{{ userName }}</el-tag>
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
@@ -20,21 +20,23 @@
 
         <el-container class='hidden-sm-and-up'>
             <el-header>
-                <span style='font-weight:900; font-size: 25px;'>{{userName}}</span>
+                <span style='font-weight:900; font-size: 25px;'>{{ userName }}</span>
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
                 <el-descriptions :title='item.name' :column='4' direction='vertical' border style='padding-top: 2vw'
                                  v-for='item in realData' :key='item'>
                     <template slot='extra'>
-                        <el-tag type='primary'>{{item.remain}}天</el-tag>
+                        <el-tag type='primary'>{{ item.remain }}天</el-tag>
                     </template>
-                    <el-descriptions-item label='编号'>{{item.code}}</el-descriptions-item>
-                    <el-descriptions-item label='名称' label-class-name="my-label" content-class-name="my-content" :span='3'>{{item.name}}</el-descriptions-item>
-                    <el-descriptions-item label='总数'>{{item.total}}</el-descriptions-item>
-                    <el-descriptions-item label='早'>{{item.noon}}</el-descriptions-item>
-                    <el-descriptions-item label='中'>{{item.noon}}</el-descriptions-item>
-                    <el-descriptions-item label='晚'>{{item.night}}</el-descriptions-item>
+                    <el-descriptions-item label='编号'>{{ item.code }}</el-descriptions-item>
+                    <el-descriptions-item label='名称' label-class-name='my-label' content-class-name='my-content'
+                                          :span='3'>{{ item.name }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
+                    <el-descriptions-item label='早'>{{ item.morning }}</el-descriptions-item>
+                    <el-descriptions-item label='中'>{{ item.noon }}</el-descriptions-item>
+                    <el-descriptions-item label='晚'>{{ item.night }}</el-descriptions-item>
                 </el-descriptions>
             </el-main>
         </el-container>
@@ -52,16 +54,21 @@ export default {
             realData: []
         }
     },
+    computed: {
+        userId() {
+            return this.$route.params.userId
+        }
+    },
     methods: {
         medicine() {
-            Medicine.myMedicine('chentt')
+            Medicine.myMedicine(this.userId)
             .then((res) => {
                 this.userName = res.data.userName
                 this.realData = res.data.medicines
             })
         },
         eat() {
-            MedicineRecord.eat('chentt').then(() => {
+            MedicineRecord.eat(this.userId).then(() => {
                 this.$notify.success({
                     title: '成功',
                     message: '吃药成功',
@@ -83,9 +90,11 @@ export default {
         width: 800px;
         margin: auto;
     }
+
     .el-header {
         padding: 10px 0;
     }
+
     .el-main {
         padding: 2px 0;
     }
@@ -96,15 +105,19 @@ export default {
     .body {
         padding: 0 4vw;
     }
+
     .el-header {
         padding: 2vw;
     }
+
     .el-main {
         padding: 0 2vw;
     }
+
     .my-label {
         background: #E1F3D8;
     }
+
     .my-content {
         background: #FDE2E2;
     }

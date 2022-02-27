@@ -25,7 +25,7 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='用户' property='userId' width='100'></el-table-column>
             <el-table-column label='编号' property='code' width='100'></el-table-column>
-            <el-table-column label='名称' property='name' width='160'></el-table-column>
+            <el-table-column label='名称' property='name' width='200'></el-table-column>
             <el-table-column label='总数' property='total' width='100'></el-table-column>
             <el-table-column label='早' property='morning' width='100'></el-table-column>
             <el-table-column label='中' property='noon' width='100'></el-table-column>
@@ -40,7 +40,7 @@
                 <template slot-scope='scope'>
                     <el-button icon='el-icon-edit-outline' title='编辑' type='text' @click='modDialog(scope.row)'>
                     </el-button>
-                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'>
                         </el-button>
                     </el-popconfirm>
@@ -61,14 +61,14 @@
         <el-dialog :title='addDialogTitle' :visible.sync='addDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='100px'>
                 <el-row>
+                    <el-col :span='8'>
+                        <el-form-item label='编号'>
+                            <el-input v-model='formData.code'></el-input>
+                        </el-form-item>
+                    </el-col>
                     <el-col :span='16'>
                         <el-form-item label='名称'>
                             <el-input v-model='formData.name' placeholder='请输入药品名称'></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='8'>
-                        <el-form-item label='总数'>
-                            <el-input v-model='formData.total'></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -90,9 +90,9 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='16'>
-                        <el-form-item label='备注'>
-                            <el-input v-model='formData.remark'></el-input>
+                    <el-col :span='8'>
+                        <el-form-item label='总数'>
+                            <el-input v-model='formData.total'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='8'>
@@ -100,7 +100,15 @@
                             <el-input v-model='formData.remain' disabled></el-input>
                         </el-form-item>
                     </el-col>
+                    <el-col :span='8'>
+                        <el-form-item label='用户'>
+                            <el-input v-model='formData.userId'></el-input>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
+                <el-form-item label='备注'>
+                    <el-input v-model='formData.remark'></el-input>
+                </el-form-item>
             </el-form>
             <span slot='footer' class='dialog-footer'>
                 <el-button type='success' @click='addData'> 确认新增</el-button>
@@ -258,7 +266,10 @@ export default {
             this.medicineRecordDialogVisible = true
         },
         eatMedicine() {
-            MedicineRecord.eat('chentt')
+            MedicineRecord.eat('chentt').then(() => {
+                this.searchData()
+                this.$message.success('吃药成功')
+            })
         }
     },
     mounted() {

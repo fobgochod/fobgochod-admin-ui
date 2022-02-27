@@ -21,7 +21,7 @@
                        @click='batchRestore'>批量恢复
             </el-button>
 
-            <el-popconfirm style='margin: 0 10px' title='确定清空回收站吗？' @onConfirm='emptyData'>
+            <el-popconfirm style='margin: 0 10px' title='确定清空回收站吗？' @confirm='emptyData'>
                 <el-button slot='reference' icon='el-icon-refresh-right' size='small' type='danger'>清空</el-button>
             </el-popconfirm>
         </el-row>
@@ -45,7 +45,7 @@
                     <el-button icon='el-icon-refresh-left' title='恢复' type='text'
                                @click='restore(scope.row)'>
                     </el-button>
-                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'></el-button>
                     </el-popconfirm>
                 </template>

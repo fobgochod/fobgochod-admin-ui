@@ -29,7 +29,7 @@
 
             <el-table-column align='center' fixed label='操作' width='80'>
                 <template slot-scope='scope'>
-                    <el-popconfirm title='确定删除吗？' @onConfirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'></el-button>
                     </el-popconfirm>
                 </template>

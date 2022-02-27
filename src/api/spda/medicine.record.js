@@ -37,7 +37,7 @@ export default {
     eat(userId) {
         return axios({
             method: 'post',
-            url: '/medicine/records/eat',
+            url: '/medicines/eat',
             data: {
                 userId: userId,
             },

@@ -1,5 +1,5 @@
 <template>
-    <el-popconfirm title='确定删除集合吗？' @onConfirm='dropData'>
+    <el-popconfirm title='确定删除集合吗？' @confirm='dropData'>
         <el-button slot='reference' icon='el-icon-lock' size='small' type='danger' circle plain
                    style='margin-left: 10px;' />
     </el-popconfirm>

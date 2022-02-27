@@ -1,42 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang='en'>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.0.0/animate.min.css" rel="stylesheet">
-  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<!--  <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet">-->
-  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
-  <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
-<!--  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>-->
-  <script src="https://unpkg.com/vue-cookies@1.7.4/vue-cookies.js"></script>
-<!--  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.js"></script>-->
-  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0/axios.min.js"></script>
-
-
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
-
 <body>
-  <noscript>
+<noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-      Please enable it to continue.</strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-  <style>
-    * {
-      margin: 0px;
-      padding: 0px;
-    }
-  </style>
-</body>
+        Please enable it to continue.</strong>
+</noscript>
+<div id='app'></div>
+<link rel='icon' href='<%= BASE_URL %>favicon.ico'>
+<link href='https://cdn.bootcdn.net/ajax/libs/animate.css/4.0.0/animate.min.css' rel='stylesheet'>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+<script src='https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js'></script>
+<script src='https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js'></script>
+<script src='https://unpkg.com/vue-cookies@1.7.4/vue-cookies.js'></script>
+<!--  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.js"></script>-->
+<script src='https://cdn.bootcdn.net/ajax/libs/axios/0.20.0/axios.min.js'></script>
 
+<link rel='stylesheet' href='https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css'>
+<script src='https://unpkg.com/element-ui@2.15.7/lib/index.js'></script>
+</body>
 </html>
