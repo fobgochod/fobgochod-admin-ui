@@ -65,7 +65,7 @@ export default {
             })
         },
         onSubmit() {
-            User.changeName(this.formData).then(() => {
+            User.modData(this.formData).then(() => {
                 this.setUserName(this.formData.name)
                 this.$message.success('修改' + this.formData.name + '成功')
             }).catch(() => {

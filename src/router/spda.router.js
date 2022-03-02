@@ -1,6 +1,6 @@
 const routes = [
     {
-        path: '/:userId',
+        path: '/medicine/:userId',
         name: 'MyMedicine',
         component: (resolve) => require(['@/views/spda/MyMedicine.vue'], resolve),
         meta: {
@@ -25,6 +25,16 @@ const routes = [
         component: (resolve) => require(['@/views/spda/MedicineRecord.vue'], resolve),
         meta: {
             title: '吃药记录',
+            loginState: true,
+            roles: ['Admin', 'Owner'],
+        },
+    },
+    {
+        path: '/sms/record',
+        name: 'MedicineRecord',
+        component: (resolve) => require(['@/views/spda/SmsRecord.vue'], resolve),
+        meta: {
+            title: '短信记录',
             loginState: true,
             roles: ['Admin', 'Owner'],
         },

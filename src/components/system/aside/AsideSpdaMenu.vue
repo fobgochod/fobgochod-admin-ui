@@ -13,6 +13,10 @@
             <i :style='{ color: aside.aside_icon_color }' class='el-icon-place'></i>
             <span>吃药记录</span>
         </el-menu-item>
+        <el-menu-item index='/sms/record'>
+            <i :style='{ color: aside.aside_icon_color }' class='el-icon-place'></i>
+            <span>短信记录</span>
+        </el-menu-item>
     </el-submenu>
 </template>
 

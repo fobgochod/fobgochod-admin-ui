@@ -5,41 +5,26 @@
         </div>
         <div id='form_space'>
             <div align='center'>
-                <h1>{{loginTitle}}</h1>
-                <p>{{loginSubTitle}}</p>
+                <h1>{{ loginTitle }}</h1>
+                <p>{{ loginSubTitle }}</p>
             </div>
             <div style='padding: 20px'>
                 <el-form ref='form' :model='loginForm'>
-                    <el-form-item>
-                        <el-select v-model='$store.state.tenantId' clearable placeholder='请选择租户' size='medium'
-                                   style='width: 100%'>
-                            <el-option v-for='item in tenants' :key='item.value' :label='item.label'
-                                       :value='item.value'>
-                                <span style='float: left'>{{item.value}}</span>
-                                <span style='float: right; color: #8492a6; font-size: 13px'>{{item.label}}</span>
-                            </el-option>
-                        </el-select>
-                        <!--                        <el-input tabindex='1' v-model='tenantId' prefix-icon='el-icon-pear'-->
-                        <!--                                  @keydown.native.enter='nextFocus($event,2)'></el-input>-->
-                    </el-form-item>
-                    <el-form-item>
-                        <el-input tabindex='2' v-model='loginForm.username' prefix-icon='el-icon-user'
-                                  @keydown.native.enter='nextFocus($event,3)'></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-input tabindex='3' v-model='loginForm.password' prefix-icon='el-icon-lock' show-password
-                                  @keydown.native.enter='login'></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-checkbox v-model='remember'>记住我</el-checkbox>
-                        <el-link :underline='false' style='float: right' type='danger' @click="to('/change/password')">
-                            忘记密码
-                        </el-link>
-                    </el-form-item>
-                    <el-form-item align='center'>
-                        <el-button icon='el-icon-right' type='primary' @click='login' @keyup.enter.native='login'>登录
-                        </el-button>
-                    </el-form-item>
+                    <el-tabs type='border-card'>
+                        <el-tab-pane label='密码登陆'>
+                            <account-login :rule-form='loginForm' :remember='remember'
+                                           @submit='login'
+                                           @errHandle='loginSmsError'>
+                            </account-login>
+                        </el-tab-pane>
+                        <el-tab-pane label='短信登陆'>
+                            <phone-login :rule-form='loginForm'
+                                         @send='sendSms'
+                                         @submit='loginSms'
+                                         @errHandle='loginSmsError'>
+                            </phone-login>
+                        </el-tab-pane>
+                    </el-tabs>
                 </el-form>
             </div>
         </div>
@@ -51,49 +36,55 @@ import {COLOR} from '@/assets/js/dmc.data.js'
 import Secret from '@/assets/js/secret.js'
 import {mapMutations, mapState} from 'vuex'
 import Login from '@/api/home/login'
-import Tenant from '@/api/system/tenant'
 
 export default {
     data() {
         let username = localStorage.getItem('username')
         let password = localStorage.getItem('password')
-
         return {
             loginTitle: 'fobgochod',
             loginSubTitle: '',
             loginForm: {
                 username: username == null ? null : Secret.decrypt(username),
-                password: password == null ? null : Secret.decrypt(password)
+                password: password == null ? null : Secret.decrypt(password),
+                telephone: '',
+                captcha: '',
+                loginType: 'token'
             },
-            remember: false,
-            hashLogin: false,
-            tenants: []
+            remember: false
         }
+    },
+    components: {
+        AccountLogin: () => import('@/views/login/sub/AccountLogin.vue'),
+        PhoneLogin: () => import('@/views/login/sub/PhoneLogin.vue')
     },
     computed: {
         ...mapState(['baseUri', 'bucket', 'tenantId'])
     },
     methods: {
         ...mapMutations(['setEnv', 'setBucket', 'setUserId', 'setUserName', 'setUserToken']),
-        nextFocus(e, index) {
-            e.target.blur()
-            document.querySelector('input[tabindex=\'' + index + '\']').focus()
-        },
         login() {
-            let password
-            if (this.hashLogin) {
-                password = this.loginForm.password
-            } else {
-                password = Secret.encode(this.loginForm.password)
-            }
-            Login.login(this.loginForm.username, password)
+            let password = Secret.encrypt(this.loginForm.password)
+            this.loginForm.password = Secret.encode(this.loginForm.password)
+            Login.login(this.loginForm)
             .then((res) => {
-                this.setUserToken(res.data.userToken)
-                this.setUserId(this.loginForm.username)
+                this.setUserToken(res.data.token)
+                this.setUserId(res.data.username)
                 if (this.remember) {
                     localStorage.setItem('username', Secret.encrypt(this.loginForm.username))
-                    localStorage.setItem('password', Secret.encrypt(this.loginForm.password))
+                    localStorage.setItem('password', password)
                 }
+                this.loginOk()
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
+            })
+        },
+        loginSms() {
+            this.loginForm.loginType = 'captcha'
+            Login.login(this.loginForm)
+            .then((res) => {
+                this.setUserToken(res.data.token)
+                this.setUserId(res.data.username)
                 this.loginOk()
             }).catch((err) => {
                 this.$message.error(err.response.data.message)
@@ -107,13 +98,11 @@ export default {
 
             await this.$router.push('/home')
         },
-        to(link) {
-            this.$router.push(link)
+        sendSms() {
+            Login.sendSms(this.loginForm.telephone)
         },
-        getTenants() {
-            Tenant.getOptions().then(res => {
-                this.tenants = res.data
-            })
+        loginSmsError() {
+            this.$message.error('登陆失败')
         }
     },
     mounted() {
@@ -121,7 +110,6 @@ export default {
         if (this.$cookies.get('setting') == null) {
             this.$cookies.set('setting', JSON.stringify(COLOR))
         }
-        this.getTenants()
     }
 }
 </script>

@@ -17,8 +17,9 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column align='center' label='Medicine' property='medicineId' width='150'></el-table-column>
             <el-table-column label='类型' property='type' width='100'></el-table-column>
-            <el-table-column label='片' property='slice' width='100'></el-table-column>
-            <el-table-column label='时间' property='time' width='160'></el-table-column>
+            <el-table-column label='片' property='slice' width='80'></el-table-column>
+            <el-table-column align='center' label='日期' property='date' width='100'></el-table-column>
+            <el-table-column align='center' label='时间' property='time' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
@@ -48,29 +49,47 @@
         <el-dialog :title='addDialogTitle' :visible.sync='addDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='60px'>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='8'>
+                        <el-form-item label='ID'>
+                            <el-input v-model='formData.id' disabled></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='8'>
                         <el-form-item label='药'>
                             <el-input v-model='formData.medicineId'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12'>
+                    <el-col :span='8'>
                         <el-form-item label='类型'>
-                            <el-input v-model='formData.type'></el-input>
+                            <el-select v-model="formData.type" placeholder="请选择">
+                                <el-option key="1" label="早晨" value="早晨"></el-option>
+                                <el-option key="2" label="中午" value="中午"></el-option>
+                                <el-option key="3" label="晚上" value="晚上"></el-option>
+                                <el-option key="4" label="买入" value="买入"></el-option>
+                                <el-option key="5" label="卖出" value="卖出"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='8'>
                         <el-form-item label='片'>
                             <el-input v-model='formData.slice'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12'>
-                        <el-form-item label='时间'>
-                            <el-date-picker v-model='formData.time' type='datetime'
-                                            value-format='yyyy-MM-dd HH:mm:ss'></el-date-picker>
+                    <el-col :span='8'>
+                        <el-form-item label='日期'>
+                            <el-date-picker v-model='formData.date' type='date'
+                                            value-format='yyyy-MM-dd'></el-date-picker>
                         </el-form-item>
                     </el-col>
+                    <el-col :span='8'>
+                        <el-form-item label='时间'>
+                            <el-time-picker v-model='formData.time' type='time'
+                                            value-format='HH:mm:ss'></el-time-picker>
+                        </el-form-item>
+                    </el-col>
+
                 </el-row>
             </el-form>
             <span slot='footer' class='dialog-footer'>
@@ -81,29 +100,47 @@
         <el-dialog :title='modDialogTitle' :visible.sync='modDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='60px'>
                 <el-row>
-                    <el-col :span='12'>
-                        <el-form-item label='药'>
-                            <el-input v-model='formData.medicineId' disabled></el-input>
+                    <el-col :span='8'>
+                        <el-form-item label='ID'>
+                            <el-input v-model='formData.id' disabled></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12'>
+                    <el-col :span='8'>
+                        <el-form-item label='药'>
+                            <el-input v-model='formData.medicineId'></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='8'>
                         <el-form-item label='类型'>
-                            <el-input v-model='formData.type'></el-input>
+                            <el-select v-model="formData.type" placeholder="请选择">
+                                <el-option key="1" label="早晨" value="早晨"></el-option>
+                                <el-option key="2" label="中午" value="中午"></el-option>
+                                <el-option key="3" label="晚上" value="晚上"></el-option>
+                                <el-option key="4" label="买入" value="买入"></el-option>
+                                <el-option key="5" label="卖出" value="卖出"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='8'>
                         <el-form-item label='片'>
                             <el-input v-model='formData.slice'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12'>
-                        <el-form-item label='时间'>
-                            <el-date-picker v-model='formData.time' type='datetime'
-                                            value-format='yyyy-MM-dd HH:mm:ss'></el-date-picker>
+                    <el-col :span='8'>
+                        <el-form-item label='日期'>
+                            <el-date-picker v-model='formData.date' type='date'
+                                            value-format='yyyy-MM-dd'></el-date-picker>
                         </el-form-item>
                     </el-col>
+                    <el-col :span='8'>
+                        <el-form-item label='时间'>
+                            <el-time-picker v-model='formData.time' type='time'
+                                            value-format='HH:mm:ss'></el-time-picker>
+                        </el-form-item>
+                    </el-col>
+
                 </el-row>
             </el-form>
             <span slot='footer' class='dialog-footer'>
@@ -114,11 +151,11 @@
 </template>
 
 <script>
-import pageMixin from '@/mixin/form.mixin'
+import formMixin from '@/mixin/form.mixin'
 import MedicineRecord from '@/api/spda/medicine.record'
 
 export default {
-    mixins: [pageMixin],
+    mixins: [formMixin],
     props: ['medicineId'],
     data() {
         return {
