@@ -2,11 +2,11 @@
     <div>
         <el-form :model='ruleForm' :rules='rules' ref='ruleForm'>
             <el-form-item prop='username'>
-                <el-input tabindex='2' v-model='ruleForm.username' prefix-icon='el-icon-user'
+                <el-input tabindex='2' v-model='ruleForm.username' prefix-icon='el-icon-user' placeholder='请输入用户名'
                           @keydown.native.enter='nextFocus($event,3)'></el-input>
             </el-form-item>
             <el-form-item prop='password'>
-                <el-input tabindex='3' v-model='ruleForm.password' prefix-icon='el-icon-lock'
+                <el-input tabindex='3' v-model='ruleForm.password' prefix-icon='el-icon-lock' placeholder='请输入密码'
                           show-password
                           @keydown.native.enter='login'></el-input>
             </el-form-item>
@@ -74,6 +74,11 @@ export default {
                     this.$emit('errHandle')
                 }
             })
+        }
+    },
+    watch: {
+        remember: function(val, oldVal) {
+            this.$emit('update:remember', this.remember)
         }
     }
 }

@@ -34,9 +34,18 @@
                                           :span='3'>{{ item.name }}
                     </el-descriptions-item>
                     <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
-                    <el-descriptions-item label='早'>{{ item.morning }}</el-descriptions-item>
-                    <el-descriptions-item label='中'>{{ item.noon }}</el-descriptions-item>
-                    <el-descriptions-item label='晚'>{{ item.night }}</el-descriptions-item>
+                    <el-descriptions-item label='早'>
+                        <el-tag v-if='item.morningB' size='small'>{{ item.morning }}</el-tag>
+                        <span v-else>{{ item.morning }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label='中'>
+                        <el-tag v-if='item.noonB' size='small'>{{ item.noon }}</el-tag>
+                        <span v-else>{{ item.noon }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label='晚'>
+                        <el-tag v-if='item.nightB' size='small'>{{ item.night }}</el-tag>
+                        <span v-else>{{ item.night }}</span>
+                    </el-descriptions-item>
                 </el-descriptions>
             </el-main>
         </el-container>

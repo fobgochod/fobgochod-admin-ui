@@ -12,7 +12,7 @@
                 <el-form ref='form' :model='loginForm'>
                     <el-tabs type='border-card'>
                         <el-tab-pane label='密码登陆'>
-                            <account-login :rule-form='loginForm' :remember='remember'
+                            <account-login :rule-form='loginForm' :remember.sync='remember'
                                            @submit='login'
                                            @errHandle='loginSmsError'>
                             </account-login>
@@ -41,6 +41,8 @@ export default {
     data() {
         let username = localStorage.getItem('username')
         let password = localStorage.getItem('password')
+        let remember = localStorage.getItem('remember')
+
         return {
             loginTitle: 'fobgochod',
             loginSubTitle: '',
@@ -51,7 +53,7 @@ export default {
                 captcha: '',
                 loginType: 'token'
             },
-            remember: false
+            remember: remember === 'true'
         }
     },
     components: {
@@ -73,6 +75,11 @@ export default {
                 if (this.remember) {
                     localStorage.setItem('username', Secret.encrypt(this.loginForm.username))
                     localStorage.setItem('password', password)
+                    localStorage.setItem('remember', this.remember)
+                } else {
+                    localStorage.removeItem('username')
+                    localStorage.removeItem('password')
+                    localStorage.removeItem('remember')
                 }
                 this.loginOk()
             }).catch((err) => {
