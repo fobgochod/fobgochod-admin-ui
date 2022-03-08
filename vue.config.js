@@ -9,6 +9,7 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
         open: true,
+        port: 9090,
     },
     configureWebpack: {
         //移除已从cdn引入的组件，不打包以下命名的内容

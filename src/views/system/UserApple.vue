@@ -30,14 +30,19 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='账号' property='code' width='100'></el-table-column>
             <el-table-column label='姓名' property='name' width='120'></el-table-column>
+            <el-table-column align='center' label='农历' width='50'>
+                <template slot-scope='scope'>
+                    <el-checkbox v-model='scope.row.lunar' @change='update(scope.row)'></el-checkbox>
+                </template>
+            </el-table-column>
             <el-table-column align='center' label='生日' property='birth' width='120'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
             <el-table-column label='微信' property='wechat' width='160'></el-table-column>
             <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='角色' width='100'>
                 <template slot-scope='scope'>
-                    <el-tag :type="scope.row != null && scope.row.role==='Admin'?'danger':'success'">
-                        {{ scope.row == null ? '' : scope.row.role }}
+                    <el-tag :type='roleColor(scope.row.role)'>
+                        {{ scope.row.role }}
                     </el-tag>
                 </template>
             </el-table-column>
@@ -48,9 +53,6 @@
                             <el-badge :value='scope.row.contacts.length' class='item'>
                                 <el-button size='small'>
                                     {{ scope.row.contacts[0] }}
-                                    <!--
-                                    <i v-if='scope.row.contacts.length>1' class='el-icon-caret-bottom el-icon--right' />
-                                    -->
                                 </el-button>
                             </el-badge>
                         </span>
@@ -108,7 +110,12 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='4'>
+                        <el-form-item label='阴历'>
+                            <el-checkbox v-model='formData.lunar'></el-checkbox>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='8'>
                         <el-form-item label='生日'>
                             <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
                         </el-form-item>
@@ -168,7 +175,12 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='4'>
+                        <el-form-item label='阴历'>
+                            <el-checkbox v-model='formData.lunar'></el-checkbox>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='8'>
                         <el-form-item label='生日'>
                             <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
                         </el-form-item>
@@ -252,6 +264,7 @@ export default {
             formData: {
                 code: '',
                 name: '',
+                lunar: false,
                 birth: null,
                 telephone: '',
                 wechat: '',
@@ -270,6 +283,15 @@ export default {
         }
     },
     methods: {
+        roleColor(role) {
+            if (role === 'Admin') {
+                return 'danger'
+            } else if (role === 'Owner') {
+                return 'success'
+            } else {
+                return 'info'
+            }
+        },
         addData() {
             this.formData.pwdHash = Secret.encode(this.formData.password)
             User.addData(this.formData).then(() => {

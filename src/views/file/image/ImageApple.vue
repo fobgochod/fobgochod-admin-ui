@@ -18,10 +18,8 @@
                     </div>
                 </el-image>
                 <span class='title'>
-                    <span>{{image.fileName}}</span>
+                    <span>{{ image.fileName }}</span>
                     <span style='float:right; margin-right: 10px'>
-<!--                        <el-button icon="el-icon-download" circle size="mini" @click='downloadFile(image)'></el-button>-->
-                        <!--                        <el-button icon="el-icon-delete" circle size="mini" @click="delFile(image)"></el-button>-->
                          <el-dropdown>
                          <span class='el-dropdown-link'>
                              <i class='el-icon-more-outline el-icon--right'></i>

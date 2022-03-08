@@ -1,39 +1,75 @@
 <template>
     <frame-space>
-        <el-card shadow='never'>
-            <div slot='header'>个人信息设置</div>
-            <div style='min-height:60vh;width:70%'>
-                <el-form ref='form' :model='formData' label-width='100px'>
-                    <el-form-item label='用户ID'>
-                        <el-input v-model='formData.code' disabled title='用户ID不可修改'></el-input>
-                    </el-form-item>
-                    <el-form-item label='用户名'>
-                        <el-input v-model='formData.name'></el-input>
-                    </el-form-item>
-                    <el-form-item label='Email'>
-                        <el-input v-model='formData.email'></el-input>
-                    </el-form-item>
-                    <el-form-item label='手机'>
-                        <el-input v-model='formData.telephone'></el-input>
-                    </el-form-item>
-                    <el-form-item label='角色'>
-                        <el-radio-group v-model='formData.role' disabled>
-                            <el-radio label='None'>None</el-radio>
-                            <el-radio label='Owner'>Owner</el-radio>
-                            <el-radio label='Admin'>Admin</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-
-                    <el-form-item label='密码'>
-                        <el-input v-model='formData.password' disabled></el-input>
-                    </el-form-item>
-
-                    <el-form-item>
-                        <el-button type='primary' @click='onSubmit()'>保存设置</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-card>
+        <el-row :gutter='20'>
+            <el-col :span='12'>
+                <el-card shadow='never'>
+                    <div slot='header'>
+                        <span>个人信息设置</span>
+                        <el-button style='float: right; padding: 3px 0' type='text' @click='onSubmit()'>保存设置</el-button>
+                    </div>
+                    <div style='min-height:60vh;width:70%'>
+                        <el-form ref='form' :model='formData' label-width='100px'>
+                            <el-form-item label='用户ID'>
+                                <el-input v-model='formData.code' disabled title='用户ID不可修改'></el-input>
+                            </el-form-item>
+                            <el-form-item label='用户名'>
+                                <el-input v-model='formData.name'></el-input>
+                            </el-form-item>
+                            <el-form-item label='生日'>
+                                <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
+                            </el-form-item>
+                            <el-form-item label='角色'>
+                                <el-radio-group v-model='formData.role' disabled>
+                                    <el-radio label='None'>None</el-radio>
+                                    <el-radio label='Owner'>Owner</el-radio>
+                                    <el-radio label='Admin'>Admin</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label='密码'>
+                                <el-input v-model='formData.password' disabled></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span='12'>
+                <el-card shadow='never'>
+                    <div slot='header'>
+                        <span>联系方式</span>
+                    </div>
+                    <div style='min-height:60vh;width:70%'>
+                        <el-form ref='form' :model='formData' label-width='100px'>
+                            <el-form-item label='Email'>
+                                <el-input v-model='formData.email'></el-input>
+                            </el-form-item>
+                            <el-form-item label='手机'>
+                                <el-input v-model='formData.telephone'></el-input>
+                            </el-form-item>
+                            <el-form-item label='微信'>
+                                <el-input v-model='formData.wechat'></el-input>
+                            </el-form-item>
+                            <el-form-item label='联系人'>
+                                <el-tag :key='tag' v-for='tag in dynamicTags'
+                                        closable :disable-transitions='false'
+                                        @close='tagClose(tag)'>
+                                    {{ tag }}
+                                </el-tag>
+                                <el-input class='input-new-tag'
+                                          v-if='tagInputVisible'
+                                          v-model='tagInputValue'
+                                          ref='saveTagInput'
+                                          size='small'
+                                          @keyup.enter.native='tagInputConfirm'
+                                          @blur='tagInputConfirm'>
+                                </el-input>
+                                <el-button v-else class='button-new-tag' size='small' @click='tagInput'>+ New Tag
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
     </frame-space>
 </template>
 
@@ -51,7 +87,10 @@ export default {
                 telephone: '',
                 password: '',
                 role: ''
-            }
+            },
+            dynamicTags: [],
+            tagInputVisible: false,
+            tagInputValue: ''
         }
     },
     computed: {
@@ -62,6 +101,7 @@ export default {
         getData() {
             User.getByName(this.userId).then((res) => {
                 this.formData = res.data
+                this.dynamicTags = res.data.contacts
             })
         },
         onSubmit() {
@@ -71,6 +111,23 @@ export default {
             }).catch(() => {
                 this.$message.error('修改' + this.formData.name + '失败')
             })
+        },
+        tagClose(tag) {
+            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+        },
+        tagInput() {
+            this.tagInputVisible = true
+            this.$nextTick(() => {
+                this.$refs.saveTagInput.$refs.input.focus()
+            })
+        },
+        tagInputConfirm() {
+            let inputValue = this.tagInputValue
+            if (inputValue) {
+                this.dynamicTags.push(inputValue)
+            }
+            this.tagInputVisible = false
+            this.tagInputValue = ''
         }
     },
     mounted() {
@@ -78,3 +135,28 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.el-tag + .el-tag {
+    margin-left: 10px;
+}
+
+.button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.input-new-tag {
+    width: 120px;
+    margin-left: 10px;
+    vertical-align: bottom;
+}
+
+.item {
+    margin-top: 10px;
+}
+</style>;

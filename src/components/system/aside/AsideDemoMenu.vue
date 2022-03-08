@@ -14,6 +14,11 @@
             <i :style='{ color: aside.aside_icon_color }' class='el-icon-tickets'></i>
             <span>富文本</span>
         </el-menu-item>
+
+        <el-menu-item index='/demo/calendar'>
+            <i :style='{ color: aside.aside_icon_color }' class='el-icon-date'></i>
+            <span>日历</span>
+        </el-menu-item>
     </el-submenu>
 </template>
 

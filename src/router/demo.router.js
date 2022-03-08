@@ -6,8 +6,8 @@ const routes = [
         meta: {
             title: '富文本编辑器',
             loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
+            roles: ['Admin', 'Owner']
+        }
     },
     // ************************************测试页面************************************
     {
@@ -17,9 +17,19 @@ const routes = [
         meta: {
             title: '参数传输',
             loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
+            roles: ['Admin', 'Owner']
+        }
     },
+    {
+        path: '/demo/calendar',
+        name: 'CalendarDemo',
+        component: (resolve) => require(['@/views/demo/CalendarDemo.vue'], resolve),
+        meta: {
+            title: '日历',
+            loginState: true,
+            roles: ['Admin', 'Owner']
+        }
+    }
 ]
 
 export default routes
