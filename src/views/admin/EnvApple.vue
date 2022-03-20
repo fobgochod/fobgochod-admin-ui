@@ -47,9 +47,6 @@ export default {
     methods: {
         ...mapMutations(['setBucket', 'setTenantId', 'setUserToken']),
         changeTenantId(val) {
-            Login.refresh(val).then(res => {
-                this.setUserToken(res.data.userToken)
-            })
             this.setTenantId(val)
             this.$message.success('设置登录租户成功')
         },

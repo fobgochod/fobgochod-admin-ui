@@ -1,28 +1,29 @@
 import axios from '@/config/http'
+import store from '@/store'
 
 export default {
     previewUrl(fileInfoId) {
-        return '/file/preview/' + fileInfoId
+        return store.state.baseUri + '/file/preview/' + fileInfoId
     },
     preview(fileInfoId) {
         return axios({
             method: 'get',
             url: '/file/preview/' + fileInfoId,
-            responseType: 'blob',
+            responseType: 'blob'
         })
     },
     download(fileInfoId) {
         return axios({
             method: 'get',
             url: '/file/download/' + fileInfoId,
-            responseType: 'blob',
+            responseType: 'blob'
         })
     },
     downloadDir(dirId) {
         return axios({
             method: 'get',
             url: '/file/download/dir/' + dirId,
-            responseType: 'blob',
+            responseType: 'blob'
         })
     },
     batchDownload(data) {
@@ -30,7 +31,7 @@ export default {
             method: 'post',
             url: '/file/download/multi',
             data: data,
-            responseType: 'blob',
+            responseType: 'blob'
         })
-    },
+    }
 }

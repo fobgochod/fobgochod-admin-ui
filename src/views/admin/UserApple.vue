@@ -1,23 +1,30 @@
 <template>
     <frame-space>
-        <el-row :gutter='20'>
+        <el-row :gutter='20' style='margin-bottom: 20px'>
             <el-col :span='12'>
                 <el-card shadow='never'>
                     <div slot='header'>
-                        <span>个人信息设置</span>
-                        <el-button style='float: right; padding: 3px 0' type='text' @click='onSubmit()'>保存设置</el-button>
+                        <span>基本信息</span>
+                        <el-button style='float: right; padding: 3px 0' type='text' @click='onSubmit()'>保存</el-button>
                     </div>
-                    <div style='min-height:60vh;width:70%'>
+                    <div>
                         <el-form ref='form' :model='formData' label-width='100px'>
                             <el-form-item label='用户ID'>
                                 <el-input v-model='formData.code' disabled title='用户ID不可修改'></el-input>
                             </el-form-item>
-                            <el-form-item label='用户名'>
-                                <el-input v-model='formData.name'></el-input>
-                            </el-form-item>
-                            <el-form-item label='生日'>
-                                <el-date-picker v-model='formData.birth' value-format='yyyy-MM-dd'></el-date-picker>
-                            </el-form-item>
+                            <el-row>
+                                <el-col :span='12'>
+                                    <el-form-item label='用户名'>
+                                        <el-input v-model='formData.name'></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span='12'>
+                                    <el-form-item label='生日'>
+                                        <el-date-picker v-model='formData.birth' style='width: 100%'
+                                                        value-format='yyyy-MM-dd'></el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
                             <el-form-item label='角色'>
                                 <el-radio-group v-model='formData.role' disabled>
                                     <el-radio label='None'>None</el-radio>
@@ -33,11 +40,16 @@
                 </el-card>
             </el-col>
             <el-col :span='12'>
+                <password-sub />
+            </el-col>
+        </el-row>
+        <el-row :gutter='20'>
+            <el-col :span='12'>
                 <el-card shadow='never'>
                     <div slot='header'>
                         <span>联系方式</span>
                     </div>
-                    <div style='min-height:60vh;width:70%'>
+                    <div>
                         <el-form ref='form' :model='formData' label-width='100px'>
                             <el-form-item label='Email'>
                                 <el-input v-model='formData.email'></el-input>
@@ -69,6 +81,9 @@
                     </div>
                 </el-card>
             </el-col>
+            <el-col :span='12'>
+                <encrypt-sub />
+            </el-col>
         </el-row>
     </frame-space>
 </template>
@@ -95,6 +110,10 @@ export default {
     },
     computed: {
         ...mapState(['baseUri', 'userId'])
+    },
+    components: {
+        PasswordSub: () => import('@/views/admin/sub/PasswordSub'),
+        EncryptSub: () => import('@/views/admin/sub/EncryptSub')
     },
     methods: {
         ...mapMutations(['setUserName']),

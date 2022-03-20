@@ -15,7 +15,7 @@
                     <el-input v-model="formData.passwordVerify" show-password></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="success" @click="onSubmit()">确认修改</el-button>
+                    <el-button type="success" plain @click="onSubmit()">确认修改</el-button>
                 </el-form-item>
             </el-form>
         </div>

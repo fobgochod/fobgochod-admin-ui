@@ -1,6 +1,6 @@
 <template>
     <el-card shadow="never">
-        <div slot="header">Test-输入密码获取加密后的值</div>
+        <div slot="header">密码加密</div>
         <div>
             <el-form ref="form" label-width="80px">
                 <el-form-item label="密码">

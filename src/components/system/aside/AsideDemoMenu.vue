@@ -1,5 +1,5 @@
 <template>
-    <el-submenu index='102'>
+    <el-submenu index='900'>
         <template slot='title'>
             <i :style='{ color: aside.aside_icon_color }' class='el-icon-thumb'></i>
             <span>使用范例</span>

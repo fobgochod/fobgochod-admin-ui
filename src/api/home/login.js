@@ -8,11 +8,6 @@ export default {
             data: data
         })
     },
-    refresh(tenantId) {
-        return axios.post('/token/refresh', {
-            tenantId: tenantId
-        })
-    },
     getRole(username) {
         return axios({
             method: 'get',

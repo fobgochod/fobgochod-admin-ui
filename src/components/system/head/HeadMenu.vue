@@ -34,7 +34,7 @@
                     <i class='el-icon-user'></i>
                     <span>个人中心</span>
                 </el-menu-item>
-                <el-menu-item index='9-2' @click="to('/admin/password')">
+                <el-menu-item index='9-2' @click="to('/admin/user')">
                     <i class='el-icon-unlock'></i>
                     <span>修改密码</span>
                 </el-menu-item>

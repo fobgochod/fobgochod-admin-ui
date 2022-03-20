@@ -101,16 +101,6 @@ const routes = [
             roles: ['Admin', 'Owner'],
         },
     },
-    {
-        path: '/admin/password',
-        name: 'setting_password',
-        component: (resolve) => require(['@/views/admin/PasswordApple.vue'], resolve),
-        meta: {
-            title: '密码修改',
-            loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
-    },
     // ************************************系统管理************************************
     {
         path: '/system/user',
@@ -128,16 +118,6 @@ const routes = [
         component: (resolve) => require(['@/views/system/TenantApple.vue'], resolve),
         meta: {
             title: '租户管理',
-            loginState: true,
-            roles: ['Admin'],
-        },
-    },
-    {
-        path: '/system/bucket',
-        name: 'Bucket',
-        component: (resolve) => require(['@/views/system/BucketApple.vue'], resolve),
-        meta: {
-            title: 'Bucket',
             loginState: true,
             roles: ['Admin'],
         },

@@ -31,7 +31,13 @@ export default {
                 fileIds: this.fileIds(),
                 dirIds: this.dirIds()
             }
-            let size = this.fileIds.length + this.dirIds.length
+            let fileSize = body.fileIds ? body.fileIds.length : 0
+            let dirSize = body.dirIds ? body.dirIds.length : 0
+            let size = fileSize + dirSize
+            if (size === 0) {
+                this.$message.error('请选择要操作的文件!')
+                return
+            }
             let fileName = '批量下载' + new Date().format('Y-m-d') + '.zip'
             FileDownload.batchDownload(body).then((res) => {
                 const blob = new Blob([res.data])
