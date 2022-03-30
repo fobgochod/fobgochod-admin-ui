@@ -7,13 +7,14 @@ export default {
             realDataCache: [],
             realData: [],
             pageData: {
+                cond: {},
                 filters: {},
                 pageNum: 1,
                 pageSize: 10,
                 orders: {
-                    createDate: -1,
+                    createDate: -1
                 },
-                total: 0,
+                total: 0
             },
             batchData: {
                 fileId: null,
@@ -22,7 +23,7 @@ export default {
                 dirIds: [],
                 shareIds: [],
                 recycleIds: [],
-                expireDate: null,
+                expireDate: null
             },
             addDialogTitle: '新增数据',
             addDialogVisible: false,
@@ -30,11 +31,11 @@ export default {
             modDialogVisible: false,
             selectionButtonTitle: '未选择数据',
             selectionButtonState: true,
-            selectionData: [],
+            selectionData: []
         }
     },
     computed: {
-        ...mapState(['baseUri', 'bucket']),
+        ...mapState(['baseUri', 'bucket'])
     },
     methods: {
         addDialog() {
@@ -107,10 +108,10 @@ export default {
         },
         selectionIds() {
             let ids = []
-            this.selectionData.forEach(function (item, index) {
+            this.selectionData.forEach(function(item, index) {
                 ids[index] = item.id
             })
             return ids
-        },
-    },
+        }
+    }
 }

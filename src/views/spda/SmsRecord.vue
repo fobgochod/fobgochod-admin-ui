@@ -1,8 +1,22 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
-            <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.filters.type' @change='searchData'></el-input>
+        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+            <el-form-item label='手机' prop='telephone'>
+                <el-input v-model='pageData.cond.telephone' @change='searchData'></el-input>
+            </el-form-item>
+            <el-form-item label='状态' prop='completed'>
+                <el-select v-model='pageData.cond.status' @change='searchData'>
+                    <el-option label='是' :value=true></el-option>
+                    <el-option label='否' :value=false></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label='发送日期' prop='sendDate'>
+                <el-date-picker v-model='pageData.cond.sendDate0' type='daterange' value-format='yyyy-MM-dd'
+                                range-separator='至' start-placeholder='开始日期' end-placeholder='结束日期'>
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label='模板CODE' prop='templateCode'>
+                <el-input v-model='pageData.cond.templateCode' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -108,19 +122,26 @@ export default {
             SmsRecord.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
                 this.realData = res.data.list
-                this.$message.success('查询Medicine成功')
             }).catch(() => {
                 this.$message.error('查询Medicine失败')
             })
         },
         searchData() {
             this.pageData.pageNum = 1
+            let sendDate0 = this.pageData.cond.sendDate0
+            if (sendDate0) {
+                this.pageData.cond.between = {
+                    key: 'sendDate',
+                    begin: sendDate0[0] + ' 00:00:00',
+                    end: sendDate0[1] + ' 23:59:59'
+                }
+            }
             this.getByPage()
         },
         clearData(formName) {
             this.$refs[formName].resetFields()
+            this.pageData.cond = {}
             this.searchData()
-            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1

@@ -1,8 +1,21 @@
 <template>
     <div>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
-            <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.filters.type' @change='searchData'></el-input>
+        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+            <el-form-item label='Medicine' prop='medicineId'>
+                <el-input v-model='pageData.cond.medicineId' @change='searchData'></el-input>
+            </el-form-item>
+            <el-form-item label='类型' prop='type'>
+                <el-select v-model='pageData.cond.type' @change='searchData'>
+                    <el-option key='1' label='早晨' value='早晨'></el-option>
+                    <el-option key='2' label='中午' value='中午'></el-option>
+                    <el-option key='3' label='晚上' value='晚上'></el-option>
+                    <el-option key='4' label='买入' value='买入'></el-option>
+                    <el-option key='5' label='卖出' value='卖出'></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label='日期' prop='date'>
+                <el-date-picker v-model='pageData.cond.date' type='date' value-format='yyyy-MM-dd'
+                                @change='searchData'></el-date-picker>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -61,12 +74,12 @@
                     </el-col>
                     <el-col :span='8'>
                         <el-form-item label='类型'>
-                            <el-select v-model="formData.type" placeholder="请选择">
-                                <el-option key="1" label="早晨" value="早晨"></el-option>
-                                <el-option key="2" label="中午" value="中午"></el-option>
-                                <el-option key="3" label="晚上" value="晚上"></el-option>
-                                <el-option key="4" label="买入" value="买入"></el-option>
-                                <el-option key="5" label="卖出" value="卖出"></el-option>
+                            <el-select v-model='formData.type' placeholder='请选择'>
+                                <el-option key='1' label='早晨' value='早晨'></el-option>
+                                <el-option key='2' label='中午' value='中午'></el-option>
+                                <el-option key='3' label='晚上' value='晚上'></el-option>
+                                <el-option key='4' label='买入' value='买入'></el-option>
+                                <el-option key='5' label='卖出' value='卖出'></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -112,12 +125,12 @@
                     </el-col>
                     <el-col :span='8'>
                         <el-form-item label='类型'>
-                            <el-select v-model="formData.type" placeholder="请选择">
-                                <el-option key="1" label="早晨" value="早晨"></el-option>
-                                <el-option key="2" label="中午" value="中午"></el-option>
-                                <el-option key="3" label="晚上" value="晚上"></el-option>
-                                <el-option key="4" label="买入" value="买入"></el-option>
-                                <el-option key="5" label="卖出" value="卖出"></el-option>
+                            <el-select v-model='formData.type' placeholder='请选择'>
+                                <el-option key='1' label='早晨' value='早晨'></el-option>
+                                <el-option key='2' label='中午' value='中午'></el-option>
+                                <el-option key='3' label='晚上' value='晚上'></el-option>
+                                <el-option key='4' label='买入' value='买入'></el-option>
+                                <el-option key='5' label='卖出' value='卖出'></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -211,7 +224,7 @@ export default {
             })
         },
         getByMedicineId() {
-            this.pageData.filters.medicineId = this.medicineId
+            this.pageData.cond.medicineId = this.medicineId
             this.searchData()
         },
         searchData() {
@@ -220,8 +233,8 @@ export default {
         },
         clearData(formName) {
             this.$refs[formName].resetFields()
+            this.pageData.cond = {}
             this.searchData()
-            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1

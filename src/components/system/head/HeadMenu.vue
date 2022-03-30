@@ -4,7 +4,7 @@
             <i :class="asideState===true?'el-icon-s-fold':'el-icon-s-unfold'"
                :style="{color:head.head_icon_color,padding:'20px',cursor: 'pointer'}"
                @click='changeAsideState' />
-            <span :style='{color:head.head_icon_color}' @click="to('/admin/env')">{{getLogin}}</span>
+            <span :style='{color:head.head_icon_color}' @click="to('/admin/env')">{{ getLogin }}</span>
         </div>
 
         <el-menu :active-text-color='head.head_active_text_color'
@@ -13,6 +13,14 @@
                  :text-color='head.head_text_color'
                  class='el-menu-demo'
                  mode='horizontal'>
+
+            <el-menu-item index='4'>
+                <el-link :href='`/medicine/${userId}`' target='_blank'><i class='el-icon-first-aid-kit' /></el-link>
+            </el-menu-item>
+
+            <el-menu-item index='5'>
+                <el-link :href='`${baseUri}`' target='_blank'><i class='el-icon-link'></i></el-link>
+            </el-menu-item>
 
             <el-menu-item index='7'>
                 <head-color-sub-menu />
@@ -27,7 +35,7 @@
 
             <el-submenu index='9'>
                 <template slot='title'>
-                    {{userName}}
+                    {{ userName }}
                     <el-avatar :src='user.avatar' :key='user.avatar' shape='square'></el-avatar>
                 </template>
                 <el-menu-item index='9-1' @click="to('/admin/user')">
@@ -76,7 +84,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'bucket', 'tenantId', 'userName']),
+        ...mapState(['baseUri', 'bucket', 'tenantId', 'userId', 'userName']),
         ...mapGetters(['getLogin'])
     },
     methods: {

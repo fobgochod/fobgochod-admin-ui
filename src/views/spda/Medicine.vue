@@ -1,14 +1,14 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+            <el-form-item label='用户' prop='userId'>
+                <el-input v-model='pageData.cond.userId' @change='searchData'></el-input>
+            </el-form-item>
+            <el-form-item label='编号' prop='code'>
+                <el-input v-model='pageData.cond.code' @change='searchData'></el-input>
+            </el-form-item>
             <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.filters.name' @change='searchData'></el-input>
-            </el-form-item>
-            <el-form-item label='所有者' prop='owner'>
-                <el-input v-model='pageData.filters.owner' @change='searchData'></el-input>
-            </el-form-item>
-            <el-form-item label='描述' prop='description'>
-                <el-input v-model='pageData.filters.description' @change='searchData'></el-input>
+                <el-input v-model='pageData.cond.name0' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -243,12 +243,19 @@ export default {
         },
         searchData() {
             this.pageData.pageNum = 1
+            let name0 = this.pageData.cond.name0
+            if (name0) {
+                this.pageData.cond.like = {
+                    key: 'name',
+                    value: name0
+                }
+            }
             this.getByPage()
         },
         clearData(formName) {
             this.$refs[formName].resetFields()
+            this.pageData.cond = {}
             this.searchData()
-            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1
@@ -261,9 +268,11 @@ export default {
             this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
             this.getByPage()
         },
-        queryRecords(row) {
-            this.medicineId = row.id
-            this.medicineRecordDialogVisible = true
+        queryRecords(row, column) {
+            if (column.property === 'name') {
+                this.medicineId = row.id
+                this.medicineRecordDialogVisible = true
+            }
         },
         eatMedicine() {
             MedicineRecord.eat('chentt').then(() => {
