@@ -83,7 +83,7 @@
     </div>
 </template>
 <script>
-    import {COLOR} from "@/assets/js/dmc.data.js";
+    import {COLOR} from "@/assets/js/base.data.js";
 
     export default {
         data() {

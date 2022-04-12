@@ -8,7 +8,7 @@
                 <el-input v-model='pageData.cond.code' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.cond.name0' @change='searchData'></el-input>
+                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -243,12 +243,9 @@ export default {
         },
         searchData() {
             this.pageData.pageNum = 1
-            let name0 = this.pageData.cond.name0
-            if (name0) {
-                this.pageData.cond.like = {
-                    key: 'name',
-                    value: name0
-                }
+            this.pageData.cond.like = {
+                key: 'name',
+                value: this.pageData.cond.$name
             }
             this.getByPage()
         },

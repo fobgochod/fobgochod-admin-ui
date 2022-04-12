@@ -24,7 +24,7 @@
             </el-form-item>
         </el-form>
         <el-button icon='el-icon-phone' size='small' type='success' @click='testSms'>测试</el-button>
-        <drop-collection table='MedicineRecord' :success='getByPage' />
+        <drop-collection table='SmsRecord' :success='getByPage' />
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>

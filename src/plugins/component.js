@@ -4,4 +4,5 @@ export default {
     HeadMenu: () => import('@/components/system/head/HeadMenu'),
     TinyMce: () => import('@/components/tools/TinyMce'),
     DropCollection: () => import('@/components/comm/DropCollection.vue'),
+    DataInfrastructure: () => import('@/components/comm/DataInfrastructure.vue')
 }

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {COLOR} from '@/assets/js/dmc.data.js'
+import {COLOR} from '@/assets/js/base.data.js'
 import Secret from '@/assets/js/secret.js'
 import {mapMutations, mapState} from 'vuex'
 import Login from '@/api/home/login'

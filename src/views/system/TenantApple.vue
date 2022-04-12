@@ -1,17 +1,17 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
-            <el-form-item label='ID' prop='id'>
-                <el-input v-model='pageData.filters.id' @change='searchData'></el-input>
-            </el-form-item>
+        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
             <el-form-item label='租户ID' prop='code'>
-                <el-input v-model='pageData.filters.code' @change='searchData'></el-input>
+                <el-input v-model='pageData.cond.$code' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='租户名' prop='name'>
-                <el-input v-model='pageData.filters.name' @change='searchData'></el-input>
+                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
+            </el-form-item>
+            <el-form-item label='手机' prop='telephone'>
+                <el-input v-model='pageData.cond.$telephone' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='所有者' prop='owner'>
-                <el-input v-model='pageData.filters.owner' @change='searchData'></el-input>
+                <el-input v-model='pageData.cond.owner' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -19,6 +19,7 @@
             </el-form-item>
         </el-form>
         <el-button icon='el-icon-plus' size='small' type='success' @click='addDialog'>新增</el-button>
+        <data-infrastructure table='Tenant' :success='getByPage'></data-infrastructure>
         <drop-collection table='Tenant' :success='getByPage' />
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
@@ -26,8 +27,8 @@
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='租户ID' property='code' width='100'></el-table-column>
             <el-table-column label='租户名' property='name' width='120'></el-table-column>
-            <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='手机' property='telephone' width='120'></el-table-column>
+            <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='所有者' property='owner' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
@@ -94,8 +95,8 @@
                                        :key='item.key'
                                        :value='item.value'
                                        :label='item.label'>
-                                <span style='float: left'>{{item.value}}({{item.label}})</span>
-                                <span style='float: right; color: #8492a6; font-size: 13px'>{{item.other}}</span>
+                                <span style='float: left'>{{ item.value }}({{ item.label }})</span>
+                                <span style='float: right; color: #8492a6; font-size: 13px'>{{ item.other }}</span>
                             </el-option>
                         </el-option-group>
                     </el-select>
@@ -155,8 +156,8 @@ export default {
             formData: {
                 code: '',
                 name: '',
-                email: '',
                 telephone: '',
+                email: '',
                 owner: ''
             }
         }
@@ -207,12 +208,24 @@ export default {
         },
         searchData() {
             this.pageData.pageNum = 1
+            this.pageData.cond.likes = [
+                {
+                    key: 'code',
+                    value: this.pageData.cond.$code
+                }, {
+                    key: 'name',
+                    value: this.pageData.cond.$name
+                }, {
+                    key: 'telephone',
+                    value: this.pageData.cond.$telephone
+                }
+            ]
             this.getByPage()
         },
         clearData(formName) {
             this.$refs[formName].resetFields()
+            this.pageData.cond = {}
             this.searchData()
-            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1

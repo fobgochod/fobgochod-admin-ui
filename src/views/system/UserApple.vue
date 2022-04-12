@@ -1,20 +1,19 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
-            <el-form-item label='ID' prop='id'>
-                <el-input v-model='pageData.filters.id' @change='searchData'></el-input>
+        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+            <el-form-item label='账号' prop='code'>
+                <el-input v-model='pageData.cond.$code' @change='searchData'></el-input>
             </el-form-item>
-            <el-form-item label='用户ID' prop='code'>
-                <el-input v-model='pageData.filters.code' @change='searchData'></el-input>
+            <el-form-item label='姓名' prop='name'>
+                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
             </el-form-item>
-            <el-form-item label='用户名' prop='name'>
-                <el-input v-model='pageData.filters.name' @change='searchData'></el-input>
+            <el-form-item label='手机' prop='telephone'>
+                <el-input v-model='pageData.cond.$telephone' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='角色' prop='role'>
-                <el-select v-model='pageData.filters.role' @change='searchData'>
-                    <el-option label='None' value='None'></el-option>
-                    <el-option label='Owner' value='Owner'></el-option>
-                    <el-option label='Admin' value='Admin'></el-option>
+                <el-select v-model='pageData.cond.role' @change='searchData'>
+                    <el-option label='用户' value='User'></el-option>
+                    <el-option label='管理员' value='Admin'></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -23,6 +22,7 @@
             </el-form-item>
         </el-form>
         <el-button icon='el-icon-plus' size='small' type='success' @click='addDialog'>新增</el-button>
+        <data-infrastructure table='User' :success='getByPage'></data-infrastructure>
         <drop-collection table='User' :success='getByPage' />
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
@@ -147,9 +147,8 @@
                     <el-col :span='12'>
                         <el-form-item label='角色'>
                             <el-radio-group v-model='formData.role'>
-                                <el-radio label='None'>None</el-radio>
-                                <el-radio label='Owner'>Owner</el-radio>
-                                <el-radio label='Admin'>Admin</el-radio>
+                                <el-radio label='User'>用户</el-radio>
+                                <el-radio label='Admin'>管理员</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
@@ -205,9 +204,8 @@
                 </el-row>
                 <el-form-item label='角色'>
                     <el-radio-group v-model='formData.role'>
-                        <el-radio label='None'>None</el-radio>
-                        <el-radio label='Owner'>Owner</el-radio>
-                        <el-radio label='Admin'>Admin</el-radio>
+                        <el-radio label='User'>用户</el-radio>
+                        <el-radio label='Admin'>管理员</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-row>
@@ -286,11 +284,8 @@ export default {
         roleColor(role) {
             if (role === 'Admin') {
                 return 'danger'
-            } else if (role === 'Owner') {
-                return 'success'
-            } else {
-                return 'info'
             }
+            return 'success'
         },
         addData() {
             this.formData.pwdHash = Secret.encode(this.formData.password)
@@ -344,12 +339,24 @@ export default {
         },
         searchData() {
             this.pageData.pageNum = 1
+            this.pageData.cond.likes = [
+                {
+                    key: 'code',
+                    value: this.pageData.cond.$code
+                }, {
+                    key: 'name',
+                    value: this.pageData.cond.$name
+                }, {
+                    key: 'telephone',
+                    value: this.pageData.cond.$telephone
+                }
+            ]
             this.getByPage()
         },
         clearData(formName) {
             this.$refs[formName].resetFields()
+            this.pageData.cond = {}
             this.searchData()
-            this.pageData.filters = {}
         },
         pageSizeChange(pageSize) {
             this.pageData.pageNum = 1
@@ -363,14 +370,16 @@ export default {
             this.getByPage()
         },
         resetDialog(row) {
-            this.formData.name = row.name
-            this.formData.password = ''
+            this.formData = row
             this.resetDialogTitle = '重置（' + this.formData.name + '）密码'
             this.resetDialogVisible = true
         },
         resetPassword() {
-            this.formData.pwdHash = Secret.encode(this.formData.password)
-            User.resetPassword(this.formData).then(() => {
+            let body = {
+                code: this.formData.code,
+                pwdHash: Secret.encode(this.formData.password)
+            }
+            User.resetPassword(body).then(() => {
                 this.getByPage()
                 this.$message.success('重置' + this.formData.name + '密码成功')
             }).catch(() => {

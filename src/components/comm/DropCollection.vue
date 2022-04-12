@@ -14,6 +14,7 @@ import FileInfo from '@/api/file/file.info'
 import FileShare from '@/api/file/file.share'
 import Medicine from '@/api/spda/medicine'
 import MedicineRecord from '@/api/spda/medicine.record'
+import SmsRecord from '@/api/spda/sms.record'
 
 export default {
     props: {
@@ -38,6 +39,8 @@ export default {
                 this.dropMedicine()
             } else if (this.table === 'MedicineRecord') {
                 this.dropMedicineRecord()
+            } else if (this.table === 'SmsRecord') {
+                this.dropSmsRecord()
             } else if (this.table === 'Task') {
                 this.dropTask()
             } else if (this.table === 'FileInfo') {
@@ -80,6 +83,14 @@ export default {
         },
         dropMedicineRecord() {
             MedicineRecord.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropSmsRecord() {
+            SmsRecord.dropData().then(() => {
                 this.success()
                 this.$message.success('清空成功')
             }).catch(() => {

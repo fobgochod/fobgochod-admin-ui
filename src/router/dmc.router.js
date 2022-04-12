@@ -7,7 +7,7 @@ const routes = [
         meta: {
             title: '目录信息',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -17,7 +17,7 @@ const routes = [
         meta: {
             title: '目录树',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -27,7 +27,7 @@ const routes = [
         meta: {
             title: '文件信息',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -37,7 +37,7 @@ const routes = [
         meta: {
             title: '文件树',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -47,7 +47,7 @@ const routes = [
         meta: {
             title: '图片库',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -57,7 +57,7 @@ const routes = [
         meta: {
             title: '缩放信息',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -67,7 +67,7 @@ const routes = [
         meta: {
             title: '分享信息',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -77,7 +77,7 @@ const routes = [
         meta: {
             title: '回收站',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     // ************************************我的账号************************************
@@ -88,7 +88,7 @@ const routes = [
         meta: {
             title: '参数设定',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     {
@@ -98,7 +98,7 @@ const routes = [
         meta: {
             title: '个人设置',
             loginState: true,
-            roles: ['Admin', 'Owner'],
+            roles: ['Admin', 'User'],
         },
     },
     // ************************************系统管理************************************

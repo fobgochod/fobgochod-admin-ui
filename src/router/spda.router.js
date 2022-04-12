@@ -16,7 +16,7 @@ const routes = [
         meta: {
             title: '按时吃药',
             loginState: true,
-            roles: ['Admin', 'Owner']
+            roles: ['Admin', 'User']
         }
     },
     {
@@ -26,7 +26,7 @@ const routes = [
         meta: {
             title: '吃药记录',
             loginState: true,
-            roles: ['Admin', 'Owner']
+            roles: ['Admin', 'User']
         }
     },
     {
@@ -36,7 +36,7 @@ const routes = [
         meta: {
             title: '药品管理',
             loginState: true,
-            roles: ['Admin', 'Owner']
+            roles: ['Admin', 'User']
         }
     },
     {
@@ -46,7 +46,7 @@ const routes = [
         meta: {
             title: '提醒记录',
             loginState: true,
-            roles: ['Admin', 'Owner']
+            roles: ['Admin', 'User']
         }
     }
 ]
