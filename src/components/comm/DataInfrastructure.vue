@@ -6,13 +6,17 @@
 </template>
 
 <script>
-import {TASKS, TENANTS, USERS} from '@/assets/js/base.data'
+import {ITEMS, TASKS, TENANTS, USERS} from '@/assets/js/base.data'
 import User from '@/api/system/user'
 import Tenant from '@/api/system/tenant'
 import Task from '@/api/system/task'
+import MedicineItem from '@/api/spda/medicine.item'
 
 export default {
     props: {
+        id: {
+            type: String
+        },
         table: {
             type: String
         },
@@ -30,6 +34,8 @@ export default {
                 this.initTenant()
             } else if (this.table === 'Task') {
                 this.initTask()
+            } else if (this.table === 'MedicineItem') {
+                this.initMedicineItem()
             }
         },
         async initUser() {
@@ -47,6 +53,13 @@ export default {
         async initTask() {
             for (let task of TASKS) {
                 await Task.addData(task)
+            }
+            this.success()
+        },
+        async initMedicineItem() {
+            for (let task of ITEMS) {
+                task.medicineId = this.id
+                await MedicineItem.addData(task)
             }
             this.success()
         }

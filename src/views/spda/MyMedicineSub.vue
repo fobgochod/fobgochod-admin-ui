@@ -6,28 +6,28 @@
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
-                <el-table :data='realData' border stripe>
+                <el-table :data='realData' border stripe default-expand-all>
+                    <el-table-column type='expand'>
+                        <template v-slot='scope'>
+                            <el-table :data='scope.row.items' border stripe :show-header=false>
+                                <el-table-column align='center' label='序号' type='index' width='60'></el-table-column>
+                                <el-table-column align='center' label='类型' property='type'
+                                                 width='100'></el-table-column>
+                                <el-table-column align='center' label='开始' property='start'
+                                                 width='100'></el-table-column>
+                                <el-table-column align='center' label='结束' property='end' width='100'></el-table-column>
+                                <el-table-column label='片' property='slice' width='100'>
+                                    <template v-slot='scope'>
+                                        <el-tag v-if='scope.row.state' size='small'>{{ scope.row.slice }}</el-tag>
+                                        <span v-else>{{ scope.row.slice }}</span>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </el-table-column>
                     <el-table-column label='编号' property='code'></el-table-column>
                     <el-table-column label='名称' property='name'></el-table-column>
                     <el-table-column label='总数' property='total'></el-table-column>
-                    <el-table-column label='早' property='morning'>
-                        <template slot-scope='scope'>
-                            <el-tag v-if='scope.row.morningB' size='small'>{{ scope.row.morning }}</el-tag>
-                            <span v-else>{{ scope.row.morning }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label='中' property='noon'>
-                        <template slot-scope='scope'>
-                            <el-tag v-if='scope.row.noonB' size='small'>{{ scope.row.noon }}</el-tag>
-                            <span v-else>{{ scope.row.noon }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label='晚' property='night'>
-                        <template slot-scope='scope'>
-                            <el-tag v-if='scope.row.nightB' size='small'>{{ scope.row.night }}</el-tag>
-                            <span v-else>{{ scope.row.night }}</span>
-                        </template>
-                    </el-table-column>
                     <el-table-column label='剩余(天)' property='remain'></el-table-column>
                 </el-table>
             </el-main>
@@ -49,17 +49,10 @@
                                           :span='3'>{{ item.name }}
                     </el-descriptions-item>
                     <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
-                    <el-descriptions-item label='早'>
-                        <el-tag v-if='item.morningB' size='small'>{{ item.morning }}</el-tag>
-                        <span v-else>{{ item.morning }}</span>
-                    </el-descriptions-item>
-                    <el-descriptions-item label='中'>
-                        <el-tag v-if='item.noonB' size='small'>{{ item.noon }}</el-tag>
-                        <span v-else>{{ item.noon }}</span>
-                    </el-descriptions-item>
-                    <el-descriptions-item label='晚'>
-                        <el-tag v-if='item.nightB' size='small'>{{ item.night }}</el-tag>
-                        <span v-else>{{ item.night }}</span>
+
+                    <el-descriptions-item :label=subItem.type v-for='subItem in item.items' :key='subItem'>
+                        <el-tag v-if='subItem.state' size='small'>{{ subItem.slice }}</el-tag>
+                        <span v-else>{{ subItem.slice }}</span>
                     </el-descriptions-item>
                 </el-descriptions>
             </el-main>
@@ -71,6 +64,7 @@
 import Medicine from '@/api/spda/medicine'
 import MedicineRecord from '@/api/spda/medicine.record'
 import {mapState} from 'vuex'
+import '@/assets/js/date.format'
 
 export default {
     data() {
@@ -99,10 +93,13 @@ export default {
         eat() {
             MedicineRecord.eat(this.me).then(() => {
                 this.medicine()
-                this.$notify.success({
-                    title: '成功',
-                    message: '吃药成功',
-                    position: 'bottom-right'
+                this.$notify({
+                    title: '提示',
+                    message: '<p>操作：吃药成功</p><p>操作人：' + this.userName + '</p><p>操作时间：' + new Date().format('Y-m-d H:i:s') + '</p>',
+                    dangerouslyUseHTMLString: true,
+                    showClose: false,
+                    type: 'success',
+                    position: 'bottom-left'
                 })
             })
         }

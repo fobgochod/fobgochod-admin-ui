@@ -147,3 +147,27 @@ export const TASKS = [
         remark: '生日提醒'
     }
 ]
+
+export const ITEMS = [
+    {
+        medicineId: '',
+        type: '早晨',
+        start: '09:00:00',
+        end: '13:00:00',
+        slice: 0
+    },
+    {
+        medicineId: '',
+        type: '中午',
+        start: '13:00:00',
+        end: '18:00:00',
+        slice: 0
+    },
+    {
+        medicineId: '',
+        type: '晚上',
+        start: '18:00:00',
+        end: '22:00:00',
+        slice: 0
+    }
+]

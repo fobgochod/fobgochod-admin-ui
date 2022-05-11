@@ -14,6 +14,13 @@ export default {
             url: '/sms/records/' + id
         })
     },
+    batchDel(data) {
+        return axios({
+            method: 'post',
+            url: '/sms/records/delete',
+            data: data
+        })
+    },
     modData(data) {
         return axios({
             method: 'put',

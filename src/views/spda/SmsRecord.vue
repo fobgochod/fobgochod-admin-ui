@@ -22,16 +22,23 @@
                 <el-button type='primary' @click='searchData'>查询</el-button>
                 <el-button @click="clearData('formCondData')">清空</el-button>
             </el-form-item>
+            <el-form-item style='float:right'>
+                <el-popconfirm title='确定删除吗？' @confirm='batchDel'>
+                    <el-button slot='reference' icon='el-icon-delete' size='small' style='margin-right: 10px;'>
+                        删除
+                    </el-button>
+                </el-popconfirm>
+                <el-button icon='el-icon-phone' size='small' type='success' @click='testSms'>测试</el-button>
+                <drop-collection table='SmsRecord' :success='getByPage' />
+            </el-form-item>
         </el-form>
-        <el-button icon='el-icon-phone' size='small' type='success' @click='testSms'>测试</el-button>
-        <drop-collection table='SmsRecord' :success='getByPage' />
         <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
-            <el-table-column :index='getIndex' align='center' label='序号' type='index'
-                             width='60'></el-table-column>
+            <el-table-column align='center' type='selection' width='40'></el-table-column>
+            <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column align='center' label='手机' property='telephone' width='150'></el-table-column>
             <el-table-column align='center' label='状态' property='status' width='80'>
-                <template slot-scope='scope'>
+                <template v-slot='scope'>
                     <el-checkbox v-model='scope.row.status'></el-checkbox>
                 </template>
             </el-table-column>
@@ -48,12 +55,27 @@
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
             <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
-            <el-table-column align='center' fixed label='操作' width='80'>
-                <template slot-scope='scope'>
-                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
-                        <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'>
-                        </el-button>
-                    </el-popconfirm>
+
+            <el-table-column align='center' fixed='left' label='操作' width='50'>
+                <template v-slot='scope'>
+                    <el-dropdown>
+                         <span class='el-dropdown-link'>
+                             <i class='el-icon-s-operation el-icon--right'></i>
+                         </span>
+                        <el-dropdown-menu slot='dropdown'>
+                            <el-dropdown-item icon='el-icon-plus' @click.native='addDialog'>
+                                新增
+                            </el-dropdown-item>
+                            <el-popconfirm icon-color='red' title='确定删除吗？' @confirm='delData(scope.row)'>
+                                <el-dropdown-item slot='reference' icon='el-icon-delete'>
+                                    删除
+                                </el-dropdown-item>
+                            </el-popconfirm>
+                            <el-dropdown-item icon='el-icon-edit-outline' @click.native='modDialog(scope.row)'>
+                                编辑
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </template>
             </el-table-column>
         </el-table>
@@ -70,8 +92,8 @@
 
         <el-dialog :title='addDialogTitle' :visible.sync='addDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='60px'>
-                <el-form-item label='ID'>
-                    <el-input v-model='formData.id' disabled></el-input>
+                <el-form-item label='备注'>
+                    <el-input v-model='formData.remark'></el-input>
                 </el-form-item>
             </el-form>
             <span slot='footer' class='dialog-footer'>
@@ -82,8 +104,8 @@
         <el-dialog :title='modDialogTitle' :visible.sync='modDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='60px'>
                 <el-form ref='form' :model='formData' label-width='60px'>
-                    <el-form-item label='ID'>
-                        <el-input v-model='formData.id' disabled></el-input>
+                    <el-form-item label='备注'>
+                        <el-input v-model='formData.remark'></el-input>
                     </el-form-item>
                 </el-form>
             </el-form>
@@ -110,20 +132,58 @@ export default {
         }
     },
     methods: {
+        addData() {
+            SmsRecord.addData(this.formData).then(() => {
+                this.getByPage()
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
+            })
+            this.addDialogVisible = false
+        },
         delData(row) {
             SmsRecord.delData(row.id).then(() => {
                 this.getByPage()
-                this.$message.success('删除' + row.type + '成功')
-            }).catch(() => {
-                this.$message.error('删除' + row.type + '失败')
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
+            })
+        },
+        batchDel() {
+            if (this.selectionData.length === 0) {
+                this.$message.error('请选择要操作的文件!')
+                return
+            }
+            let body = {
+                ids: this.selectionIds()
+            }
+            SmsRecord.batchDel(body).then(() => {
+                this.searchData()
+                this.$message.success('批量删除[' + this.selectionData.length + ']个')
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
+            })
+        },
+        modDialog(row) {
+            this.formData = row
+            this.modDialogTitle = '修改（' + this.formData.telephone + '）'
+            this.modDialogVisible = true
+        },
+        modData() {
+            this.update(this.formData)
+            this.modDialogVisible = false
+        },
+        update(data) {
+            SmsRecord.modData(data).then(() => {
+                this.getByPage()
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
             })
         },
         getByPage() {
             SmsRecord.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
                 this.realData = res.data.list
-            }).catch(() => {
-                this.$message.error('查询Medicine失败')
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
             })
         },
         searchData() {
@@ -157,6 +217,8 @@ export default {
         testSms() {
             SmsRecord.testSms().then(() => {
                 this.getByPage()
+            }).catch((err) => {
+                this.$message.error(err.response.data.message)
             })
         }
     },

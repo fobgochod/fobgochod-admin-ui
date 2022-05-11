@@ -4,60 +4,41 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/medicine/records',
+            url: '/medicine/items',
             data: data
         })
     },
     delData(id) {
         return axios({
             method: 'delete',
-            url: '/medicine/records/' + id
+            url: '/medicine/items/' + id
         })
     },
     batchDel(data) {
         return axios({
             method: 'post',
-            url: '/medicine/records/delete',
+            url: '/medicine/items/delete',
             data: data
         })
     },
     modData(data) {
         return axios({
             method: 'put',
-            url: '/medicine/records',
+            url: '/medicine/items',
             data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
-            url: '/medicine/records/search',
+            url: '/medicine/items/search',
             data: data
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/medicine/records/drop'
-        })
-    },
-    eat(userId) {
-        return axios({
-            method: 'post',
-            url: '/medicines/eat',
-            data: {
-                userId: userId
-            }
-        })
-    },
-    eatDay(userId, date) {
-        return axios({
-            method: 'post',
-            url: '/medicines/eat/day',
-            data: {
-                userId: userId,
-                date: date
-            }
+            url: '/medicine/items/drop'
         })
     }
 }
