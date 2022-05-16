@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
+import Secret from '@/assets/js/secret.js'
 
 axios.defaults.baseURL = process.env.VUE_APP_ADMIN_API
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 
 let whiteList = ['/redis', '/mariadb', '/websocket', '/login']
+let encryptList = ['/users', '/users/search']
 
 axios.interceptors.request.use(
     (config) => {
@@ -17,20 +19,23 @@ axios.interceptors.request.use(
         if (userToken && !flag) {
             config.headers.common['digi-middleware-auth-user'] = userToken
         }
-        let tenantId = store.state.tenantId
-        if (tenantId && tenantId !== 'default' && !flag) {
-            config.headers.common['tenantId'] = tenantId
+
+        if (encryptList.indexOf(config.url) > -1) {
+            config.headers['Content-Type'] = 'application/json;charset=utf-8'
+            config.data = Secret.encrypt(JSON.stringify(config.data))
         }
         return config
     },
     (error) => {
-        console.log(error)
         Promise.reject(error)
     }
 )
 
 axios.interceptors.response.use(
     (response) => {
+        if (encryptList.indexOf(response.config.url) > -1) {
+            response.data = JSON.parse(Secret.decrypt(response.data))
+        }
         return response
     },
     (error) => {
@@ -41,14 +46,14 @@ axios.interceptors.response.use(
                 title: status,
                 message: message,
                 position: 'top-left',
-                showClose: false,
+                showClose: false
             })
         } else {
             Vue.prototype.$notify.error({
                 title: status,
                 message: '服务器错误',
                 position: 'top-left',
-                showClose: false,
+                showClose: false
             })
         }
         if (status) {
