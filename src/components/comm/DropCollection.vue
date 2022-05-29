@@ -7,14 +7,15 @@
 
 <script>
 import User from '@/api/system/user'
+import Role from '@/api/system/role'
 import Tenant from '@/api/system/tenant'
 import Bucket from '@/api/system/bucket'
 import Task from '@/api/system/task'
+import Menu from '@/api/menu/menu'
 import FileInfo from '@/api/file/file.info'
-import FileShare from '@/api/file/file.share'
-import Medicine from '@/api/spda/medicine'
-import MedicineRecord from '@/api/spda/medicine.record'
-import SmsRecord from '@/api/spda/sms.record'
+import Medicine from '@/api/medicine/medicine'
+import MedicineRecord from '@/api/medicine/medicine.record'
+import SmsRecord from '@/api/system/sms.record'
 
 export default {
     props: {
@@ -31,6 +32,8 @@ export default {
         dropData() {
             if (this.table === 'User') {
                 this.dropUser()
+            } else if (this.table === 'Role') {
+                this.dropRole()
             } else if (this.table === 'Tenant') {
                 this.dropTenant()
             } else if (this.table === 'Bucket') {
@@ -43,14 +46,22 @@ export default {
                 this.dropSmsRecord()
             } else if (this.table === 'Task') {
                 this.dropTask()
+            } else if (this.table === 'Menu') {
+                this.dropMenu()
             } else if (this.table === 'FileInfo') {
                 this.dropFileInfo()
-            } else if (this.table === 'Share') {
-                this.dropShare()
             }
         },
         dropUser() {
             User.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
+        dropRole() {
+            Role.dropData().then(() => {
                 this.success()
                 this.$message.success('清空成功')
             }).catch(() => {
@@ -105,6 +116,14 @@ export default {
                 this.$message.error('清空失败')
             })
         },
+        dropMenu() {
+            Menu.dropData().then(() => {
+                this.success()
+                this.$message.success('清空成功')
+            }).catch(() => {
+                this.$message.error('清空失败')
+            })
+        },
         dropFileInfo() {
             FileInfo.dropData().then(() => {
                 this.success()
@@ -113,14 +132,6 @@ export default {
                 this.$message.error('清空失败')
             })
         },
-        dropShare() {
-            FileShare.dropData().then(() => {
-                this.success()
-                this.$message.success('清空成功')
-            }).catch(() => {
-                this.$message.error('清空失败')
-            })
-        }
     }
 }
 </script>

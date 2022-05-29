@@ -74,6 +74,24 @@ export const USERS = [
     }
 ]
 
+export const ROLES = [
+    {
+        code: 'Admin',
+        name: '管理员',
+        order: 1
+    },
+    {
+        code: 'Owner',
+        name: '所有者',
+        order: 2
+    },
+    {
+        code: 'User',
+        name: '一般用户',
+        order: 3
+    }
+]
+
 export const TENANTS = [
     {
         code: 'fobgochod',
@@ -112,24 +130,15 @@ export const TASKS = [
     },
     {
         code: 'TS003',
-        name: '过期文件移动到回收站',
+        name: '回收站文件',
         type: '文件',
         cron: '0 0 1 1/1 * ?',
         className: 'statsTask',
         disable: false,
-        remark: '进回收站'
+        remark: '文件删除'
     },
     {
         code: 'TS004',
-        name: '回收站文件删除',
-        type: '文件',
-        cron: '0 0 1 1/1 * ?',
-        className: 'statsTask',
-        disable: false,
-        remark: '永久删除'
-    },
-    {
-        code: 'TS005',
         name: '吃药提醒',
         type: '生活',
         cron: '0 0 8-22/1 * * ?',
@@ -138,7 +147,7 @@ export const TASKS = [
         remark: '吃药提醒'
     },
     {
-        code: 'TS006',
+        code: 'TS005',
         name: '生日提醒',
         type: '生活',
         cron: '0 0 9 1/1 * ?',

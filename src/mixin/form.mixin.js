@@ -3,6 +3,7 @@ import {mapState} from 'vuex'
 export default {
     data() {
         return {
+            formData: {},
             conditionData: {},
             realDataCache: [],
             realData: [],
@@ -25,6 +26,9 @@ export default {
                 recycleIds: [],
                 expireDate: null
             },
+            operation: 'add',
+            opDialogTitle: '',
+            opDialogVisible: false,
             addDialogTitle: '新增数据',
             addDialogVisible: false,
             modDialogTitle: '修改数据',
@@ -35,10 +39,32 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'bucket'])
+        ...mapState(['baseUri', 'userId'])
     },
     methods: {
-        addDialog() {
+        opDialog(op, data) {
+            this.operation = op
+            if (op === 'add') {
+                this.opDialogTitle = '新增数据'
+                this.addDialog(data)
+            } else if (op === 'mod') {
+                this.opDialogTitle = '修改数据'
+                this.modDialog(data)
+            }
+            this.opDialogVisible = true
+        },
+        opData(op, data) {
+            if (op === 'add') {
+                this.addData()
+            } else if (op === 'mod') {
+                this.modData()
+            } else if (op === 'del') {
+                this.delData(data)
+            }
+            this.opDialogVisible = false
+        },
+
+        addDialog(row) {
             this.formData = {}
             this.addDialogVisible = true
         },

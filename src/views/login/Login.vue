@@ -61,10 +61,10 @@ export default {
         PhoneLogin: () => import('@/views/login/sub/PhoneLogin.vue')
     },
     computed: {
-        ...mapState(['baseUri', 'bucket', 'tenantId'])
+        ...mapState(['baseUri', 'tenantId'])
     },
     methods: {
-        ...mapMutations(['setEnv', 'setBucket', 'setUserId', 'setUserName', 'setUserToken']),
+        ...mapMutations(['setEnv', 'setUserId', 'setUserName', 'setTenantId', 'setUserToken']),
         login() {
             let password = Secret.encrypt(this.loginForm.password)
             this.loginForm.password = Secret.encode(this.loginForm.password)
@@ -72,6 +72,7 @@ export default {
             .then((res) => {
                 this.setUserToken(res.data.token)
                 this.setUserId(res.data.username)
+                this.setTenantId(res.data.tenantId)
                 if (this.remember) {
                     localStorage.setItem('username', Secret.encrypt(this.loginForm.username))
                     localStorage.setItem('password', password)
@@ -82,8 +83,6 @@ export default {
                     localStorage.removeItem('remember')
                 }
                 this.loginOk()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
         },
         loginSms() {
@@ -93,8 +92,6 @@ export default {
                 this.setUserToken(res.data.token)
                 this.setUserId(res.data.username)
                 this.loginOk()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
         },
         async loginOk() {

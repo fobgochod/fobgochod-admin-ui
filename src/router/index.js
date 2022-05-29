@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import demoRoutes from '@/router/demo.router'
-import dmcRoutes from '@/router/dmc.router'
-import spdaRoutes from '@/router/spda.router'
+import medicines from '@/router/module/medicine'
+import settings from '@/router/module/setting'
+import systems from '@/router/module/system'
+import menus from '@/router/module/menu'
+import attachments from '@/router/module/attachment'
+import demos from '@/router/module/demo'
 import RoleInterceptor from '@/router/auth/role'
 
 Vue.use(VueRouter)
@@ -14,8 +17,9 @@ const baseRoutes = [
         component: () => import('@/views/login/Login.vue'),
         meta: {
             title: '登录',
-            roles: [],
-        },
+            loginState: false,
+            roles: []
+        }
     },
     {
         path: '/register',
@@ -23,8 +27,9 @@ const baseRoutes = [
         component: () => import('@/views/login/Register.vue'),
         meta: {
             title: '注册',
-            roles: [],
-        },
+            loginState: false,
+            roles: []
+        }
     },
     {
         path: '/register/success',
@@ -32,8 +37,9 @@ const baseRoutes = [
         component: () => import('@/views/login/RegisterSuccess.vue'),
         meta: {
             title: '注册成功',
-            roles: [],
-        },
+            loginState: false,
+            roles: []
+        }
     },
     {
         path: '/change/password',
@@ -41,38 +47,9 @@ const baseRoutes = [
         component: () => import('@/views/login/ChangePassword.vue'),
         meta: {
             title: '修改密码',
-            roles: [],
-        },
-    },
-    {
-        path: '/error/401',
-        name: 'ServerError',
-        component: () => import('@/views/error/401.vue'),
-        meta: {
-            title: '系统错误',
             loginState: false,
-            roles: [],
-        },
-    },
-    {
-        path: '/error/404',
-        name: 'NotFound',
-        component: () => import('@/views/error/404.vue'),
-        meta: {
-            title: '页面不存在',
-            loginState: false,
-            roles: [],
-        },
-    },
-    {
-        path: '/error/500',
-        name: 'ServerError',
-        component: () => import('@/views/error/500.vue'),
-        meta: {
-            title: '系统错误',
-            loginState: false,
-            roles: [],
-        },
+            roles: []
+        }
     },
     {
         path: '/home',
@@ -80,20 +57,54 @@ const baseRoutes = [
         component: () => import('@/views/home/Home.vue'),
         meta: {
             title: '主页',
-            loginState: true,
-            roles: ['Admin', 'Owner'],
-        },
+            loginState: false,
+            roles: []
+        }
     },
-    ...spdaRoutes,
-    ...dmcRoutes,
+    {
+        path: '/error/401',
+        name: 'ServerError',
+        component: () => import('@/components/frame/error/Unauthorized.vue'),
+        meta: {
+            title: '系统错误',
+            loginState: false,
+            roles: []
+        }
+    },
+    {
+        path: '/error/404',
+        name: 'NotFound',
+        component: () => import('@/components/frame/error/NotFound.vue'),
+        meta: {
+            title: '页面不存在',
+            loginState: false,
+            roles: []
+        }
+    },
+    {
+        path: '/error/500',
+        name: 'ServerError',
+        component: () => import('@/components/frame/error/ServerError.vue'),
+        meta: {
+            title: '系统错误',
+            loginState: false,
+            roles: []
+        }
+    },
+
+    ...medicines,
+    ...settings,
+    ...systems,
+    ...menus,
+    ...attachments
 ]
 
-const routes = baseRoutes.concat(demoRoutes)
+const routes = baseRoutes.concat(demos)
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.VUE_APP_BASE_API,
-    routes: routes,
+    routes: routes
 })
 
 router.beforeEach(RoleInterceptor)

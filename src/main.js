@@ -8,7 +8,7 @@ import echarts from 'echarts'
 import qs from 'qs'
 import VueClipboard from 'vue-clipboard2'
 
-import components from '@/plugins/component' //加载公共组件
+import components from '@/plugins/component'
 import axios from '@/config/http'
 import '@/assets/css/common.css'
 import 'element-ui/lib/theme-chalk/display.css'

@@ -6,11 +6,14 @@
 </template>
 
 <script>
-import {ITEMS, TASKS, TENANTS, USERS} from '@/assets/js/base.data'
+import {ITEMS, ROLES, TASKS, TENANTS, USERS} from '@/assets/js/base.data'
+import MenuData from '@/assets/js/menu'
 import User from '@/api/system/user'
+import Role from '@/api/system/role'
 import Tenant from '@/api/system/tenant'
 import Task from '@/api/system/task'
-import MedicineItem from '@/api/spda/medicine.item'
+import Menu from '@/api/menu/menu'
+import MedicineItem from '@/api/medicine/medicine.item'
 
 export default {
     props: {
@@ -30,10 +33,14 @@ export default {
         initData() {
             if (this.table === 'User') {
                 this.initUser()
+            } else if (this.table === 'Role') {
+                this.initRole()
             } else if (this.table === 'Tenant') {
                 this.initTenant()
             } else if (this.table === 'Task') {
                 this.initTask()
+            } else if (this.table === 'Menu') {
+                this.initMenu()
             } else if (this.table === 'MedicineItem') {
                 this.initMedicineItem()
             }
@@ -41,6 +48,12 @@ export default {
         async initUser() {
             for (let task of USERS) {
                 await User.addData(task)
+            }
+            this.success()
+        },
+        async initRole() {
+            for (let task of ROLES) {
+                await Role.addData(task)
             }
             this.success()
         },
@@ -53,6 +66,16 @@ export default {
         async initTask() {
             for (let task of TASKS) {
                 await Task.addData(task)
+            }
+            this.success()
+        },
+        async initMenu() {
+            for (let menu of MenuData) {
+                const res = await Menu.addData(menu)
+                for (let subMenu of menu.children) {
+                    subMenu.parentId = res.data.id
+                    await Menu.addData(subMenu)
+                }
             }
             this.success()
         },

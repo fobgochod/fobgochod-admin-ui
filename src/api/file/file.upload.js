@@ -16,7 +16,7 @@ export default {
         reader.onload = (e) => {
             axios({
                 method: 'post',
-                url: '/buckets/files',
+                url: '/file/upload/stream',
                 headers: {
                     'digi-middleware-drive-arg': encodeURIComponent(JSON.stringify(this.formData)),
                 },
