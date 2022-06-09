@@ -2,27 +2,27 @@ import axios from '@/config/http'
 import store from '@/store'
 
 export default {
-    previewUrl(fileInfoId) {
-        return store.state.baseUri + '/file/preview/' + fileInfoId
+    previewUrl(fileId) {
+        return store.state.baseUri + '/file/preview?fileId=' + fileId
     },
-    preview(fileInfoId) {
+    preview(fileId) {
         return axios({
             method: 'get',
-            url: '/file/preview/' + fileInfoId,
+            url: '/file/preview?fileId=' + fileId,
             responseType: 'blob'
         })
     },
-    download(fileInfoId) {
+    download(fileId) {
         return axios({
             method: 'get',
-            url: '/file/download/' + fileInfoId,
+            url: '/file/download?fileId=' + fileId,
             responseType: 'blob'
         })
     },
     downloadDir(dirId) {
         return axios({
             method: 'get',
-            url: '/file/download/dir/' + dirId,
+            url: '/file/download/dir?dirId=' + dirId,
             responseType: 'blob'
         })
     },

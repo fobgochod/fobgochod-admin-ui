@@ -8,7 +8,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         baseUri: '',
-        bucket: '',
         tenantId: '',
         userId: '',
         userName: '',
@@ -26,9 +25,6 @@ const store = new Vuex.Store({
     mutations: {
         setEnv(state, payload) {
             state.baseUri = payload
-        },
-        setBucket(state, payload) {
-            state.bucket = payload
         },
         setTenantId(state, payload) {
             state.tenantId = payload

@@ -1,17 +1,14 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='ID' prop='id'>
-                <el-input v-model='pageData.filters.id' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.id' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='名称' prop='fileName'>
-                <el-input v-model='pageData.filters.name' @change='searchData'></el-input>
-            </el-form-item>
-            <el-form-item label='描述' prop='displayName'>
-                <el-input v-model='pageData.filters.displayName' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='父ID' prop='parentId'>
-                <el-input v-model='pageData.filters.parentId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.parentId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -27,11 +24,10 @@
                 新增
             </el-button>
         </el-row>
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>
-            <el-table-column label='描述' property='displayName' width='200'></el-table-column>
             <el-table-column label='父ID' property='parentId' width='150'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
@@ -89,9 +85,6 @@
                 <el-form-item label='名称'>
                     <el-input v-model='formData.name'></el-input>
                 </el-form-item>
-                <el-form-item label='描述'>
-                    <el-input v-model='formData.displayName'></el-input>
-                </el-form-item>
                 <el-form-item label='父ID'>
                     <el-input v-model='formData.parentId' disabled></el-input>
                 </el-form-item>
@@ -110,16 +103,6 @@ import File from '@/api/file/file'
 
 export default {
     mixins: [formMixin],
-    data() {
-        return {
-            formData: {
-                id: '',
-                name: '',
-                displayName: '',
-                parentId: '0'
-            }
-        }
-    },
     methods: {
         addDialog(row) {
             if (row) {
@@ -135,72 +118,31 @@ export default {
         addData() {
             DirInfo.addData(this.formData).then(() => {
                 this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
-            this.addDialogVisible = false
         },
         delData(row) {
-            let body = {
-                dirId: row.id
-            }
-            File.batchDelFile(body).then(() => {
+            // DirInfo.delFile(row).then(() => {
+            //     this.getByPage()
+            // })
+            File.delDir(row.id).then(() => {
                 this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
-        },
-        delFileForce(row) {
-            let body = {
-                dirId: row.id
-            }
-            File.batchDelFileForce(body).then(() => {
-                this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
-            })
-        },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.name + '）'
         },
         modData() {
-            this.update(this.formData)
-        },
-        update(data) {
-            DirInfo.modData(data).then(() => {
+            DirInfo.modData(this.formData).then(() => {
                 this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
         },
         getByPage() {
             DirInfo.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
+                this.tableData = res.data.list
             })
         },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.searchData()
-            this.pageData.filters = {}
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
+        delFileForce(row) {
+            File.delDirForce(row.id).then(() => {
+                this.getByPage()
+            })
         }
     },
     mounted() {

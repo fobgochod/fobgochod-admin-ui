@@ -6,7 +6,7 @@
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
-                <el-table :data='realData' border stripe default-expand-all>
+                <el-table :data='tableData' border stripe default-expand-all>
                     <el-table-column type='expand'>
                         <template v-slot='scope'>
                             <el-table :data='scope.row.items' border stripe :show-header=false>
@@ -40,7 +40,7 @@
             </el-header>
             <el-main>
                 <el-descriptions :title='item.name' :column='4' direction='vertical' border style='padding-top: 2vw'
-                                 v-for='item in realData' :key='item'>
+                                 v-for='item in tableData' :key='item'>
                     <template slot='extra'>
                         <el-tag type='primary'>{{ item.remain }}天</el-tag>
                     </template>
@@ -69,7 +69,7 @@ export default {
     data() {
         return {
             userName: '',
-            realData: []
+            tableData: []
         }
     },
     computed: {
@@ -86,7 +86,7 @@ export default {
             MyMedicine.me(this.me)
             .then((res) => {
                 this.userName = res.data.userName
-                this.realData = res.data.medicines
+                this.tableData = res.data.medicines
             })
         },
         eat() {

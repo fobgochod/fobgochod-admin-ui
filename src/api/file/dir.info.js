@@ -4,37 +4,38 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/directory',
-            data: data,
+            url: '/directory/add',
+            data: data
         })
     },
-    delData(dirId) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/directory' + dirId,
+            method: 'post',
+            url: '/directory/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/directory',
-            data: data,
+            method: 'post',
+            url: '/directory/mod',
+            data: data
         })
-    },
-    getData() {
-        return this.getByPage()
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/directory/search',
-            data: data,
+            data: data
         })
     },
     getDirInfo(dirId) {
         return axios({
-            method: 'get',
-            url: '/directory/list/' + dirId,
+            method: 'post',
+            url: '/directory/info',
+            data: {
+                id: dirId
+            }
         })
-    },
+    }
 }

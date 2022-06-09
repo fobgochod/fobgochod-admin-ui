@@ -1,17 +1,21 @@
 import CryptoJS from 'crypto-js'
 import Base64 from 'crypto-js/enc-base64'
 import SHA256 from 'crypto-js/sha256'
-
-const key = CryptoJS.enc.Utf8.parse('Cyrus·Smith____')
+import JSEncrypt from 'encryptlong'
+import {PRIVATE_KEY, PUBLIC_KEY, SECRET_KEY} from './id_rsa'
 
 /**
  * 加密
- * @param data
+ * @param dataStr
  * @returns {string}
  */
-function encrypt(data) {
-    let srcs = CryptoJS.enc.Utf8.parse(data)
-    let encrypted = CryptoJS.AES.encrypt(srcs, key, {
+function aesEnc(dataStr) {
+    const encryptSecretKey = sessionStorage.getItem(SECRET_KEY)
+    let secretKeyBase64 = this.rsaDec(encryptSecretKey, PRIVATE_KEY)
+    const secretKey = Base64.parse(secretKeyBase64)
+
+    let data = CryptoJS.enc.Utf8.parse(dataStr)
+    let encrypted = CryptoJS.AES.encrypt(data, secretKey, {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
     })
@@ -23,8 +27,12 @@ function encrypt(data) {
  * @param data
  * @returns {*}
  */
-function decrypt(data) {
-    let decrypt = CryptoJS.AES.decrypt(data, key, {
+function aesDec(data) {
+    const encryptSecretKey = sessionStorage.getItem(SECRET_KEY)
+    let secretKeyBase64 = this.rsaDec(encryptSecretKey, PRIVATE_KEY)
+    const secretKey = Base64.parse(secretKeyBase64)
+
+    let decrypt = CryptoJS.AES.decrypt(data, secretKey, {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
     })
@@ -36,7 +44,7 @@ function decrypt(data) {
  * @param password
  * @returns {*}
  */
-function encode(password) {
+function sha256(password) {
     return Base64.stringify(SHA256(SHA256(password)))
 }
 
@@ -48,11 +56,31 @@ function base64Decode(data) {
     return Base64.parse(data).toString(CryptoJS.enc.Utf8)
 }
 
+function rsaEnc(data, publicKey) {
+    if (!publicKey) {
+        publicKey = PUBLIC_KEY
+    }
+    const encrypt = new JSEncrypt()
+    encrypt.setPublicKey(publicKey)
+    return encrypt.encryptLong(data)
+}
+
+function rsaDec(data, privateKey) {
+    if (!privateKey) {
+        privateKey = PRIVATE_KEY
+    }
+    const decrypt = new JSEncrypt()
+    decrypt.setPrivateKey(privateKey)
+    return decrypt.decryptLong(data)
+}
+
 
 export default {
-    encrypt,
-    decrypt,
-    encode,
+    aesEnc,
+    aesDec,
+    sha256,
     base64Encode,
-    base64Decode
+    base64Decode,
+    rsaEnc,
+    rsaDec
 }

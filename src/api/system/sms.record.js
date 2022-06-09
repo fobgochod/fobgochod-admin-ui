@@ -4,27 +4,21 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/sms/records',
+            url: '/sms/records/add',
             data: data
         })
     },
-    delData(id) {
-        return axios({
-            method: 'delete',
-            url: '/sms/records/' + id
-        })
-    },
-    batchDel(data) {
+    delData(data) {
         return axios({
             method: 'post',
-            url: '/sms/records/delete',
+            url: '/sms/records/del',
             data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/sms/records',
+            method: 'post',
+            url: '/sms/records/mod',
             data: data
         })
     },
@@ -39,6 +33,13 @@ export default {
         return axios({
             method: 'delete',
             url: '/sms/records/drop'
+        })
+    },
+    batchDel(data) {
+        return axios({
+            method: 'post',
+            url: '/sms/records/delete',
+            data: data
         })
     },
     testSms() {

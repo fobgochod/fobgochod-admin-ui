@@ -4,7 +4,7 @@
             <img alt="Vue logo" src="../../assets/logo.png">
         </div>
         <div>
-            <el-table :data="realData" border stripe>
+            <el-table :data="tableData" border stripe>
                 <el-table-column label="标题" prop="name" width="100px"></el-table-column>
                 <el-table-column label="内容" prop="value"></el-table-column>
             </el-table>
@@ -20,7 +20,7 @@
 export default {
     data() {
         return {
-            realData: [
+            tableData: [
                 {
                     name: 'Bucket',
                     value: sessionStorage.getItem("bucket")

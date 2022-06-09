@@ -1,14 +1,14 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item v-if="userId === 'admin'" label='用户' prop='userId'>
-                <el-input v-model='pageData.cond.userId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.userId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='编号' prop='code'>
-                <el-input v-model='pageData.cond.code' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.code' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -17,11 +17,11 @@
             <el-form-item style='float:right'>
                 <el-button icon='el-icon-plus' size='small' type='success' @click='opDialog("add")'>加药</el-button>
                 <el-button icon='el-icon-first-aid-kit' size='small' type='danger' @click='eatMedicine'>吃药</el-button>
-                <fo-drop-collection table='Medicine' :success='getByPage' />
+                <fo-drop-collection table='Medicin4e' :success='getByPage' />
             </el-form-item>
         </el-form>
 
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'
                   @cell-dblclick='queryRecords'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
@@ -204,14 +204,6 @@ export default {
     mixins: [pageMixin],
     data() {
         return {
-            formData: {
-                userId: '',
-                code: '',
-                name: '',
-                total: '',
-                remain: '',
-                remark: ''
-            },
             itemFormData: {
                 medicineId: '',
                 type: '',
@@ -224,7 +216,7 @@ export default {
             items: [],
             medicineId: '',
             medicineName: '',
-            medicineTotal: 0,
+            medicineTotal: 0
         }
     },
     computed: mapState(['userId']),
@@ -243,13 +235,9 @@ export default {
             })
         },
         delData(row) {
-            Medicine.delData(row.id).then(() => {
+            Medicine.delData(row).then(() => {
                 this.getByPage()
             })
-        },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.name + '）'
         },
         modData() {
             this.update(this.formData)
@@ -262,32 +250,8 @@ export default {
         getByPage() {
             Medicine.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
             })
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.pageData.cond.like = {
-                key: 'name',
-                value: this.pageData.cond.$name
-            }
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.pageData.cond = {}
-            this.searchData()
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
         },
         addItemDialog(row) {
             this.medicineId = row.id
@@ -320,7 +284,7 @@ export default {
             this.addDialogVisible = false
         },
         delItemData(row) {
-            MedicineItem.delData(row.id).then(() => {
+            MedicineItem.delData(row).then(() => {
                 this.searchItemData()
             })
         },
@@ -336,8 +300,10 @@ export default {
             let itemPageData = {
                 pageNum: 1,
                 pageSize: 10,
-                cond: {
-                    medicineId: this.medicineId
+                filter: {
+                    eq: {
+                        medicineId: this.medicineId
+                    }
                 },
                 orders: {
                     start: 1

@@ -4,52 +4,47 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/tenants',
-            data: data,
+            url: '/tenants/add',
+            data: data
         })
     },
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/tenants/' + id,
+            method: 'post',
+            url: '/tenants/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/tenants',
-            data: data,
-        })
-    },
-    getById(id) {
-        return axios({
-            method: 'get',
-            url: '/tenants/' + id,
+            method: 'post',
+            url: '/tenants/mod',
+            data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/tenants/search',
-            data: data,
+            data: data
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/tenants/drop',
+            url: '/tenants/drop'
         })
     },
     getOptions() {
         return axios({
             method: 'get',
-            url: '/tenants/option',
+            url: '/tenants/option'
         })
     },
     getOptionGroups() {
         return axios({
             method: 'get',
-            url: '/tenants/option/group',
+            url: '/tenants/option/group'
         })
-    },
+    }
 }

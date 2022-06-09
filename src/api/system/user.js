@@ -4,80 +4,62 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/users',
-            data: data,
+            url: '/users/add',
+            data: data
         })
     },
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/users/' + id,
+            method: 'post',
+            url: '/users/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/users',
-            data: data,
-        })
-    },
-    getById(id) {
-        return axios({
-            method: 'get',
-            url: '/users/' + id,
+            method: 'post',
+            url: '/users/mod',
+            data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/users/search',
-            data: data,
+            data: data
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/users/drop',
+            url: '/users/drop'
         })
     },
     getOptionGroups() {
         return axios({
             method: 'get',
-            url: '/users/option/group',
-        })
-    },
-    getByName(username) {
-        return axios({
-            method: 'get',
-            url: '/users/name/' + username,
-        })
-    },
-    changeName(data) {
-        return axios({
-            method: 'put',
-            url: '/users/name',
-            data: data,
+            url: '/users/option/group'
         })
     },
     checkPassword(data) {
         return axios({
             method: 'post',
             url: '/users/password/check',
-            data: data,
+            data: data
         })
     },
     changePassword(data) {
         return axios({
             method: 'post',
             url: '/users/password/change',
-            data: data,
+            data: data
         })
     },
     resetPassword(data) {
         return axios({
             method: 'post',
             url: '/users/password/reset',
-            data: data,
+            data: data
         })
     }
 }

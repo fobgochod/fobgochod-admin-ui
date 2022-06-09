@@ -4,52 +4,53 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/tasks',
-            data: data,
+            url: '/tasks/add',
+            data: data
         })
     },
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/tasks/' + id,
+            method: 'post',
+            url: '/tasks/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/tasks',
-            data: data,
+            method: 'post',
+            url: '/tasks/mod',
+            data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/tasks/search',
-            data: data,
+            data: data
         })
     },
     dropData() {
         return axios({
             method: 'delete',
-            url: '/tasks/drop',
+            url: '/tasks/drop'
         })
     },
     getOptions() {
         return axios({
             method: 'get',
-            url: '/tasks/option',
+            url: '/tasks/option'
         })
     },
     doTask(id) {
         return axios({
             method: 'get',
-            url: '/tasks/run/' + id,
+            url: '/tasks/run/' + id
         })
     },
     refreshTask() {
         return axios({
             method: 'get',
-            url: '/tasks/refresh',
+            url: '/tasks/refresh'
         })
-    },
+    }
 }

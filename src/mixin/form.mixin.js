@@ -4,14 +4,14 @@ export default {
     data() {
         return {
             formData: {},
-            conditionData: {},
-            realDataCache: [],
-            realData: [],
+            tableData: [],
             pageData: {
-                cond: {},
-                filters: {},
                 pageNum: 1,
                 pageSize: 10,
+                filter: {
+                    eq: {},
+                    like: {}
+                },
                 orders: {
                     createDate: -1
                 },
@@ -29,10 +29,6 @@ export default {
             operation: 'add',
             opDialogTitle: '',
             opDialogVisible: false,
-            addDialogTitle: '新增数据',
-            addDialogVisible: false,
-            modDialogTitle: '修改数据',
-            modDialogVisible: false,
             selectionButtonTitle: '未选择数据',
             selectionButtonState: true,
             selectionData: []
@@ -42,17 +38,24 @@ export default {
         ...mapState(['baseUri', 'userId'])
     },
     methods: {
-        opDialog(op, data) {
+        opDialog(op, row) {
             this.operation = op
             if (op === 'add') {
                 this.opDialogTitle = '新增数据'
-                this.addDialog(data)
+                this.addDialog(row)
             } else if (op === 'mod') {
-                this.opDialogTitle = '修改数据'
-                this.modDialog(data)
+                this.opDialogTitle = '修改（' + row.name + '）'
+                this.modDialog(row)
             }
             this.opDialogVisible = true
         },
+        addDialog(row) {
+            this.formData = {}
+        },
+        modDialog(row) {
+            this.formData = row
+        },
+
         opData(op, data) {
             if (op === 'add') {
                 this.addData()
@@ -63,63 +66,51 @@ export default {
             }
             this.opDialogVisible = false
         },
-
-        addDialog(row) {
-            this.formData = {}
-            this.addDialogVisible = true
-        },
         addData() {
             console.log('调用API新增数据')
-            this.addDialogVisible = false
         },
         delData(row) {
             console.log('调用API删除数据' + row)
         },
-        modDialog(row) {
-            this.formData = row
-            this.modDialogVisible = true
-        },
         modData() {
             console.log('调用API修改数据')
-            this.modDialogVisible = false
         },
-        getData() {
-            console.log('调用API查询数据')
+        getByPage() {
+            console.log('调用API分页查询数据')
+        },
+        searchData() {
+            this.pageData.pageNum = 1
+            this.getByPage()
+        },
+        clearData(formRef) {
+            this.$refs[formRef].resetFields()
+            this.pageData.filter = {
+                eq: {},
+                like: {}
+            }
+            this.searchData()
+        },
+        pageSizeChange(pageSize) {
+            this.pageData.pageNum = 1
+            this.pageData.pageSize = pageSize
+            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
+            this.getByPage()
+        },
+        pageNumChange(pageNum) {
+            this.pageData.pageNum = pageNum
+            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
+            this.getByPage()
         },
         getIndex(index) {
             // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
             return (this.pageData.pageNum - 1) * this.pageData.pageSize + index + 1
         },
-        pageHandler() {
-            let startRow = this.pageData.pageNum > 0 ? (this.pageData.pageNum - 1) * this.pageData.pageSize : 0
-            let endRow = startRow + this.pageData.pageSize * (this.pageData.pageNum > 0 ? 1 : 0)
-
-            let tempData = []
-            for (let index = startRow; index < endRow; index++) {
-                let temp = this.realDataCache[index]
-                if (temp == null) {
-                    break
-                }
-                tempData[index] = temp
-            }
-            this.realData = tempData
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据')
-            this.pageHandler()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('正在展示第' + pageNum + '页数据')
-            this.pageHandler()
-        },
         selection(selectData) {
-            if (selectData.length > 0 && this.realData.length !== selectData.length) {
+            if (selectData.length > 0 && this.tableData.length !== selectData.length) {
                 this.selectionButtonTitle = '已选择' + selectData.length
                 this.selectionButtonState = false
                 this.selectionData = selectData
-            } else if (this.realData.length === selectData.length) {
+            } else if (this.tableData.length === selectData.length) {
                 this.selectionButtonTitle = '已全选'
                 this.selectionButtonState = false
                 this.selectionData = selectData
@@ -127,10 +118,6 @@ export default {
                 this.selectionButtonTitle = '未选择数据'
                 this.selectionButtonState = true
             }
-        },
-        consoleSelection() {
-            this.$message.success('打印选择数据成功，请按F12打开Console查看')
-            console.log(this.selectionData)
         },
         selectionIds() {
             let ids = []

@@ -1,22 +1,22 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='手机' prop='telephone'>
-                <el-input v-model='pageData.cond.telephone' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.telephone' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='状态' prop='completed'>
-                <el-select v-model='pageData.cond.status' @change='searchData'>
+                <el-select v-model='pageData.filter.eq.status' @change='searchData'>
                     <el-option label='是' :value=true></el-option>
                     <el-option label='否' :value=false></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label='发送日期' prop='sendDate'>
-                <el-date-picker v-model='pageData.cond.sendDate0' type='daterange' value-format='yyyy-MM-dd'
+                <el-date-picker v-model='pageData.filter.eq.sendDate0' type='daterange' value-format='yyyy-MM-dd'
                                 range-separator='至' start-placeholder='开始日期' end-placeholder='结束日期'>
                 </el-date-picker>
             </el-form-item>
             <el-form-item label='模板CODE' prop='templateCode'>
-                <el-input v-model='pageData.cond.templateCode' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.templateCode' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -32,7 +32,7 @@
                 <fo-drop-collection table='SmsRecord' :success='getByPage' />
             </el-form-item>
         </el-form>
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column align='center' type='selection' width='40'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
@@ -109,15 +109,6 @@ import SmsRecord from '@/api/system/sms.record'
 
 export default {
     mixins: [formMixin],
-    data() {
-        return {
-            formData: {
-                type: '',
-                slice: '',
-                time: ''
-            }
-        }
-    },
     methods: {
         addData() {
             SmsRecord.addData(this.formData).then(() => {
@@ -125,9 +116,35 @@ export default {
             })
         },
         delData(row) {
-            SmsRecord.delData(row.id).then(() => {
+            SmsRecord.delData(row).then(() => {
                 this.getByPage()
             })
+        },
+        modData() {
+            this.update(this.formData)
+        },
+        update(data) {
+            SmsRecord.modData(data).then(() => {
+                this.getByPage()
+            })
+        },
+        getByPage() {
+            SmsRecord.getByPage(this.pageData).then(res => {
+                this.pageData.total = res.data.total
+                this.tableData = res.data.list
+            })
+        },
+        searchData() {
+            this.pageData.pageNum = 1
+            let sendDate0 = this.pageData.filter.eq.sendDate0
+            if (sendDate0) {
+                this.pageData.filter.between = {
+                    key: 'sendDate',
+                    begin: sendDate0[0] + ' 00:00:00',
+                    end: sendDate0[1] + ' 23:59:59'
+                }
+            }
+            this.getByPage()
         },
         batchDel() {
             if (this.selectionData.length === 0) {
@@ -141,52 +158,6 @@ export default {
                 this.searchData()
                 this.$message.success('批量删除[' + this.selectionData.length + ']个')
             })
-        },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.telephone + '）'
-        },
-        modData() {
-            this.update(this.formData)
-        },
-        update(data) {
-            SmsRecord.modData(data).then(() => {
-                this.getByPage()
-            })
-        },
-        getByPage() {
-            SmsRecord.getByPage(this.pageData).then(res => {
-                this.pageData.total = res.data.total
-                this.realData = res.data.list
-            })
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            let sendDate0 = this.pageData.cond.sendDate0
-            if (sendDate0) {
-                this.pageData.cond.between = {
-                    key: 'sendDate',
-                    begin: sendDate0[0] + ' 00:00:00',
-                    end: sendDate0[1] + ' 23:59:59'
-                }
-            }
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.pageData.cond = {}
-            this.searchData()
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
         },
         testSms() {
             SmsRecord.testSms().then(() => {

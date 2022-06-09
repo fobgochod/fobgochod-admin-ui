@@ -1,17 +1,17 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='ID' prop='id'>
-                <el-input v-model='pageData.filters.id' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.id' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='文件ID' prop='fileId'>
-                <el-input v-model='pageData.filters.fileId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.fileId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='文件名称' prop='fileName'>
-                <el-input v-model='pageData.filters.fileName' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.fileName' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='原位置' prop='paths'>
-                <el-input v-model='pageData.filters.paths' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.paths' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -20,16 +20,18 @@
         </el-form>
 
         <el-row>
-            <el-button icon='el-icon-delete' size='small' style='margin-left: 10px;'
-                       @click='batchRestore'>批量恢复
-            </el-button>
+            <el-button icon='el-icon-delete' size='small' @click='batchRestoreBin'>批量恢复</el-button>
 
-            <el-popconfirm style='margin: 0 10px' title='确定清空回收站吗？' @confirm='emptyData'>
+            <el-popconfirm style='margin-left: 10px' title='确定删除吗？' @confirm='batchDeleteBin'>
+                <el-button slot='reference' icon='el-icon-delete' size='small' type='warning'>批量删除</el-button>
+            </el-popconfirm>
+
+            <el-popconfirm style='margin-left: 10px' title='确定清空回收站吗？' @confirm='emptyBin'>
                 <el-button slot='reference' icon='el-icon-refresh-right' size='small' type='danger'>清空</el-button>
             </el-popconfirm>
         </el-row>
 
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column label='ID' property='id' width='200'></el-table-column>
             <el-table-column label='文件ID' property='fileId' width='200'></el-table-column>
@@ -45,11 +47,11 @@
             <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='80'>
-                <template slot-scope='scope'>
+                <template v-slot='scope'>
                     <el-button icon='el-icon-refresh-left' title='恢复' type='text'
-                               @click='restore(scope.row)'>
+                               @click='restoreBin(scope.row)'>
                     </el-button>
-                    <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
+                    <el-popconfirm title='确定删除吗？' @confirm='deleteBin(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'></el-button>
                     </el-popconfirm>
                 </template>
@@ -76,90 +78,50 @@ import Utils from '@/assets/js/utils'
 
 export default {
     mixins: [pageMixin],
-    data() {
-        return {
-            formData: {
-                id: '',
-                fileId: '',
-                fileName: '',
-                paths: '',
-                type: ''
-            }
-        }
-    },
     methods: {
         getByPage() {
             RecycleBin.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
                 // 修改文件大小显示方式
-                this.realData.forEach(function(item, index, arr) {
+                this.tableData.forEach(function(item, index, arr) {
                     arr[index].sizeShow = Utils.byteSwitch(item.size)
                 })
-                this.$message.success('查询回收站成功')
-            }).catch(() => {
-                this.$message.error('查询回收站失败')
             })
         },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.searchData()
-            this.pageData.filters = {}
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
-        },
-        delData(row) {
-            RecycleBin.delData(row.id).then(() => {
+        deleteBin(row) {
+            RecycleBin.deleteBin(row.id).then(() => {
                 this.searchData()
-                this.$message.success('删除' + row.name + '成功')
-            }).catch(() => {
-                this.$message.error('删除' + row.name + '失败')
             })
         },
-        emptyData() {
-            RecycleBin.emptyData().then(() => {
-                this.getByPage()
-                this.$message.success('清空回收站成功')
-            }).catch(() => {
-                this.$message.error('清空回收站失败')
-            })
-            this.addDialogVisible = false
-        },
-        restore(row) {
-            RecycleBin.restore(row.id).then(() => {
-                this.getByPage()
-                this.$message.success('恢复' + row.name + '成功')
-            }).catch(() => {
-                this.$message.error('恢复' + row.name + '失败')
-            })
-        },
-        batchRestore() {
+        batchDeleteBin() {
             if (this.selectionData.length === 0) {
                 this.$message.error('请选择要操作的文件!')
                 return
             }
-            let body = {
-                recycleIds: this.selectionIds()
-            }
-            RecycleBin.batchRestore(body).then(() => {
+            RecycleBin.deleteBin(null, this.selectionIds()).then(() => {
                 this.getByPage()
-                this.$message.success('恢复' + this.selectionData.length + '个文件成功')
-            }).catch(() => {
-                this.$message.error('恢复' + this.selectionData.length + '个文件失败')
             })
+        },
+        restoreBin(row) {
+            RecycleBin.restoreBin(row.id).then(() => {
+                this.getByPage()
+            })
+        },
+        batchRestoreBin() {
+            if (this.selectionData.length === 0) {
+                this.$message.error('请选择要操作的文件!')
+                return
+            }
+            RecycleBin.restoreBin(null, this.selectionIds()).then(() => {
+                this.getByPage()
+            })
+        },
+        emptyBin() {
+            RecycleBin.emptyBin().then(() => {
+                this.getByPage()
+            })
+            this.addDialogVisible = false
         }
     },
     mounted() {

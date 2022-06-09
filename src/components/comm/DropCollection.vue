@@ -9,7 +9,6 @@
 import User from '@/api/system/user'
 import Role from '@/api/system/role'
 import Tenant from '@/api/system/tenant'
-import Bucket from '@/api/system/bucket'
 import Task from '@/api/system/task'
 import Menu from '@/api/menu/menu'
 import FileInfo from '@/api/file/file.info'
@@ -36,8 +35,6 @@ export default {
                 this.dropRole()
             } else if (this.table === 'Tenant') {
                 this.dropTenant()
-            } else if (this.table === 'Bucket') {
-                this.dropBucket()
             } else if (this.table === 'Medicine') {
                 this.dropMedicine()
             } else if (this.table === 'MedicineRecord') {
@@ -70,14 +67,6 @@ export default {
         },
         dropTenant() {
             Tenant.dropData().then(() => {
-                this.success()
-                this.$message.success('清空成功')
-            }).catch(() => {
-                this.$message.error('清空失败')
-            })
-        },
-        dropBucket() {
-            Bucket.dropData().then(() => {
                 this.success()
                 this.$message.success('清空成功')
             }).catch(() => {

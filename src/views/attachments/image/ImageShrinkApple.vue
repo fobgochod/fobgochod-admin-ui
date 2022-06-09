@@ -1,11 +1,11 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='原文件ID' prop='sourceId'>
-                <el-input v-model='pageData.filters.sourceId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.sourceId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='压缩文件ID' prop='sourceId'>
-                <el-input v-model='pageData.filters.targetId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.targetId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -13,13 +13,13 @@
             </el-form-item>
         </el-form>
 
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='原文件ID' property='sourceId' width='150'></el-table-column>
             <el-table-column label='压缩文件ID' property='targetId' width='150'></el-table-column>
-            <el-table-column label='宽' property='property.width' width='100' align='center'></el-table-column>
-            <el-table-column label='高' property='property.height' width='100' align='center'></el-table-column>
+            <el-table-column label='宽' property='width' width='100' align='center'></el-table-column>
+            <el-table-column label='高' property='height' width='100' align='center'></el-table-column>
 
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
@@ -55,46 +55,17 @@ import ImageShrink from '@/api/image/image.shrink'
 
 export default {
     mixins: [pageMixin],
-    data() {
-        return {}
-    },
     methods: {
         delData(row) {
-            ImageShrink.delData(row.id).then(() => {
+            ImageShrink.delData(row).then(() => {
                 this.searchData()
-                this.$message.success('删除' + row.id + '成功')
-            }).catch(() => {
-                this.$message.error('删除' + row.id + '失败')
             })
         },
         getByPage() {
             ImageShrink.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
-                this.$message.success('查询图片压缩站成功')
-            }).catch(() => {
-                this.$message.error('查询图片压缩站失败')
+                this.tableData = res.data.list
             })
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.searchData()
-            this.pageData.filters = {}
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
         }
     },
     mounted() {

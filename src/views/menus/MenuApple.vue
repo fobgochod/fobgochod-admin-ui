@@ -4,7 +4,7 @@
         </el-button>
         <fo-data-infrastructure table='Menu' :success='getMenu' />
         <fo-drop-collection table='Menu' :success='getMenu' />
-        <el-table :data='realData' style='width: 100%;margin-bottom: 20px;'
+        <el-table :data='tableData' style='width: 100%;margin-bottom: 20px;'
                   row-key='id' border stripe
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column label='菜单' property='name' width='130'>
@@ -138,7 +138,7 @@ export default {
             })
         },
         delData(row) {
-            Menu.delData(row.id).then(() => {
+            Menu.delData(row).then(() => {
                 this.getMenu()
             })
         },
@@ -153,7 +153,7 @@ export default {
         },
         getMenu() {
             Profile.getMenu().then(res => {
-                this.realData = res.data
+                this.tableData = res.data
             })
         }
     },

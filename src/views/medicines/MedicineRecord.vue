@@ -1,17 +1,17 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item v-if="userId === 'admin'" label='用户' prop='userId'>
-                <el-input v-model='pageData.cond.userId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.userId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='Medicine' prop='medicineId'>
-                <el-input v-model='pageData.cond.medicineId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.medicineId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='类型' prop='type'>
-                <time-type :type.sync='pageData.cond.type' :success='searchData' />
+                <time-type :type.sync='pageData.filter.eq.type' :success='searchData' />
             </el-form-item>
             <el-form-item label='日期' prop='date'>
-                <el-date-picker v-model='pageData.cond.date' type='date' value-format='yyyy-MM-dd'
+                <el-date-picker v-model='pageData.filter.eq.date' type='date' value-format='yyyy-MM-dd'
                                 @change='searchData'></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -31,7 +31,7 @@
                 <fo-drop-collection table='MedicineRecord' :success='getByPage' />
             </el-form-item>
         </el-form>
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column align='center' type='selection' width='40'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
@@ -130,7 +130,8 @@
                 <el-row>
                     <el-col :span='12'>
                         <el-form-item label='用户'>
-                            <fo-user-option :option='eatForm.userId' :disabled="userId !== 'admin'"></fo-user-option>
+                            <fo-user-option :option.sync='eatForm.userId'
+                                            :disabled="userId !== 'admin'"></fo-user-option>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12'>
@@ -188,7 +189,7 @@ export default {
             })
         },
         delData(row) {
-            MedicineRecord.delData(row.id).then(() => {
+            MedicineRecord.delData(row).then(() => {
                 this.getByPage()
             })
         },
@@ -205,22 +206,15 @@ export default {
                 this.$message.success('批量删除[' + this.selectionData.length + ']个')
             })
         },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.type + '）'
-        },
         modData() {
-            this.update(this.formData)
-        },
-        update(data) {
-            MedicineRecord.modData(data).then(() => {
+            MedicineRecord.modData(this.formData).then(() => {
                 this.getByPage()
             })
         },
         getByPage() {
             MedicineRecord.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
             })
         },
         getByMedicineId() {
@@ -228,26 +222,6 @@ export default {
                 medicineId: this.medicineId
             }
             this.searchData()
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.pageData.cond = {}
-            this.searchData()
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
         },
         eatDialog() {
             this.eatForm = {

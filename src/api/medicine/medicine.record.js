@@ -4,27 +4,21 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/medicine/records',
+            url: '/medicine/records/add',
             data: data
         })
     },
-    delData(id) {
-        return axios({
-            method: 'delete',
-            url: '/medicine/records/' + id
-        })
-    },
-    batchDel(data) {
+    delData(data) {
         return axios({
             method: 'post',
-            url: '/medicine/records/delete',
+            url: '/medicine/records/del',
             data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/medicine/records',
+            method: 'post',
+            url: '/medicine/records/mod',
             data: data
         })
     },
@@ -39,6 +33,13 @@ export default {
         return axios({
             method: 'delete',
             url: '/medicine/records/drop'
+        })
+    },
+    batchDel(data) {
+        return axios({
+            method: 'post',
+            url: '/medicine/records/delete',
+            data: data
         })
     }
 }

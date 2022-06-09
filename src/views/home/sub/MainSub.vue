@@ -24,7 +24,7 @@ import Stats from '@/api/system/stats'
 export default {
     data() {
         return {
-            realData: [],
+            tableData: [],
             tenantSizes: [],
             sizes: [],
             tenantFiles: [],
@@ -38,12 +38,12 @@ export default {
     methods: {
         getData() {
             Stats.getTotal(this.limit).then(res => {
-                this.realData = res.data;
+                this.tableData = res.data;
 
-                this.tenantSizes = this.realData.tenantSizes;
-                this.sizes = this.realData.sizes;
-                this.tenantFiles = this.realData.tenantFiles;
-                this.files = this.realData.files;
+                this.tenantSizes = this.tableData.tenantSizes;
+                this.sizes = this.tableData.sizes;
+                this.tenantFiles = this.tableData.tenantFiles;
+                this.files = this.tableData.files;
                 this.drawBar();
                 this.drawPie()
             });

@@ -1,6 +1,6 @@
 <template>
     <frame-space>
-        <el-table :data='realData' border stripe>
+        <el-table :data='tableData' border stripe>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column align='center' label='年份' property='year' width='100'></el-table-column>
             <el-table-column align='center' label='月份' property='month' width='100'></el-table-column>
@@ -41,44 +41,21 @@ import Stats from '@/api/system/stats'
 
 export default {
     mixins: [pageMixin],
-    data() {
-        return {
-            formData: {
-                name: ''
-            }
-        }
-    },
     methods: {
         delData(row) {
-            Stats.delData(row.id).then(() => {
+            Stats.delData(row).then(() => {
                 this.getData()
-                this.$message.success('删除' + row.title + '成功')
-            }).catch(() => {
-                this.$message.error('删除' + row.title + '失败')
             })
         },
         getData() {
             Stats.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
                 // 修改文件大小显示方式
-                this.realData.forEach(function(item, index, arr) {
+                this.tableData.forEach(function(item, index, arr) {
                     arr[index].totalSizeShow = Utils.byteSwitch(item.totalSize)
                 })
-            }).catch(() => {
-                this.$message.error('查询失败')
             })
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getData()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getData()
         }
     },
     mounted() {

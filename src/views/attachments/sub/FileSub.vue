@@ -1,17 +1,17 @@
 <template>
     <div>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='文件ID' prop='id'>
-                <el-input v-model='pageData.filters.id' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.id' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='名称' prop='name'>
-                <el-input v-model='pageData.filters.name' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='租户' prop='tenantId'>
-                <el-input v-model='pageData.filters.tenantId' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.tenantId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='是否完成' prop='completed'>
-                <el-select v-model='pageData.filters.completed' placeholder='请选择'>
+                <el-select v-model='pageData.filter.eq.completed' @change='searchData'>
                     <el-option label='是' :value=true></el-option>
                     <el-option label='否' :value=false></el-option>
                 </el-select>
@@ -35,10 +35,7 @@
                 <el-button icon='el-icon-upload2' size='small' style='margin-left: 10px'>上传</el-button>
             </fo-file-upload>
 
-            <el-button icon='el-icon-upload2' size='small' style='margin-left: 10px;' @click='batchUpload'>批量上传
-            </el-button>
-            <fo-file-upload-multi :directoryId='directoryId' :success='searchData'
-                                  :batchVisible.sync='batchUploadVisible' />
+            <fo-file-upload-multi :directoryId='directoryId' :success='searchData' />
 
             <fo-file-download-multi :fileIds='selectionIds' :success='searchData' />
 
@@ -54,36 +51,36 @@
 
             <fo-drop-collection table='FileInfo' :success='getByPage' />
         </el-row>
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'
                   @cell-dblclick='dblClick'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
-            <el-table-column label='文件ID' property='id' width='180'>
+            <el-table-column label='文件ID' property='id' width='160'>
                 <template v-slot='scope'>
-                    <a :href='`${baseUri}/file/preview/${scope.row.id}`'
+                    <a :href='`${baseUri}/file/preview?fileId=${scope.row.id}`'
                        target='_blank'>{{ scope.row.id }}</a>
                 </template>
             </el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>
-            <el-table-column label='显示名称' property='displayName' width='200'></el-table-column>
             <el-table-column label='标签' property='tag' width='160'></el-table-column>
             <el-table-column label='大小' property='sizeShow' width='100'></el-table-column>
-            <el-table-column label='后缀名' property='extension' width='80'></el-table-column>
-            <el-table-column label='扩展名' property='contentType' width='200'></el-table-column>
+            <el-table-column label='宽' property='width' width='100'></el-table-column>
+            <el-table-column label='高' property='height' width='100'></el-table-column>
+            <el-table-column label='后缀名' property='suffix' width='80'></el-table-column>
+            <el-table-column label='扩展名' property='mediaType' width='200'></el-table-column>
             <el-table-column align='center' label='完成' width='60'>
                 <template v-slot='scope'>
                     <el-checkbox v-model='scope.row.completed'
                                  @change='checked=>completed(checked, scope.row)'></el-checkbox>
                 </template>
             </el-table-column>
-            <el-table-column align='center' label='过期时间' property='expireDate' width='160'></el-table-column>
-            <el-table-column label='目录ID' property='directoryId' width='180'></el-table-column>
-            <el-table-column label='FileId' property='fileId' width='220'></el-table-column>
+            <el-table-column label='目录ID' property='directoryId' width='160'></el-table-column>
+            <el-table-column label='FileId' property='fileId' width='230'></el-table-column>
+            <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
             <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
             <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
-            <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
 
             <el-table-column align='center' fixed='left' label='操作' width='50'>
                 <template v-slot='scope'>
@@ -126,21 +123,8 @@
             <el-form ref='form' :model='formData' label-width='80px'>
                 <el-row>
                     <el-col :span='12'>
-                        <el-form-item label='原始名称'>
-                            <el-input v-model='formData.name' disabled></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='12'>
-                        <el-form-item label='显示名称'>
-                            <el-input v-model='formData.displayName'></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span='12'>
-                        <el-form-item label='过期时间'>
-                            <el-date-picker v-model='formData.expireDate' placeholder='选择日期时间' type='datetime'>
-                            </el-date-picker>
+                        <el-form-item label='名称'>
+                            <el-input v-model='formData.name'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12'>
@@ -150,12 +134,12 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='6'>
+                    <el-col :span='8'>
                         <el-form-item label='租户'>
-                            <el-input v-model='formData.tenantId'></el-input>
+                            <fo-tenant-option :option.sync='formData.tenantId' />
                         </el-form-item>
                     </el-col>
-                    <el-col :span='18'>
+                    <el-col :span='16'>
                         <el-form-item label='标签'>
                             <el-tag :key='tag' v-for='tag in dynamicTags'
                                     closable :disable-transitions='false'
@@ -196,13 +180,7 @@ export default {
     props: ['directoryId'],
     data() {
         return {
-            formData: {
-                name: '',
-                displayName: '',
-                expireDate: null
-            },
             dialogUpload: false,
-            batchUploadVisible: false,
             dynamicTags: [],
             tagInputVisible: false,
             tagInputValue: ''
@@ -234,7 +212,6 @@ export default {
                 this.dynamicTags = []
             }
             this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.name + '）'
         },
         modData() {
             if (this.dynamicTags.length > 0) {
@@ -245,72 +222,36 @@ export default {
             this.formData.expireDate = Utils.dateToStr(this.formData.expireDate)
             FileInfo.modData(this.formData).then(() => {
                 this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
         },
         completed(checked, data) {
-            FileInfo.completed(data.id, checked).then(() => {
-                this.getByPage()
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
+            FileInfo.modData(data).then(() => {
                 this.getByPage()
             })
         },
         getByPage() {
             FileInfo.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
                 // 修改文件大小显示方式
-                this.realData.forEach(function(item, index, arr) {
+                this.tableData.forEach(function(item, index, arr) {
                     arr[index].sizeShow = Utils.byteSwitch(item.size)
                     arr[index].complete = !item.completed
                 })
-            }).catch((err) => {
-                this.$message.error(err.response.data.message)
             })
         },
         getByDirectoryId() {
-            this.pageData.filters.directoryId = this.directoryId
+            this.pageData.filter.eq.directoryId = this.directoryId
             this.searchData()
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.searchData()
-            this.pageData.filters = {}
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
-        },
-        batchUpload() {
-            this.batchUploadVisible = true
         },
         delFileForce(row) {
             File.delFileForce(row.id).then(() => {
                 this.getByPage()
-                this.$message.success('删除' + row.name + '成功')
-            }).catch(() => {
-                this.$message.error('删除' + row.name + '失败')
             })
         },
         delFile(row) {
             File.delFile(row.id).then(() => {
                 this.getByPage()
-                this.$message.success('移' + row.name + '进回收站成功')
-            }).catch(() => {
-                this.$message.error('移' + row.name + '进回收站失败')
             })
         },
         getFileInfo(file) {
@@ -325,14 +266,8 @@ export default {
                 this.$message.error('请选择要操作的文件!')
                 return
             }
-            let body = {
-                fileIds: this.selectionIds()
-            }
-            File.batchDelFileForce(body).then(() => {
+            File.delFileForce(null, this.selectionIds()).then(() => {
                 this.searchData()
-                this.$message.success('批量删除[' + this.selectionData.length + ']个文件成功')
-            }).catch(() => {
-                this.$message.error('批量删除' + this.selectionData.length + '个文件失败')
             })
         },
         batchDelFile() {
@@ -340,14 +275,9 @@ export default {
                 this.$message.error('请选择要操作的文件!')
                 return
             }
-            let body = {
-                fileIds: this.selectionIds()
-            }
-            File.batchDelFile(body).then(() => {
+            File.delFile(null, this.selectionIds()).then(() => {
                 this.searchData()
                 this.$message.success('批量删除[' + this.selectionData.length + ']个文件到回收站成功')
-            }).catch(() => {
-                this.$message.error('批量删除' + this.selectionData.length + '个文件到回收站失败')
             })
         },
         dblClick(row, column) {

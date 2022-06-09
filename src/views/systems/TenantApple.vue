@@ -1,17 +1,17 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='租户ID' prop='code'>
-                <el-input v-model='pageData.cond.$code' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.code' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='租户名' prop='name'>
-                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='手机' prop='telephone'>
-                <el-input v-model='pageData.cond.$telephone' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.telephone' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='所有者' prop='owner'>
-                <el-input v-model='pageData.cond.owner' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.eq.owner' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -21,7 +21,7 @@
         <el-button icon='el-icon-plus' size='small' type='success' @click='opDialog("add")'>新增</el-button>
         <fo-data-infrastructure table='Tenant' :success='getByPage' />
         <fo-drop-collection table='Tenant' :success='getByPage' />
-        <el-table :data='realData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
@@ -102,17 +102,6 @@ import User from '@/api/system/user'
 
 export default {
     mixins: [pageMixin],
-    data() {
-        return {
-            formData: {
-                code: '',
-                name: '',
-                telephone: '',
-                email: '',
-                owner: ''
-            }
-        }
-    },
     methods: {
         addData() {
             Tenant.addData(this.formData).then(() => {
@@ -120,13 +109,9 @@ export default {
             })
         },
         delData(row) {
-            Tenant.delData(row.id).then(() => {
+            Tenant.delData(row).then(() => {
                 this.getByPage()
             })
-        },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.name + '）'
         },
         modData() {
             Tenant.modData(this.formData).then(() => {
@@ -136,40 +121,8 @@ export default {
         getByPage() {
             Tenant.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
             })
-        },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.pageData.cond.likes = [
-                {
-                    key: 'code',
-                    value: this.pageData.cond.$code
-                }, {
-                    key: 'name',
-                    value: this.pageData.cond.$name
-                }, {
-                    key: 'telephone',
-                    value: this.pageData.cond.$telephone
-                }
-            ]
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.pageData.cond = {}
-            this.searchData()
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
         },
         getUsers() {
             User.getOptionGroups().then(res => {

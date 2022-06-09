@@ -5,16 +5,17 @@ export default {
     props: {
         batchVisible: {
             type: Boolean,
-            default: false,
+            default: false
         },
         directoryId: {
             type: String,
-            required: true,
+            required: true
         },
         success: {
             type: Function,
-            default: () => {},
-        },
+            default: () => {
+            }
+        }
     },
     data() {
         return {
@@ -26,16 +27,16 @@ export default {
             batchUploadTitle: '批量上传',
             batchUploadVisible: false,
             progressVisible: false,
-            fileList: [],
+            fileList: []
         }
     },
     computed: {
-        ...mapState(['baseUri', 'bucket']),
+        ...mapState(['baseUri', 'bucket'])
     },
     watch: {
-        batchVisible: function (val) {
+        batchVisible: function(val) {
             this.batchUploadVisible = val
-        },
+        }
     },
     methods: {
         uploadByStream(file) {
@@ -59,18 +60,18 @@ export default {
             this.name = file.name
             this.uploadVisible = true
             FileUpload.uploadByForm(file, (progress) => this.progressBar(progress), this.directoryId)
-                .then(() => {
-                    this.percentage = 0
-                    this.uploadVisible = false
-                    this.$message.success('文件' + this.name + '上传成功')
-                    this.success()
-                    // this.$emit('success')
-                })
-                .catch(() => {
-                    this.uploadVisible = false
-                    this.$message.error('文件' + this.name + '上传失败')
-                    this.$emit('fail')
-                })
+            .then(() => {
+                this.percentage = 0
+                this.uploadVisible = false
+                this.$message.success('文件' + this.name + '上传成功')
+                this.success()
+                // this.$emit('success')
+            })
+            .catch(() => {
+                this.uploadVisible = false
+                this.$message.error('文件' + this.name + '上传失败')
+                this.$emit('fail')
+            })
         },
         progressBar(progress) {
             this.percentage = Number(((progress.loaded / progress.total) * 100).toFixed(2))
@@ -89,7 +90,7 @@ export default {
             }
             this.fileList = fileList
 
-            let totalSize = this.fileList.reduce(function (prev, curr) {
+            let totalSize = this.fileList.reduce(function(prev, curr) {
                 return prev + curr.size
             }, 0)
             const isLt1GB = totalSize / 1024 / 1024 / 1024 < 1
@@ -105,24 +106,28 @@ export default {
             )
         },
         batchUpload() {
+            if (this.fileList.length === 0) {
+                this.$message.warning('请先选择文件')
+                return
+            }
             this.progressVisible = true
             FileUpload.batchUpload(this.fileList, (progress) => this.progressBar(progress), this.directoryId)
-                .then(() => {
-                    this.progressPercent = 0
-                    this.fileList = []
-                    this.progressVisible = false
-                    this.batchUploadVisible = false
-                    this.$message.success('批量上传成功')
-                    this.success()
-                })
-                .catch(() => {
-                    this.progressPercent = 0
-                    this.fileList = []
-                    this.progressVisible = false
-                    this.batchUploadVisible = false
-                    this.$message.error('批量上传失败')
-                    this.$emit('fail')
-                })
-        },
-    },
+            .then(() => {
+                this.progressPercent = 0
+                this.fileList = []
+                this.progressVisible = false
+                this.batchUploadVisible = false
+                this.$message.success('批量上传成功')
+                this.success()
+            })
+            .catch(() => {
+                this.progressPercent = 0
+                this.fileList = []
+                this.progressVisible = false
+                this.batchUploadVisible = false
+                this.$message.error('批量上传失败')
+                this.$emit('fail')
+            })
+        }
+    }
 }

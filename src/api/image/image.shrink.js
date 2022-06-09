@@ -1,34 +1,25 @@
 import axios from '@/config/http'
 
 export default {
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/shrink/' + id,
+            method: 'post',
+            url: '/shrink/del',
+            data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/shrink/search',
-            data: data,
+            data: data
         })
     },
-    getImageByPage(data) {
+    shrinkImage(data) {
         return axios({
             method: 'post',
-            url: '/image/search',
-            data: data,
+            url: '/file/images/shrink',
+            data: data
         })
-    },
-    shrinkImage(shrink) {
-        return axios({
-            method: 'get',
-            url: '/buckets/images/' + shrink.fileId,
-            params: {
-                width: shrink.width,
-                height: shrink.height,
-            },
-        })
-    },
+    }
 }

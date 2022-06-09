@@ -1,18 +1,17 @@
 <template>
     <frame-space>
         <el-row :gutter='20'>
-            <el-button icon='el-icon-folder-add' size='small' style='margin-left: 10px;'
-                       @click='addDirDialog'>新建文件夹
+            <el-button icon='el-icon-folder-add' size='small' style='margin-left: 10px;' @click='addDirDialog'>
+                新建文件夹
             </el-button>
 
             <fo-file-upload :directoryId='directoryId' :success='uploadSuccess'>
                 <el-button icon='el-icon-upload2' size='small' style='margin-left: 10px'>上传</el-button>
             </fo-file-upload>
 
-            <el-button icon='el-icon-upload2' size='small' style='margin-left: 10px;' @click='batchUpload'>批量上传
-            </el-button>
-            <fo-file-upload-multi :directoryId='directoryId' :success='uploadSuccess'
-                                  :batchVisible.sync='batchUploadVisible' />
+            <fo-file-upload-multi :directoryId='directoryId' :success='uploadSuccess' />
+
+            <fo-file-upload-drag :directoryId='directoryId' :success='uploadSuccess' />
         </el-row>
         <el-card shadow='hover'>
             <div slot='header' class='clearfix'>
@@ -28,7 +27,7 @@
                 <span style='font-size: 14px;'>{{ dirSize }} 个文件夹，{{ fileSize }} 个文件</span>
                 <i class='el-icon-refresh' style='font-size: 14px; float: right' @click='getDirInfo(directoryId)'></i>
             </div>
-            <el-table :data='realData' show-header='false' highlight-current-row @cell-click='clickFile'>
+            <el-table :data='tableData' show-header='false' highlight-current-row @cell-click='clickFile'>
                 <el-table-column label='文件名称' property='name'>
                     <template v-slot='scope'>
                         <span></span>
@@ -51,11 +50,10 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label='过期时间' property='expireDate' width='180'></el-table-column>
-                <el-table-column label='大小' property='size' width='100'></el-table-column>
-                <el-table-column label='修改人' property='modifyById' width='140'></el-table-column>
-                <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-                <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
+                <el-table-column label='修改人' property='modifyById' width='120'></el-table-column>
+                <el-table-column label='修改时间' property='modifyDate' width='160'></el-table-column>
+                <el-table-column label='类型' property='mediaType' width='200' show-overflow-tooltip></el-table-column>
+                <el-table-column align='right' label='大小' property='size' width='120'></el-table-column>
             </el-table>
         </el-card>
 
@@ -63,9 +61,6 @@
             <el-form ref='form' :model='formData' label-width='60px'>
                 <el-form-item label='名称'>
                     <el-input v-model='formData.name'></el-input>
-                </el-form-item>
-                <el-form-item label='描述'>
-                    <el-input v-model='formData.displayName'></el-input>
                 </el-form-item>
                 <el-form-item label='父ID'>
                     <el-input v-model='formData.parentId' disabled></el-input>
@@ -83,7 +78,7 @@
                         <el-col :span='20'>
                             <el-input v-model='fileData.name'></el-input>
                         </el-col>
-                        <el-col :span='4'><span>.{{ fileData.extension }}</span></el-col>
+                        <el-col :span='4'><span>.{{ fileData.suffix }}</span></el-col>
                     </el-row>
                 </el-form-item>
             </el-form>
@@ -118,30 +113,25 @@ export default {
 
             fileData: {},
             modFileTitle: '重命名',
-            modFileVisible: false,
-
-            batchUploadVisible: false
+            modFileVisible: false
         }
     },
     methods: {
         modDialog(row) {
             let len = row.name.lastIndexOf('.')
+            console.log(row)
             this.fileData = {
                 fileId: row.id,
                 name: row.name.slice(0, len),
-                extension: row.extension
+                suffix: row.suffix
             }
             this.modFileVisible = true
         },
         changeName() {
-            let fileName = this.fileData.name + '.' + this.fileData.extension
+            let fileName = this.fileData.name + '.' + this.fileData.suffix
             FileInfo.changeName(this.fileData.fileId, fileName)
             .then(() => {
                 this.getDirInfo(this.directoryId)
-                this.$message.success('修改' + this.fileData.name + '成功')
-            })
-            .catch(() => {
-                this.$message.error('修改' + this.fileData.name + '失败')
             })
             this.modFileVisible = false
         },
@@ -149,19 +139,10 @@ export default {
             if (row.type === 'File') {
                 File.delFile(row.id).then(() => {
                     this.getDirInfo(this.directoryId)
-                    this.$message.success('移' + row.name + '进回收站成功')
-                }).catch(() => {
-                    this.$message.error('移' + row.name + '进回收站失败')
                 })
             } else {
-                let body = {
-                    dirId: row.id
-                }
-                File.batchDelFile(body).then(() => {
+                File.delDir(row.id).then(() => {
                     this.getDirInfo(this.directoryId)
-                    this.$message.success('删除' + row.name + '成功')
-                }).catch(() => {
-                    this.$message.error('删除' + row.name + '失败')
                 })
             }
         },
@@ -181,9 +162,6 @@ export default {
         },
         uploadSuccess() {
             this.getDirInfo(this.directoryId)
-        },
-        batchUpload() {
-            this.batchUploadVisible = true
         },
         clickFile(row, column) {
             if (column.property === 'name') {
@@ -212,37 +190,34 @@ export default {
             }
         },
         getDirInfo(dirId) {
-            this.realData = []
+            this.tableData = []
             DirInfo.getDirInfo(dirId).then(res => {
                 let files = res.data.files
                 let dirs = res.data.dirs
                 this.fileSize = files.length
                 this.dirSize = dirs.length
-                this.realData.push.apply(this.realData, dirs.map(v => ({
+                this.tableData.push.apply(this.tableData, dirs.map(v => ({
                     type: 'Directory',
                     id: v.id,
                     name: v.name,
-                    displayName: v.displayName,
                     size: 0,
+                    mediaType: '',
                     createDate: v.createDate,
                     createById: v.createById,
                     modifyDate: v.modifyDate,
-                    modifyById: v.modifyById,
-                    tenantId: v.tenantId
+                    modifyById: v.modifyById
                 })))
-                this.realData.push.apply(this.realData, files.map(v => ({
+                this.tableData.push.apply(this.tableData, files.map(v => ({
                     type: 'File',
                     id: v.id,
                     name: v.name,
-                    displayName: v.displayName,
-                    extension: v.extension,
-                    expireDate: v.expireDate,
                     size: Utils.byteSwitch(v.size),
+                    suffix: v.suffix,
+                    mediaType: v.mediaType,
                     createDate: v.createDate,
                     createById: v.createById,
                     modifyDate: v.modifyDate,
-                    modifyById: v.modifyById,
-                    tenantId: v.tenantId
+                    modifyById: v.modifyById
                 })))
             }).catch(() => {
                 this.$message.success('查询分享记录失败')

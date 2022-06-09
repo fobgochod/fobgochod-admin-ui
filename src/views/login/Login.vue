@@ -4,7 +4,7 @@
             <img alt='Vue logo' src='../../assets/logo.png'>
         </div>
         <div id='form_space'>
-            <div align='center'>
+            <div style='text-align: center; min-height: 20px'>
                 <h1>{{ loginTitle }}</h1>
                 <p>{{ loginSubTitle }}</p>
             </div>
@@ -44,11 +44,11 @@ export default {
         let remember = localStorage.getItem('remember')
 
         return {
-            loginTitle: 'fobgochod',
+            loginTitle: '',
             loginSubTitle: '',
             loginForm: {
-                username: username == null ? null : Secret.decrypt(username),
-                password: password == null ? null : Secret.decrypt(password),
+                username: username == null ? null : Secret.rsaDec(username),
+                password: password == null ? null : Secret.rsaDec(password),
                 telephone: '',
                 captcha: '',
                 loginType: 'token'
@@ -66,15 +66,16 @@ export default {
     methods: {
         ...mapMutations(['setEnv', 'setUserId', 'setUserName', 'setTenantId', 'setUserToken']),
         login() {
-            let password = Secret.encrypt(this.loginForm.password)
-            this.loginForm.password = Secret.encode(this.loginForm.password)
+            let password = Secret.rsaEnc(this.loginForm.password)
+            this.loginForm.password = Secret.aesEnc(this.loginForm.password)
             Login.login(this.loginForm)
             .then((res) => {
                 this.setUserToken(res.data.token)
-                this.setUserId(res.data.username)
+                this.setUserId(res.data.userId)
+                this.setUserName(res.data.userName)
                 this.setTenantId(res.data.tenantId)
                 if (this.remember) {
-                    localStorage.setItem('username', Secret.encrypt(this.loginForm.username))
+                    localStorage.setItem('username', Secret.rsaEnc(this.loginForm.username))
                     localStorage.setItem('password', password)
                     localStorage.setItem('remember', this.remember)
                 } else {
@@ -82,7 +83,7 @@ export default {
                     localStorage.removeItem('password')
                     localStorage.removeItem('remember')
                 }
-                this.loginOk()
+                this.$router.push('/home')
             })
         },
         loginSms() {
@@ -90,17 +91,11 @@ export default {
             Login.login(this.loginForm)
             .then((res) => {
                 this.setUserToken(res.data.token)
-                this.setUserId(res.data.username)
-                this.loginOk()
+                this.setUserId(res.data.userId)
+                this.setUserName(res.data.userName)
+                this.setTenantId(res.data.tenantId)
+                this.$router.push('/home')
             })
-        },
-        async loginOk() {
-            const resRole = await Login.getRole(this.loginForm.username)
-            sessionStorage.setItem('loginMark', 'login')
-            sessionStorage.setItem('loginRole', resRole.data.role)
-            this.setUserName(resRole.data.name)
-
-            await this.$router.push('/home')
         },
         sendSms() {
             Login.sendSms(this.loginForm.telephone)

@@ -45,10 +45,9 @@ function dataToTree(data) {
         if (data[i].parentId === '0') {
             tree.push({
                 id: data[i].id,
-                label: data[i].name,
+                name: data[i].name,
                 parentId: data[i].parentId,
                 children: [],
-                readData: data[i],
             })
             pos[data[i].id] = [tree.length - 1]
             data.splice(i, 1)
@@ -62,10 +61,9 @@ function dataToTree(data) {
                 }
                 obj.children.push({
                     id: data[i].id,
-                    label: data[i].name,
+                    name: data[i].name,
                     parentId: data[i].parentId,
                     children: [],
-                    readData: data[i],
                 })
                 pos[data[i].id] = posArr.concat([obj.children.length - 1])
                 data.splice(i, 1)
@@ -80,8 +78,8 @@ function dataToTree(data) {
     let top = []
     top.push({
         id: '0',
-        label: '虚拟根目录(Root)',
-        parentId: '0',
+        name: '根目录(/)',
+        parentId: '-1',
         children: tree,
     })
     return top

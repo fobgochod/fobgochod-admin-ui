@@ -13,21 +13,15 @@ export default {
             tenantId: tenantId
         })
     },
-    getRole(username) {
-        return axios({
-            method: 'get',
-            url: '/users/name/' + username
-        })
-    },
-    getByOwner() {
-        return axios({
-            method: 'get',
-            url: '/buckets/option'
-        })
-    },
     sendSms(telephone) {
         return axios.post('/login/captcha', {
             telephone: telephone
+        })
+    },
+
+    getSecurityKey(publicKey) {
+        return axios.post('/login/security', {
+            publicKey: publicKey
         })
     }
 }

@@ -1,35 +1,30 @@
 import axios from '@/config/http'
 
 export default {
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/stats/' + id,
+            method: 'post',
+            url: '/stats/del',
+            data: data
         })
     },
     getByPage(data) {
         return axios({
             method: 'post',
             url: '/stats/search',
-            data: data,
+            data: data
         })
     },
     getCount() {
         return axios({
             method: 'get',
-            url: '/stats/count',
+            url: '/stats/count'
         })
     },
     getTotal(limit) {
         return axios({
             method: 'get',
-            url: '/stats/total?limit=' + limit,
-        })
-    },
-    getIncrement(prev, next) {
-        return axios({
-            method: 'get',
-            url: '/stats/increment/' + prev + '/' + next,
+            url: '/stats/total?limit=' + limit
         })
     },
 }

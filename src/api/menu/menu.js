@@ -4,20 +4,21 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/menus',
+            url: '/menus/add',
             data: data
         })
     },
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/menus/' + id
+            method: 'post',
+            url: '/menus/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/menus',
+            method: 'post',
+            url: '/menus/mod',
             data: data
         })
     },

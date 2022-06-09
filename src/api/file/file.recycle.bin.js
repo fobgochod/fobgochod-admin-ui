@@ -5,32 +5,33 @@ export default {
         return axios({
             method: 'post',
             url: '/recycle/search',
-            data: data,
+            data: data
         })
     },
-    delData(recycleId) {
-        return axios({
-            method: 'delete',
-            url: '/file/recycle/delete/' + recycleId,
-        })
-    },
-    emptyData() {
-        return axios({
-            method: 'delete',
-            url: '/file/recycle/clear',
-        })
-    },
-    restore(recycleId) {
+    deleteBin(id, recycleIds) {
         return axios({
             method: 'post',
-            url: '/file/recycle/restore/' + recycleId,
+            url: '/file/recycle/delete',
+            data: {
+                id: id,
+                recycleIds: recycleIds
+            }
         })
     },
-    batchRestore(data) {
+    restoreBin(id, recycleIds) {
         return axios({
             method: 'post',
             url: '/file/recycle/restore',
-            data: data,
+            data: {
+                id: id,
+                recycleIds: recycleIds
+            }
         })
     },
+    emptyBin() {
+        return axios({
+            method: 'post',
+            url: '/file/recycle/clear'
+        })
+    }
 }

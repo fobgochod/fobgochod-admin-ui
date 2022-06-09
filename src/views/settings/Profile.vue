@@ -102,9 +102,16 @@ export default {
     methods: {
         ...mapMutations(['setUserName']),
         getData() {
-            User.getByName(this.userId).then((res) => {
-                this.formData = res.data
-                this.dynamicTags = res.data.contacts
+            let body = {
+                filter: {
+                    eq: {
+                        code: this.userId
+                    }
+                }
+            }
+            User.getByPage(body).then((res)=>{
+                this.formData = res.data.list[0]
+                this.dynamicTags = this.formData.contacts
             })
         },
         onSubmit() {

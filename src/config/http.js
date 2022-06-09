@@ -7,7 +7,7 @@ axios.defaults.baseURL = process.env.VUE_APP_ADMIN_API
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 
 let whiteList = ['/redis', '/mariadb', '/websocket', '/login']
-let encryptList = ['/users', '/users/search']
+let encryptList = ['/users/add', '/users/mod', '/users/get', '/users/search']
 
 axios.interceptors.request.use(
     (config) => {
@@ -20,7 +20,7 @@ axios.interceptors.request.use(
 
         if (encryptList.indexOf(config.url) > -1) {
             config.headers['Content-Type'] = 'application/json;charset=utf-8'
-            config.data = Secret.encrypt(JSON.stringify(config.data))
+            config.data = Secret.aesEnc(JSON.stringify(config.data))
         }
         return config
     },
@@ -32,7 +32,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     (response) => {
         if (encryptList.indexOf(response.config.url) > -1) {
-            response.data = JSON.parse(Secret.decrypt(response.data))
+            response.data = JSON.parse(Secret.aesDec(response.data))
         }
         return response
     },

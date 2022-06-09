@@ -4,27 +4,31 @@ export default {
     addData(data) {
         return axios({
             method: 'post',
-            url: '/roles',
+            url: '/roles/add',
             data: data
         })
     },
-    delData(id) {
+    delData(data) {
         return axios({
-            method: 'delete',
-            url: '/roles/' + id
+            method: 'post',
+            url: '/roles/del',
+            data: data
         })
     },
     modData(data) {
         return axios({
-            method: 'put',
-            url: '/roles',
+            method: 'post',
+            url: '/roles/mod',
             data: data
         })
     },
     getById(id) {
         return axios({
-            method: 'get',
-            url: '/roles/' + id
+            method: 'post',
+            url: '/roles/get',
+            data: {
+                id: id
+            }
         })
     },
     getByPage(data) {

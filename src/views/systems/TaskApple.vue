@@ -1,11 +1,11 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.cond' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='编号' prop='code'>
-                <el-input v-model='pageData.cond.$code' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.code' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='标题' prop='name'>
-                <el-input v-model='pageData.cond.$name' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -22,7 +22,7 @@
         <fo-data-infrastructure table='Task' :success='getByPage' />
         <fo-drop-collection table='Task' :success='getByPage' />
 
-        <el-table :data='realData' border max-height='560' stripe @selection-change='selection'>
+        <el-table :data='tableData' border max-height='560' stripe @selection-change='selection'>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='编号' property='code' width='100'></el-table-column>
             <el-table-column label='标题' property='name' width='200'></el-table-column>
@@ -117,26 +117,10 @@
 
 <script>
 import pageMixin from '@/mixin/form.mixin'
-import {TASKS} from '@/assets/js/base.data'
 import Task from '@/api/system/task'
 
 export default {
     mixins: [pageMixin],
-    data() {
-        return {
-            formData: {
-                code: '',
-                name: '',
-                type: '',
-                cron: '',
-                className: '',
-                disable: false,
-                remark: '',
-                hash: 0
-            },
-            cronPopover: false
-        }
-    },
     methods: {
         addData() {
             Task.addData(this.formData).then(() => {
@@ -144,13 +128,9 @@ export default {
             })
         },
         delData(row) {
-            Task.delData(row.id).then(() => {
+            Task.delData(row).then(() => {
                 this.getByPage()
             })
-        },
-        modDialog(row) {
-            this.formData = row
-            this.opDialogTitle = '修改（' + this.formData.name + '）'
         },
         modData() {
             this.update(this.formData)
@@ -164,57 +144,15 @@ export default {
             })
         },
         getByPage() {
-            this.pageData.orders = {code: 1}
             Task.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
+                this.tableData = res.data.list
             })
         },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.pageData.cond.likes = [
-                {
-                    key: 'code',
-                    value: this.pageData.cond.$code
-                }, {
-                    key: 'name',
-                    value: this.pageData.cond.$name
-                }
-            ]
-            this.getByPage()
-        },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.pageData.cond = {}
-            this.searchData()
-        },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
-        },
-
         run(row) {
             Task.doTask(row.id).then(() => {
                 this.$message.success('执行任务成功')
             })
-        },
-        initData() {
-            let count = 0
-            for (let task of TASKS) {
-                Task.addData(task).then(() => {
-                    count++
-                    if (count === 6) {
-                        this.getByPage()
-                    }
-                })
-            }
         },
         refreshTask() {
             Task.refreshTask().then(() => {

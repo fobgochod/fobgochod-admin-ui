@@ -22,15 +22,8 @@
                 <el-link :href='`${baseUri}`' target='_blank'><i class='el-icon-link'></i></el-link>
             </el-menu-item>
 
-            <el-menu-item index='7'>
+            <el-menu-item index='6'>
                 <head-color />
-            </el-menu-item>
-
-            <el-menu-item index='8' @click='fullScreen'>
-                <template slot='title'>
-                    <i :style='{color:head.head_icon_color}' class='el-icon-full-screen' />
-                    <span>全屏</span>
-                </template>
             </el-menu-item>
 
             <el-submenu index='9'>
@@ -46,11 +39,17 @@
                     <i class='el-icon-unlock'></i>
                     <span>修改密码</span>
                 </el-menu-item>
-                <el-menu-item index='9-3' @click="to('/')">
+                <el-menu-item index='9-3' @click='fullScreen'>
+                    <template slot='title'>
+                        <i :style='{color:head.head_icon_color}' class='el-icon-full-screen' />
+                        <span>全屏</span>
+                    </template>
+                </el-menu-item>
+                <el-menu-item index='9-4' @click="to('/')">
                     <i class='el-icon-switch-button'></i>
                     <span>退出</span>
                 </el-menu-item>
-                <el-menu-item index='9-4'>
+                <el-menu-item index='9-5'>
                     <head-about />
                 </el-menu-item>
             </el-submenu>
@@ -76,7 +75,7 @@ export default {
                 head_active_text_color: this.$cookies.get('setting').head_active_text_color
             },
             user: {
-                avatar: '/avatar.jpg'
+                avatar: '/avatar.png'
             },
             asideState: false,
             fullscreen: false,
@@ -84,11 +83,11 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'bucket', 'tenantId', 'userId', 'userName']),
+        ...mapState(['baseUri', 'tenantId', 'userId', 'userName']),
         ...mapGetters(['getLogin'])
     },
     methods: {
-        ...mapMutations(['setBucket', 'setUserName']),
+        ...mapMutations(['setUserName']),
         changeAsideState() {
             this.asideState = !this.asideState
             Pass.$emit('aside_state', this.asideState)

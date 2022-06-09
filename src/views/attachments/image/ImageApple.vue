@@ -1,11 +1,11 @@
 <template>
     <frame-space>
-        <el-form ref='formCondData' :inline='true' :model='pageData.filters' class='demo-form-inline' size='small'>
+        <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
             <el-form-item label='关键词' prop='fileName'>
-                <el-input v-model='pageData.filters.fileName' @change='searchData'></el-input>
+                <el-input v-model='pageData.filter.like.name' @change='searchData'></el-input>
             </el-form-item>
-            <el-form-item label='文件类型' prop='contentType'>
-                <el-input v-model='pageData.filters.contentType' @change='searchData'></el-input>
+            <el-form-item label='文件类型' prop='mediaType'>
+                <el-input v-model='pageData.filter.eq.mediaType' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -13,20 +13,19 @@
             </el-form-item>
         </el-form>
 
-        <el-button icon='el-icon-upload' size='small' type='primary' @click='dragUpload'>拖拽上传</el-button>
-        <fo-file-upload-drag :success='searchData' :batchVisible.sync='dragUploadVisible' />
-
+        <fo-file-upload-drag :success='searchData' />
 
         <div class='demo-image__error'>
-            <div class='block' v-for='image in realData' :key='image.uri'>
-                <el-image :src='image.uri' lazy :preview-src-list='[image.uri]' fit='fit'
+            <div class='block' v-for='image in tableData' :key='image.id'>
+                <el-image :src='image.url' lazy fit='fit'
+                          :preview-src-list='[image.url]'
                           style='width: 300px; height: 200px;'>
-                    <div slot='error' class='image-slot'>
-                        <i class='el-icon-picture-outline'></i>
+                    <div slot='error'>
+                        <div style='height: 200px' class='el-image__error'>当前文件不支持预览</div>
                     </div>
                 </el-image>
                 <span class='title'>
-                    <span>{{ image.fileName }}</span>
+                    <el-link :underline='false' @click='editDialog(image)'>{{ image.name }}</el-link>
                     <span style='float:right; margin-right: 10px'>
                          <el-dropdown>
                          <span class='el-dropdown-link'>
@@ -43,7 +42,7 @@
                                 删除
                             </el-dropdown-item>
 
-                            <el-dropdown-item icon='el-icon-delete' @click.native='editDialog(image)'>
+                            <el-dropdown-item icon='el-icon-edit' @click.native='editDialog(image)'>
                                 编辑
                             </el-dropdown-item>
                         </el-dropdown-menu>
@@ -93,39 +92,59 @@
         <el-drawer title='附件详情' :visible.sync='editDialogVisible' direction='rtl' size='30%'>
             <el-container style='height: 800px; border: 1px solid #eee'>
                 <el-header height='300px'>
-                    <el-image fit='fit' :src='formData.uri' style='width: 100%; height: 100%'>
+                    <el-image fit='fit' :src='formData.url' style='width: 100%; height: 100%'>
                     </el-image>
                 </el-header>
-                <el-main style='background-color: #E9EEF3;'>
+                <el-main>
                     <el-form ref='form' :model='formData' label-width='80px' label-position='top' size='medium'>
                         <el-form-item label='附件名'>
-                            <el-input v-model='formData.fileName'></el-input>
+                            <el-input v-model='formData.name' disabled>
+                                <el-button slot='append' icon='el-icon-edit' @click='changeNameDialog'></el-button>
+                            </el-input>
                         </el-form-item>
                         <el-form-item label='附件类型'>
-                            <el-input v-model='formData.contentType'></el-input>
+                            <el-input v-model='formData.mediaType' disabled />
                         </el-form-item>
                         <el-form-item label='附件大小'>
-                            <el-input v-model='formData.size'></el-input>
+                            <el-input v-model='formData.sizeShow' disabled />
                         </el-form-item>
                         <el-form-item label='图片尺寸'>
-                            <el-input v-model='formData.size'></el-input>
+                            <el-input v-model='formData.imageSize' disabled />
                         </el-form-item>
                         <el-form-item label='上传日期'>
-                            <el-input v-model='formData.createDate'></el-input>
+                            <el-input v-model='formData.createDate' disabled />
                         </el-form-item>
                         <el-form-item label='普通链接'>
-                            <el-input v-model='formData.createDate'></el-input>
+                            <el-input v-model='formData.url' disabled>
+                                <el-button slot='append' icon='el-icon-copy-document' @click='copyUrl'></el-button>
+                            </el-input>
                         </el-form-item>
                     </el-form>
                 </el-main>
                 <el-footer>
                     <div style='float: right;'>
-                        <el-button>取 消</el-button>
-                        <el-button type='danger'>确 定</el-button>
+                        <el-button @click='editDialogVisible=false' type='info'>关 闭</el-button>
                     </div>
                 </el-footer>
             </el-container>
         </el-drawer>
+
+        <el-dialog :title='modFileNameTitle' :visible.sync='modFileNameVisible' width='400px'>
+            <el-form ref='form' :model='formData'>
+                <el-form-item>
+                    <el-row :gutter='10'>
+                        <el-col :span='20'>
+                            <el-input v-model='fileName'></el-input>
+                        </el-col>
+                        <el-col :span='4'><span>.{{ formData.suffix }}</span></el-col>
+                    </el-row>
+                </el-form-item>
+            </el-form>
+            <div slot='footer' class='dialog-footer'>
+                <el-button @click='modFileNameVisible = false'>取 消</el-button>
+                <el-button type='primary' @click='changeName'>确 定</el-button>
+            </div>
+        </el-dialog>
     </frame-space>
 </template>
 
@@ -133,6 +152,9 @@
 import pageMixin from '@/mixin/form.mixin'
 import Shrink from '@/api/image/image.shrink'
 import File from '@/api/file/file'
+import FileInfo from '@/api/file/file.info'
+import {mapState} from 'vuex'
+import Utils from '@/assets/js/utils'
 
 export default {
     mixins: [pageMixin],
@@ -148,67 +170,86 @@ export default {
                 height: 0
             },
             editDialogVisible: false,
-            dragUploadVisible: false
+            dragUploadVisible: false,
+
+            fileName: {},
+            modFileNameTitle: '重命名',
+            modFileNameVisible: false
         }
     },
+    computed: mapState(['baseUri']),
     methods: {
         shrinkDialog(image) {
-            this.shrink.fileId = image.fileId
-            this.shrink.fileName = image.fileName
+            this.shrink = {
+                fileId: image.id,
+                fileName: image.name,
+                width: image.width,
+                height: image.height
+            }
             this.shrinkDialogVisible = true
         },
         shrinkFile() {
             Shrink.shrinkImage(this.shrink).then(() => {
                 this.getByPage()
-                this.$message.success('压缩图片' + this.shrink.fileName + '成功')
-            }).catch(() => {
-                this.$message.error('压缩图片' + this.shrink.fileName + '失败')
             })
+            this.shrink = {}
             this.shrinkDialogVisible = false
         },
         delFileForce(image) {
-            File.delFileForce(image.fileId).then(() => {
+            File.delFileForce(image.id).then(() => {
                 this.getByPage()
-                this.$message.success('删除图片' + image.fileName + '成功')
-            }).catch(() => {
-                this.$message.error('删除图片' + image.fileName + '失败')
             })
         },
         editDialog(image) {
             this.editDialogVisible = true
             this.formData = image
         },
+        modData() {
+            FileInfo.modData(this.formData).then(() => {
+                this.getByPage()
+            })
+            this.editDialogVisible = false
+        },
         dragUpload() {
             this.dragUploadVisible = true
         },
         getByPage() {
-            Shrink.getImageByPage(this.pageData).then(res => {
+            let that = this
+            FileInfo.getByPage(this.pageData).then(res => {
                 this.pageData.total = res.data.total
-                this.realData = res.data.list
-                this.$message.success('查询图片成功')
-            }).catch(() => {
-                this.$message.error('查询图片失败')
+                this.tableData = res.data.list
+
+                this.tableData.forEach(function(item, index, arr) {
+                    arr[index].sizeShow = Utils.byteSwitch(item.size)
+                    arr[index].imageSize = item.width + 'X' + item.height
+                    if (item.width > 0) {
+                        // 有宽度的就是图片
+                        arr[index].url = `${that.baseUri}/file/preview?fileId=${item.id}`
+                    }
+                })
             })
         },
-        searchData() {
-            this.pageData.pageNum = 1
-            this.getByPage()
+        changeNameDialog() {
+            let len = this.formData.name.lastIndexOf('.')
+            this.fileName = this.formData.name.slice(0, len)
+            this.modFileNameVisible = true
         },
-        clearData(formName) {
-            this.$refs[formName].resetFields()
-            this.searchData()
-            this.pageData.filters = {}
+        changeName() {
+            this.formData.name = this.fileName + '.' + this.formData.suffix
+            FileInfo.changeName(this.formData.id, this.formData.name)
+            .then(() => {
+                this.getByPage()
+            })
+            this.modFileNameVisible = false
         },
-        pageSizeChange(pageSize) {
-            this.pageData.pageNum = 1
-            this.pageData.pageSize = pageSize
-            this.$message.success('每页显示' + pageSize + '条数据 ' + '正在展示第' + this.pageData.pageNum + '页数据')
-            this.getByPage()
-        },
-        pageNumChange(pageNum) {
-            this.pageData.pageNum = pageNum
-            this.$message.success('每页显示' + this.pageData.pageSize + '条数据 ' + '正在展示第' + pageNum + '页数据')
-            this.getByPage()
+        copyUrl() {
+            this.$copyText(this.formData.url).then(() => {
+                this.$notify({
+                    message: '复制成功',
+                    type: 'success',
+                    position: 'bottom-left'
+                })
+            })
         }
     },
     mounted() {

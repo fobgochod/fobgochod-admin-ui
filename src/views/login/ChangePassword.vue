@@ -4,15 +4,14 @@
             <img alt='Vue logo' src='../../assets/logo.png'>
         </div>
         <div id='form_space'>
-            <div align='center'>
-                <h1>{{changeTitle}}</h1>
-                <p>{{changeSubTitle}}</p>
+            <div style='text-align: center; min-height: 20px'>
+                <h1>{{ changeTitle }}</h1>
+                <p>{{ changeSubTitle }}</p>
             </div>
             <div style='padding:20px'>
                 <el-form ref='changePasswordForm' :model='formData' :rules='rules' class='demo-ruleForm'>
-                    <el-form-item>
-                        <el-input v-model='formData.name' placeholder='请输入用户名'
-                                  prefix-icon='el-icon-user'></el-input>
+                    <el-form-item prop='name'>
+                        <el-input v-model='formData.name' placeholder='请输入用户名' prefix-icon='el-icon-user' />
                     </el-form-item>
                     <el-form-item prop='oldPassword'>
                         <el-input v-model='formData.oldPassword' placeholder='请输入旧密码' prefix-icon='el-icon-lock'
@@ -30,7 +29,7 @@
                         <el-link :underline='false' style='float:right' type='primary' @click="to('/')">返回登录</el-link>
                     </el-form-item>
                     <el-form-item align='center'>
-                        <el-button icon='el-icon-thumb' type='danger' @click='forget()'>修改密码？</el-button>
+                        <el-button icon='el-icon-thumb' type='danger' @click='forget()' disabled>修改密码？</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -40,6 +39,7 @@
 <script>
 import {mapState} from 'vuex'
 import User from '@/api/system/user'
+import Login from '@/api/home/login'
 import Secret from '@/assets/js/secret.js'
 
 export default {
@@ -82,7 +82,11 @@ export default {
                 password: '',
                 passwordVerify: ''
             },
+            disabled: false,
             rules: {
+                name: [
+                    {required: true, message: '用户名不能为空', trigger: 'blur'}
+                ],
                 oldPassword: [
                     {validator: validateOldPassword, trigger: ['blur', 'change']}
                 ],
@@ -98,21 +102,27 @@ export default {
     computed: mapState(['baseUri']),
     methods: {
         checkOldPassword() {
-            this.formData.pwdHash = Secret.encode(this.formData.oldPassword)
-            User.checkPassword(this.formData).then((res) => {
+            let body = {
+                code: this.formData.name,
+                pwdHash: Secret.encode(this.formData.oldPassword)
+            }
+            User.checkPassword(body).then((res) => {
                 this.checkOld = res.data
             })
         },
         forget() {
             this.$refs['changePasswordForm'].validate((valid) => {
                 if (valid) {
-                    this.formData.oldPwdHash = Secret.encode(this.formData.oldPassword)
-                    this.formData.pwdHash = Secret.encode(this.formData.password)
-                    User.changePassword(this.formData).then(() => {
+                    let body = {
+                        code: this.formData.name,
+                        oldPwdHash: Secret.encode(this.formData.oldPassword),
+                        pwdHash: Secret.encode(this.formData.password)
+                    }
+                    User.changePassword(body).then(() => {
                         this.$message.success('修改密码成功')
                         setTimeout(() => {
                             this.$router.push('/')
-                        }, 1500)
+                        }, 1000)
                     }).catch(() => {
                         this.$message.error('修改密码失败')
                     })
