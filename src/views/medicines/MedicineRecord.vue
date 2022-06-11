@@ -1,8 +1,8 @@
 <template>
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
-            <el-form-item v-if="userId === 'admin'" label='用户' prop='userId'>
-                <el-input v-model='pageData.filter.eq.userId' @change='searchData'></el-input>
+            <el-form-item v-if="userCode === 'admin'" label='用户' prop='userCode'>
+                <el-input v-model='pageData.filter.eq.userCode' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='Medicine' prop='medicineId'>
                 <el-input v-model='pageData.filter.eq.medicineId' @change='searchData'></el-input>
@@ -35,16 +35,16 @@
             <el-table-column align='center' type='selection' width='40'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='用户' property='userId' width='100'></el-table-column>
+            <el-table-column label='用户' property='userCode' width='100'></el-table-column>
             <el-table-column align='center' label='Medicine' property='medicineId' width='150'></el-table-column>
             <el-table-column align='center' label='类型' property='type' width='60'></el-table-column>
             <el-table-column label='片' property='slice' width='80'></el-table-column>
             <el-table-column align='center' label='日期' property='date' width='100'></el-table-column>
             <el-table-column align='center' label='时间' property='time' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed='left' label='操作' width='50'>
                 <template v-slot='scope'>
@@ -85,7 +85,7 @@
                 <el-row>
                     <el-col :span='8'>
                         <el-form-item label='用户'>
-                            <el-input v-model='formData.userId' :disabled="userId !== 'admin'"></el-input>
+                            <el-input v-model='formData.userCode' :disabled="userCode !== 'admin'"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='8'>
@@ -130,8 +130,8 @@
                 <el-row>
                     <el-col :span='12'>
                         <el-form-item label='用户'>
-                            <fo-user-option :option.sync='eatForm.userId'
-                                            :disabled="userId !== 'admin'"></fo-user-option>
+                            <fo-user-option :option.sync='eatForm.userCode'
+                                            :disabled="userCode !== 'admin'"></fo-user-option>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12'>
@@ -167,20 +167,20 @@ export default {
             },
             users: [],
             eatForm: {
-                userId: '',
+                userCode: '',
                 date: ''
             },
             eatDialogVisible: false
         }
     },
-    computed: mapState(['userId', 'userName']),
+    computed: mapState(['userCode', 'userName']),
     components: {
         TimeType: () => import('@/views/medicines/sub/TimeType')
     },
     methods: {
         addDialog() {
             this.formData = {
-                userId: this.userId
+                userCode: this.userCode
             }
         },
         addData() {
@@ -225,13 +225,13 @@ export default {
         },
         eatDialog() {
             this.eatForm = {
-                userId: this.userId,
+                userCode: this.userCode,
                 date: new Date().format('Y-m-d')
             }
             this.eatDialogVisible = true
         },
         eatMedicine() {
-            MyMedicine.eat(this.eatForm.userId, this.eatForm.date).then(() => {
+            MyMedicine.eat(this.eatForm.userCode, this.eatForm.date).then(() => {
                 this.searchData()
             })
             this.eatDialogVisible = false

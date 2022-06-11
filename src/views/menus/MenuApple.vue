@@ -25,9 +25,9 @@
             <el-table-column align='center' label='层' property='level' width='40'></el-table-column>
             <el-table-column align='center' label='序' property='order' width='50'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
             <!--
             <el-table-column align='center' fixed='right' label='操作' width='80'>
                 <template v-slot='scope'>

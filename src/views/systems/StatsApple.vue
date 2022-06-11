@@ -9,7 +9,7 @@
             <el-table-column align='center' label='文件数量' property='fileCount' width='140'></el-table-column>
             <el-table-column align='center' label='磁盘空间大小' property='totalSizeShow' width='200'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
 
             <el-table-column align='center' label='操作' width='80'>
                 <template v-slot='scope'>

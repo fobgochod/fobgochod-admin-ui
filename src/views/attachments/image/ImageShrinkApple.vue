@@ -1,11 +1,11 @@
 <template>
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
-            <el-form-item label='原文件ID' prop='sourceId'>
-                <el-input v-model='pageData.filter.eq.sourceId' @change='searchData'></el-input>
+            <el-form-item label='原文件ID' prop='fileId'>
+                <el-input v-model='pageData.filter.eq.fileId' @change='searchData'></el-input>
             </el-form-item>
-            <el-form-item label='压缩文件ID' prop='sourceId'>
-                <el-input v-model='pageData.filter.eq.targetId' @change='searchData'></el-input>
+            <el-form-item label='压缩文件ID' prop='shrinkId'>
+                <el-input v-model='pageData.filter.eq.shrinkId' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -16,19 +16,18 @@
         <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='原文件ID' property='sourceId' width='150'></el-table-column>
-            <el-table-column label='压缩文件ID' property='targetId' width='150'></el-table-column>
+            <el-table-column label='原文件ID' property='fileId' width='150'></el-table-column>
+            <el-table-column label='压缩文件ID' property='shrinkId' width='150'></el-table-column>
             <el-table-column label='宽' property='width' width='100' align='center'></el-table-column>
             <el-table-column label='高' property='height' width='100' align='center'></el-table-column>
 
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
-            <el-table-column label='租户' property='tenant' width='100'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='80'>
-                <template slot-scope='scope'>
+                <template v-slot='scope'>
                     <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>
                         <el-button slot='reference' icon='el-icon-delete' title='删除' type='text'></el-button>
                     </el-popconfirm>

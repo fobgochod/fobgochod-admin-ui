@@ -1,22 +1,16 @@
 <template>
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
+            <el-form-item label='分类' prop='type'>
+                <el-input v-model='pageData.filter.like.type' @change='searchData'></el-input>
+            </el-form-item>
             <el-form-item label='手机' prop='telephone'>
                 <el-input v-model='pageData.filter.eq.telephone' @change='searchData'></el-input>
-            </el-form-item>
-            <el-form-item label='状态' prop='completed'>
-                <el-select v-model='pageData.filter.eq.status' @change='searchData'>
-                    <el-option label='是' :value=true></el-option>
-                    <el-option label='否' :value=false></el-option>
-                </el-select>
             </el-form-item>
             <el-form-item label='发送日期' prop='sendDate'>
                 <el-date-picker v-model='pageData.filter.eq.sendDate0' type='daterange' value-format='yyyy-MM-dd'
                                 range-separator='至' start-placeholder='开始日期' end-placeholder='结束日期'>
                 </el-date-picker>
-            </el-form-item>
-            <el-form-item label='模板CODE' prop='templateCode'>
-                <el-input v-model='pageData.filter.eq.templateCode' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type='primary' @click='searchData'>查询</el-button>
@@ -36,6 +30,7 @@
             <el-table-column align='center' type='selection' width='40'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
+            <el-table-column label='分类' property='type' width='120'></el-table-column>
             <el-table-column align='center' label='手机' property='telephone' width='150'></el-table-column>
             <el-table-column align='center' label='状态' property='status' width='80'>
                 <template v-slot='scope'>
@@ -52,9 +47,9 @@
             <el-table-column label='错误信息' property='smsMessage' width='240'></el-table-column>
             <el-table-column label='备注' property='remark' width='240'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed='left' label='操作' width='50'>
                 <template v-slot='scope'>

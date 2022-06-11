@@ -55,7 +55,7 @@
                   @cell-dblclick='dblClick'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
-            <el-table-column label='文件ID' property='id' width='160'>
+            <el-table-column label='文件ID' property='id' width='150'>
                 <template v-slot='scope'>
                     <a :href='`${baseUri}/file/preview?fileId=${scope.row.id}`'
                        target='_blank'>{{ scope.row.id }}</a>
@@ -78,9 +78,9 @@
             <el-table-column label='FileId' property='fileId' width='230'></el-table-column>
             <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed='left' label='操作' width='50'>
                 <template v-slot='scope'>

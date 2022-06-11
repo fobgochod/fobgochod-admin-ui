@@ -61,19 +61,19 @@ export default {
         PhoneLogin: () => import('@/views/login/sub/PhoneLogin.vue')
     },
     computed: {
-        ...mapState(['baseUri', 'tenantId'])
+        ...mapState(['baseUri', 'tenantCode'])
     },
     methods: {
-        ...mapMutations(['setEnv', 'setUserId', 'setUserName', 'setTenantId', 'setUserToken']),
+        ...mapMutations(['setBaseUri', 'setUserCode', 'setUserName', 'setTenantCode', 'setToken']),
         login() {
             let password = Secret.rsaEnc(this.loginForm.password)
             this.loginForm.password = Secret.aesEnc(this.loginForm.password)
             Login.login(this.loginForm)
             .then((res) => {
-                this.setUserToken(res.data.token)
-                this.setUserId(res.data.userId)
+                this.setUserCode(res.data.userCode)
                 this.setUserName(res.data.userName)
-                this.setTenantId(res.data.tenantId)
+                this.setTenantCode(res.data.tenantCode)
+                this.setToken(res.data.token)
                 if (this.remember) {
                     localStorage.setItem('username', Secret.rsaEnc(this.loginForm.username))
                     localStorage.setItem('password', password)
@@ -90,10 +90,10 @@ export default {
             this.loginForm.loginType = 'captcha'
             Login.login(this.loginForm)
             .then((res) => {
-                this.setUserToken(res.data.token)
-                this.setUserId(res.data.userId)
+                this.setUserCode(res.data.userCode)
                 this.setUserName(res.data.userName)
-                this.setTenantId(res.data.tenantId)
+                this.setTenantCode(res.data.tenantCode)
+                this.setToken(res.data.token)
                 this.$router.push('/home')
             })
         },
@@ -105,7 +105,7 @@ export default {
         }
     },
     mounted() {
-        this.setEnv(this.$axios.defaults.baseURL)
+        this.setBaseUri(this.$axios.defaults.baseURL)
         if (this.$cookies.get('setting') == null) {
             this.$cookies.set('setting', JSON.stringify(COLOR))
         }

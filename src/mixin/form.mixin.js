@@ -35,7 +35,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'userId'])
+        ...mapState(['baseUri', 'userCode'])
     },
     methods: {
         opDialog(op, row) {

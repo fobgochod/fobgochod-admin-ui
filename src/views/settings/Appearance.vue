@@ -11,8 +11,8 @@
                             <el-input v-model='baseUri' disabled></el-input>
                         </el-form-item>
                         <el-form-item label='当前登陆租户'>
-                            <el-select v-model='tenantId' :loading='loading' :remote-method='getTenant' clearable
-                                       filterable @change='changeTenantId'>
+                            <el-select v-model='tenantCode' :loading='loading' :remote-method='getTenant' clearable
+                                       filterable @change='changeTenant'>
                                 <el-option-group v-for='group in tenants'
                                                  :key='group.key'
                                                  :label='group.label'>
@@ -28,10 +28,10 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label='当前登陆用户'>
-                            <div>{{ userName }}({{ userId }})</div>
+                            <div>{{ userName }}({{ userCode }})</div>
                         </el-form-item>
                         <el-form-item label='当前用户Token'>
-                            <div style='word-wrap:break-word;line-height:30px;'>{{ userToken }}</div>
+                            <div style='word-wrap:break-word;line-height:30px;'>{{ token }}</div>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -52,22 +52,20 @@ export default {
     data() {
         return {
             tenants: [],
-            token: '',
             loading: false
         }
     },
-    computed: mapState(['baseUri', 'tenantId', 'userId', 'userName', 'userToken']),
+    computed: mapState(['baseUri', 'userCode', 'userName', 'tenantCode', 'token']),
     methods: {
-        ...mapMutations(['setBucket', 'setTenantId', 'setUserToken']),
-        changeTenantId(val) {
+        ...mapMutations(['setTenantCode', 'setToken']),
+        changeTenant(val) {
             Login.refreshToken(val)
             .then(res => {
-                console.log(res.data.token)
-                this.setUserToken(res.data.token)
+                this.setToken(res.data.token)
+                this.setTenantCode(res.data.tenantCode)
             })
-            this.setTenantId(val)
         },
-        async getTenant() {
+        getTenant() {
             Tenant.getOptionGroups().then(res => {
                 this.tenants = res.data
             }).catch(() => {

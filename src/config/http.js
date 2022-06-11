@@ -13,9 +13,9 @@ axios.interceptors.request.use(
     (config) => {
         let flag = whiteList.indexOf(config.url) > -1
 
-        let userToken = store.state.userToken
-        if (userToken && !flag) {
-            config.headers.common['digi-middleware-auth-user'] = userToken
+        let token = store.state.token
+        if (token && !flag) {
+            config.headers.common['digi-middleware-auth-user'] = token
         }
 
         if (encryptList.indexOf(config.url) > -1) {

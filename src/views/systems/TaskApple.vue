@@ -38,9 +38,9 @@
             <el-table-column align='center' label='Lock' property='hash' width='60'></el-table-column>
             <el-table-column label='备注' property='remark' width='200'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='80'>
                 <template v-slot='scope'>

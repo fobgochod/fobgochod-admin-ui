@@ -8,9 +8,9 @@ export default {
             data: data
         })
     },
-    refreshToken(tenantId) {
+    refreshToken(tenantCode) {
         return axios.post('/token/refresh', {
-            tenantId: tenantId
+            tenantCode: tenantCode
         })
     },
     sendSms(telephone) {

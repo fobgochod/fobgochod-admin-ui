@@ -30,10 +30,9 @@
             <el-table-column label='名称' property='name' width='200'></el-table-column>
             <el-table-column label='父ID' property='parentId' width='150'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
-            <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='50'>
                 <template v-slot='scope'>

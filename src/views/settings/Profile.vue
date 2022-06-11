@@ -97,7 +97,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'userId'])
+        ...mapState(['baseUri', 'userCode'])
     },
     methods: {
         ...mapMutations(['setUserName']),
@@ -105,7 +105,7 @@ export default {
             let body = {
                 filter: {
                     eq: {
-                        code: this.userId
+                        code: this.userCode
                     }
                 }
             }

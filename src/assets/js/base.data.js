@@ -44,7 +44,9 @@ export const USERS = [
         email: 'admin@nobody.com',
         contacts: [18110308184],
         password: 'QtspoWLqGqxDJJxmYTn4zNXrdKCkydPNhbvHSOlNmeA=',
-        role: 'Admin'
+        role: 'Admin',
+        order: 1,
+        tenantCode: 'fobgochod'
     },
     {
         code: 'zhouxiao',
@@ -57,7 +59,9 @@ export const USERS = [
         email: 'zhouxiao@nobody.com',
         contacts: [15371028040],
         password: 'lU1aSf1w2bi82zXSUiZ4KZV/fvf6bHT4hBm9xegiCfQ=',
-        role: 'User'
+        role: 'User',
+        order: 2,
+        tenantCode: 'fobgochod'
     },
     {
         code: 'chentt',
@@ -70,7 +74,9 @@ export const USERS = [
         email: 'chentt@nobody.com',
         contacts: [18255396069],
         password: 'lU1aSf1w2bi82zXSUiZ4KZV/fvf6bHT4hBm9xegiCfQ=',
-        role: 'User'
+        role: 'User',
+        order: 3,
+        tenantCode: 'fobgochod'
     }
 ]
 

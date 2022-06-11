@@ -31,7 +31,7 @@ export default {
             options: []
         }
     },
-    computed: mapState(['tenantId']),
+    computed: mapState(['tenantCode']),
     watch: {
         option: function() {
             this.$emit('update:option', this.option)

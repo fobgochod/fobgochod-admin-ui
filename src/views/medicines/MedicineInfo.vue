@@ -1,8 +1,8 @@
 <template>
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
-            <el-form-item v-if="userId === 'admin'" label='用户' prop='userId'>
-                <el-input v-model='pageData.filter.eq.userId' @change='searchData'></el-input>
+            <el-form-item v-if="userCode === 'admin'" label='用户' prop='userCode'>
+                <el-input v-model='pageData.filter.eq.userCode' @change='searchData'></el-input>
             </el-form-item>
             <el-form-item label='编号' prop='code'>
                 <el-input v-model='pageData.filter.eq.code' @change='searchData'></el-input>
@@ -25,7 +25,7 @@
                   @cell-dblclick='queryRecords'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='用户' property='userId' width='100'></el-table-column>
+            <el-table-column label='用户' property='userCode' width='100'></el-table-column>
             <el-table-column label='编号' property='code' width='100'></el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>
             <el-table-column label='总数' property='total' width='100'></el-table-column>
@@ -36,9 +36,9 @@
             </el-table-column>
             <el-table-column label='备注' property='remark' width='300'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed='left' label='操作' width='50'>
                 <template v-slot='scope'>
@@ -104,7 +104,7 @@
                     </el-col>
                     <el-col :span='8'>
                         <el-form-item label='用户'>
-                            <el-input v-model='formData.userId' :disabled="userId !== 'admin'"></el-input>
+                            <el-input v-model='formData.userCode' :disabled="userCode !== 'admin'"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -219,14 +219,14 @@ export default {
             medicineTotal: 0
         }
     },
-    computed: mapState(['userId']),
+    computed: mapState(['userCode']),
     components: {
         TimeType: () => import('@/views/medicines/sub/TimeType')
     },
     methods: {
         addDialog() {
             this.formData = {
-                userId: this.userId
+                userCode: this.userCode
             }
         },
         addData() {
@@ -319,7 +319,7 @@ export default {
             }
         },
         eatMedicine() {
-            MyMedicine.eat(this.userId).then(() => {
+            MyMedicine.eat(this.userCode).then(() => {
                 this.searchData()
                 this.$message.success('吃药成功')
             })

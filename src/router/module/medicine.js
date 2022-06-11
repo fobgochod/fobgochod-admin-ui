@@ -1,6 +1,6 @@
 const routes = [
     {
-        path: '/medicine/:userId',
+        path: '/medicine/:userCode',
         name: 'MyMedicine',
         component: (resolve) => require(['@/views/medicines/sub/MyMedicine.vue'], resolve),
         meta: {

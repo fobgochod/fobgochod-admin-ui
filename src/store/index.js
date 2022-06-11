@@ -8,46 +8,46 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         baseUri: '',
-        tenantId: '',
-        userId: '',
+        userCode: '',
         userName: '',
-        userToken: '',
+        tenantCode: '',
+        token: ''
     },
     getters: {
         getLogin: (state) => {
             let temp = state.baseUri
-            if (state.tenantId) {
-                temp = temp + '(' + state.tenantId + ')'
+            if (state.tenantCode) {
+                temp = temp + '(' + state.tenantCode + ')'
             }
             return temp
-        },
+        }
     },
     mutations: {
-        setEnv(state, payload) {
+        setBaseUri(state, payload) {
             state.baseUri = payload
         },
-        setTenantId(state, payload) {
-            state.tenantId = payload
-        },
-        setUserId(state, payload) {
-            state.userId = payload
+        setUserCode(state, payload) {
+            state.userCode = payload
         },
         setUserName(state, payload) {
             state.userName = payload
         },
-        setUserToken(state, payload) {
-            state.userToken = payload
+        setTenantCode(state, payload) {
+            state.tenantCode = payload
         },
+        setToken(state, payload) {
+            state.token = payload
+        }
     },
     modules: {
-        console,
+        console
     },
     plugins: [
         persistedState({
-            key: 'loginUser',
-            storage: window.sessionStorage,
-        }),
-    ],
+            key: 'UserDetails',
+            storage: window.sessionStorage
+        })
+    ]
 })
 
 export default store

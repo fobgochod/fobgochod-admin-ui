@@ -31,11 +31,11 @@
             <el-table-column label='Email' property='email' width='210'></el-table-column>
             <el-table-column label='所有者' property='owner' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
             <el-table-column align='center' fixed label='操作' width='80'>
-                <template slot-scope='scope'>
+                <template v-slot='scope'>
                     <el-button icon='el-icon-edit-outline' title='编辑' type='text' @click='opDialog("mod",scope.row)'>
                     </el-button>
                     <el-popconfirm title='确定删除吗？' @confirm='delData(scope.row)'>

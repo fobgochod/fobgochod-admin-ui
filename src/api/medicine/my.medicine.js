@@ -1,21 +1,30 @@
 import axios from '@/config/http'
 
 export default {
-    me(userId) {
+    me(userCode) {
         return axios({
             method: 'post',
             url: '/medicines/me',
             data: {
-                userId: userId
+                userCode: userCode
             }
         })
     },
-    eat(userId, date) {
+    meEat(userCode) {
+        return axios({
+            method: 'post',
+            url: '/medicines/me/eat',
+            data: {
+                userCode: userCode
+            }
+        })
+    },
+    eat(userCode, date) {
         return axios({
             method: 'post',
             url: '/medicines/eat',
             data: {
-                userId: userId,
+                userCode: userCode,
                 date: date
             }
         })

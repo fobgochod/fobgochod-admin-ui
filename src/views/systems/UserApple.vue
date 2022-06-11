@@ -25,8 +25,8 @@
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
-            <el-table-column label='账号' property='code' width='100'></el-table-column>
+            <el-table-column label='租户' property='tenantCode' width='100'></el-table-column>
+            <el-table-column label='账号' property='code' width='160'></el-table-column>
             <el-table-column label='姓名' property='name' width='120'></el-table-column>
             <el-table-column align='center' label='农历' width='50'>
                 <template v-slot='scope'>
@@ -43,7 +43,7 @@
                 </template>
             </el-table-column>
             <el-table-column label='联系人' width='140'>
-                <template slot-scope='scope'>
+                <template v-slot='scope'>
                     <el-dropdown trigger='click' v-if='scope.row.contacts && scope.row.contacts.length>0'>
                         <span class='el-dropdown-link'>
                             <el-badge :value='scope.row.contacts.length' class='item'>
@@ -63,9 +63,9 @@
             <el-table-column label='密码' property='password' width='440'></el-table-column>
             <el-table-column align='center' label='序' property='order' width='50'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
             <el-table-column align='center' fixed label='操作' width='80'>
                 <template v-slot='scope'>
                     <el-button icon='el-icon-edit-outline' title='编辑' type='text' @click='opDialog("mod",scope.row)'>
@@ -114,7 +114,7 @@
                     </el-col>
                     <el-col :span='12'>
                         <el-form-item label='租户ID'>
-                            <fo-tenant-option :option.sync='formData.tenantId' />
+                            <fo-tenant-option :option.sync='formData.tenantCode' />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -154,7 +154,7 @@
                     </el-col>
                     <el-col :span='10'>
                         <el-form-item label='角色'>
-                            <fo-role-radio :radio.sync='formData.role' :disabled="userId !== 'admin'" />
+                            <fo-role-radio :radio.sync='formData.role' :disabled="userCode !== 'admin'" />
                         </el-form-item>
                     </el-col>
                 </el-row>

@@ -31,7 +31,7 @@
                 </el-menu-item>
             </el-submenu>
 
-            <el-menu-item index='/menus/basic' v-if="userId === 'admin'">
+            <el-menu-item index='/menus/basic' v-if="userCode === 'admin'">
                 <i :style='{ color: aside.aside_icon_color }' class='el-icon-s-operation'></i>
                 <span>生成菜单</span>
             </el-menu-item>
@@ -74,7 +74,7 @@ export default {
         })
     },
     computed: {
-        ...mapState(['userId'])
+        ...mapState(['userCode'])
     },
     methods: {
         changeAsideMenu(index) {
@@ -87,7 +87,7 @@ export default {
         getMenu() {
             Profile.getMenu().then(res => {
                 this.menus = res.data
-                sessionStorage.setItem('menus:' + this.userId, JSON.stringify(this.menus))
+                sessionStorage.setItem('menus:' + this.userCode, JSON.stringify(this.menus))
             }).catch((err) => {
                 this.$message.error(err.response.data.message)
             })
@@ -98,7 +98,7 @@ export default {
             this.$cookies.set('activie_index', 1)
             this.$router.push(this.$cookies.get('activie_index'))
         }
-        let menusCache = sessionStorage.getItem('menus:' + this.userId)
+        let menusCache = sessionStorage.getItem('menus:' + this.userCode)
         if (menusCache == null) {
             this.getMenu()
         } else {

@@ -33,18 +33,17 @@
 
         <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
-            <el-table-column label='ID' property='id' width='200'></el-table-column>
-            <el-table-column label='文件ID' property='fileId' width='200'></el-table-column>
+            <el-table-column label='ID' property='id' width='150'></el-table-column>
+            <el-table-column label='文件ID' property='fileId' width='150'></el-table-column>
             <el-table-column label='文件名称' property='fileName' width='200'></el-table-column>
             <el-table-column label='原位置' property='paths' width='300'></el-table-column>
             <el-table-column align='center' label='删除时间' property='deleteDate' width='160'></el-table-column>
             <el-table-column label='大小' property='sizeShow' width='100'></el-table-column>
             <el-table-column align='center' label='类型' property='type' width='100'></el-table-column>
             <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createById' width='140'></el-table-column>
+            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
-            <el-table-column align='center' label='修改人' property='modifyById' width='140'></el-table-column>
-            <el-table-column label='租户ID' property='tenantId' width='100'></el-table-column>
+            <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 
             <el-table-column align='center' fixed label='操作' width='80'>
                 <template v-slot='scope'>

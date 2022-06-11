@@ -1,41 +1,37 @@
 <template>
     <div class='body'>
         <el-container class='hidden-xs-only'>
-            <el-header>
-                <el-tag>{{ userName }}</el-tag>
-                <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
+            <el-header height='30px'>
+                <el-descriptions class='margin-top' :title='`${userName}(${tableData.length})`' border>
+                    <template slot='extra'>
+                        <el-button type='danger' plain size='small' @click='eat'>点我吃药</el-button>
+                    </template>
+                </el-descriptions>
             </el-header>
             <el-main>
-                <el-table :data='tableData' border stripe default-expand-all>
-                    <el-table-column type='expand'>
-                        <template v-slot='scope'>
-                            <el-table :data='scope.row.items' border stripe :show-header=false>
-                                <el-table-column align='center' label='序号' type='index' width='60'></el-table-column>
-                                <el-table-column align='center' label='类型' property='type'
-                                                 width='100'></el-table-column>
-                                <el-table-column align='center' label='开始' property='start'
-                                                 width='100'></el-table-column>
-                                <el-table-column align='center' label='结束' property='end' width='100'></el-table-column>
-                                <el-table-column label='片' property='slice' width='100'>
-                                    <template v-slot='scope'>
-                                        <el-tag v-if='scope.row.state' size='small'>{{ scope.row.slice }}</el-tag>
-                                        <span v-else>{{ scope.row.slice }}</span>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label='编号' property='code'></el-table-column>
-                    <el-table-column label='名称' property='name'></el-table-column>
-                    <el-table-column label='总数' property='total'></el-table-column>
-                    <el-table-column label='剩余(天)' property='remain'></el-table-column>
-                </el-table>
+                <el-descriptions :title='item.name' :column='4' border style='padding-top: 2vw'
+                                 v-for='item in tableData' :key='item'>
+                    <template slot='extra'>
+                        <el-tag type='primary'>{{ item.remain }}天</el-tag>
+                    </template>
+                    <el-descriptions-item label='编号'>{{ item.code }}</el-descriptions-item>
+                    <el-descriptions-item label='名称' label-class-name='my-label' content-class-name='my-content'
+                                          :span='3'>{{ item.name }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
+
+                    <el-descriptions-item :label=subItem.type v-for='subItem in item.items' :key='subItem'>
+                        <span v-if='subItem.state'>{{ subItem.slice }}</span>
+                        <el-tag v-else type='danger' effect='plain' size='small'>{{ subItem.slice }}
+                        </el-tag>
+                    </el-descriptions-item>
+                </el-descriptions>
             </el-main>
         </el-container>
 
         <el-container class='hidden-sm-and-up'>
             <el-header>
-                <span style='font-weight:900; font-size: 25px;'>{{ userName }}</span>
+                <span style='font-weight:900; font-size: 25px;'>{{ userName }}({{ tableData.length }})</span>
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
@@ -51,8 +47,9 @@
                     <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
 
                     <el-descriptions-item :label=subItem.type v-for='subItem in item.items' :key='subItem'>
-                        <el-tag v-if='subItem.state' size='small'>{{ subItem.slice }}</el-tag>
-                        <span v-else>{{ subItem.slice }}</span>
+                        <span v-if='subItem.state'>{{ subItem.slice }}</span>
+                        <el-tag v-else type='danger' effect='plain' size='small'>{{ subItem.slice }}
+                        </el-tag>
                     </el-descriptions-item>
                 </el-descriptions>
             </el-main>
@@ -73,12 +70,12 @@ export default {
         }
     },
     computed: {
-        ...mapState(['userId']),
+        ...mapState(['userCode']),
         me() {
             if (this.$route.path === '/medicines/today') {
-                return this.userId
+                return this.userCode
             }
-            return this.$route.params.userId
+            return this.$route.params.userCode
         }
     },
     methods: {
@@ -90,7 +87,7 @@ export default {
             })
         },
         eat() {
-            MyMedicine.eat(this.me).then(() => {
+            MyMedicine.meEat(this.me).then(() => {
                 this.medicine()
                 this.$notify({
                     title: '提示',

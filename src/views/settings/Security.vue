@@ -83,11 +83,11 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'userId'])
+        ...mapState(['baseUri', 'userCode'])
     },
     methods: {
         checkOldPassword() {
-            this.formData.name = this.userId
+            this.formData.name = this.userCode
             this.formData.pwdHash = Secret.encode(this.formData.oldPassword)
             User.checkPassword(this.formData).then((res) => {
                 this.checkOld = res.data
@@ -96,7 +96,7 @@ export default {
         onSubmit() {
             this.$refs['changePasswordForm'].validate((valid) => {
                 if (valid) {
-                    this.formData.name = this.userId
+                    this.formData.name = this.userCode
                     this.formData.oldPwdHash = Secret.encode(this.formData.oldPassword)
                     this.formData.pwdHash = Secret.encode(this.formData.password)
                     User.changePassword(this.formData).then(() => {

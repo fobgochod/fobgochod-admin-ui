@@ -24,8 +24,8 @@ function checkRoles(to, from, next) {
  */
 function getMenuPaths() {
     let menuPaths = []
-    let userId = store.state.userId
-    let menus = sessionStorage.getItem('menus:' + userId)
+    let userCode = store.state.userCode
+    let menus = sessionStorage.getItem('menus:' + userCode)
     JSON.parse(menus).forEach(function(item) {
         menuPaths.push(item.path)
         item.children.forEach(function(child) {

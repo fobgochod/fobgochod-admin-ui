@@ -15,7 +15,7 @@
                  mode='horizontal'>
 
             <el-menu-item index='4'>
-                <el-link :href='`/medicine/${userId}`' target='_blank'><i class='el-icon-first-aid-kit' /></el-link>
+                <el-link :href='`/medicine/${userCode}`' target='_blank'><i class='el-icon-first-aid-kit' /></el-link>
             </el-menu-item>
 
             <el-menu-item index='5'>
@@ -83,7 +83,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['baseUri', 'tenantId', 'userId', 'userName']),
+        ...mapState(['baseUri', 'tenantCode', 'userCode', 'userName']),
         ...mapGetters(['getLogin'])
     },
     methods: {
