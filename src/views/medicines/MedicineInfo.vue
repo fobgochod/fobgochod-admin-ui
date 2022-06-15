@@ -28,6 +28,7 @@
             <el-table-column label='用户' property='userCode' width='100'></el-table-column>
             <el-table-column label='编号' property='code' width='100'></el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>
+            <el-table-column label='片(盒)' property='slice' width='60'></el-table-column>
             <el-table-column label='总数' property='total' width='100'></el-table-column>
             <el-table-column label='剩余(天)' property='remain' width='100'></el-table-column>
             <el-table-column align='center' label='状态' width='60' v-slot='scope'>
@@ -80,29 +81,34 @@
         <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='100px'>
                 <el-row>
-                    <el-col :span='8'>
+                    <el-col :span='6'>
                         <el-form-item label='编号'>
                             <el-input v-model='formData.code'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='16'>
+                    <el-col :span='18'>
                         <el-form-item label='名称'>
                             <el-input v-model='formData.name' placeholder='请输入药品名称'></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span='8'>
+                    <el-col :span='6'>
                         <el-form-item label='总数'>
                             <el-input v-model='formData.total'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='8'>
+                    <el-col :span='6'>
+                        <el-form-item label='片(盒)'>
+                            <el-input v-model='formData.slice'></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='6'>
                         <el-form-item label='剩余(天)'>
                             <el-input v-model='formData.remain' disabled></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='8'>
+                    <el-col :span='6'>
                         <el-form-item label='用户'>
                             <el-input v-model='formData.userCode' :disabled="userCode !== 'admin'"></el-input>
                         </el-form-item>

@@ -9,7 +9,8 @@
                 </el-descriptions>
             </el-header>
             <el-main>
-                <el-descriptions :title='item.name' :column='4' border style='padding-top: 2vw'
+                <el-descriptions :title='`${item.name}(${item.desc})`' :column='4' border
+                                 style='padding-top: 2vw'
                                  v-for='item in tableData' :key='item'>
                     <template slot='extra'>
                         <el-tag type='primary'>{{ item.remain }}天</el-tag>
@@ -22,7 +23,7 @@
 
                     <el-descriptions-item :label=subItem.type v-for='subItem in item.items' :key='subItem'>
                         <span v-if='subItem.state'>{{ subItem.slice }}</span>
-                        <el-tag v-else type='danger' effect='plain' size='small'>{{ subItem.slice }}
+                        <el-tag v-else type='danger' size='small'>{{ subItem.slice }}
                         </el-tag>
                     </el-descriptions-item>
                 </el-descriptions>
@@ -35,7 +36,8 @@
                 <el-tag type='danger' style='float:right' @click='eat'>点我吃药</el-tag>
             </el-header>
             <el-main>
-                <el-descriptions :title='item.name' :column='4' direction='vertical' border style='padding-top: 2vw'
+                <el-descriptions :title='`${item.name}(${item.desc})`' :column='4' direction='vertical'
+                                 border style='padding-top: 2vw'
                                  v-for='item in tableData' :key='item'>
                     <template slot='extra'>
                         <el-tag type='primary'>{{ item.remain }}天</el-tag>
@@ -44,11 +46,11 @@
                     <el-descriptions-item label='名称' label-class-name='my-label' content-class-name='my-content'
                                           :span='3'>{{ item.name }}
                     </el-descriptions-item>
-                    <el-descriptions-item label='总数'>{{ item.total }}</el-descriptions-item>
+                    <el-descriptions-item label='总数/盒'>{{ item.total }}</el-descriptions-item>
 
                     <el-descriptions-item :label=subItem.type v-for='subItem in item.items' :key='subItem'>
                         <span v-if='subItem.state'>{{ subItem.slice }}</span>
-                        <el-tag v-else type='danger' effect='plain' size='small'>{{ subItem.slice }}
+                        <el-tag v-else type='danger' size='small'>{{ subItem.slice }}
                         </el-tag>
                     </el-descriptions-item>
                 </el-descriptions>
@@ -84,6 +86,19 @@ export default {
             .then((res) => {
                 this.userName = res.data.userName
                 this.tableData = res.data.medicines
+
+                this.tableData.forEach(function(item, index, arr) {
+                    let box = Math.floor(item.total / item.slice)
+                    let remainder = item.total % item.slice
+                    let desc = ''
+                    if (box > 0) {
+                        desc = box + '盒'
+                    }
+                    if (remainder > 0) {
+                        desc += remainder + '片'
+                    }
+                    arr[index].desc = desc
+                })
             })
         },
         eat() {
