@@ -22,23 +22,20 @@
         <fo-data-infrastructure table='Task' :success='getByPage' />
         <fo-drop-collection table='Task' :success='getByPage' />
 
-        <el-table :data='tableData' border max-height='560' stripe @selection-change='selection'>
+        <el-table :data='tableData' border stripe @selection-change='selection'>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='编号' property='code' width='100'></el-table-column>
             <el-table-column label='标题' property='name' width='200'></el-table-column>
             <el-table-column label='类型' property='type' width='80'></el-table-column>
             <el-table-column align='center' label='cron表达式' property='cron' width='140'></el-table-column>
-            <el-table-column label='bean' property='className' width='280'></el-table-column>
+            <el-table-column label='bean' property='className' width='200'></el-table-column>
             <el-table-column align='center' label='禁用' width='62'>
                 <template v-slot='scope'>
                     <el-switch v-model='scope.row.disable' active-color='#ff4949'
                                @change='disableData(scope.row)'></el-switch>
                 </template>
             </el-table-column>
-            <el-table-column align='center' label='Lock' property='hash' width='60'></el-table-column>
             <el-table-column label='备注' property='remark' width='200'></el-table-column>
-            <el-table-column align='center' label='创建时间' property='createDate' width='160'></el-table-column>
-            <el-table-column align='center' label='创建人' property='createCode' width='140'></el-table-column>
             <el-table-column align='center' label='修改时间' property='modifyDate' width='160'></el-table-column>
             <el-table-column align='center' label='修改人' property='modifyCode' width='140'></el-table-column>
 

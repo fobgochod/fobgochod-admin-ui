@@ -1,6 +1,6 @@
 <template>
     <el-card class='card' shadow='never'>
-        <div slot='header' class='clearfix'>
+        <div slot='header'>
             <span>数据统计</span>
         </div>
         <div>
@@ -11,9 +11,6 @@
                 <el-col :span='8'>
                     <div id='chart2' class='grid-content bg-purple' style='width:100%;height:400px'></div>
                 </el-col>
-            </el-row>
-            <el-row :gutter='20'>
-                <div id='chart3' style='width:100%;height:400px'></div>
             </el-row>
         </div>
     </el-card>
@@ -115,9 +112,6 @@ export default {
                     }
                 ]
             })
-        },
-        drawMedicine() {
-
         }
     },
     mounted() {
@@ -127,7 +121,4 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    min-height: 50vh;
-}
 </style>

@@ -1,9 +1,9 @@
 <template>
     <el-aside id='aside' :style='{ backgroundColor: aside.aside_background_color }' :width='aside.aside_width'>
-        <div style='height: 60px; color: #fff'>
-            <p :style='`padding-top: 10%; padding-left: 30%; color: ${aside.aside_icon_color}`'>
+        <div style='text-align: center; line-height: 60px; width: 100%; color: #fff'>
+            <span :style='`color: ${aside.aside_icon_color}`'>
                 {{ aside.aside_title }}
-            </p>
+            </span>
         </div>
         <el-menu :active-text-color='aside.aside_active_text_color'
                  :background-color='aside.aside_background_color'
@@ -94,10 +94,6 @@ export default {
         }
     },
     mounted() {
-        if (this.$cookies.get('activie_index') == null) {
-            this.$cookies.set('activie_index', 1)
-            this.$router.push(this.$cookies.get('activie_index'))
-        }
         let menusCache = sessionStorage.getItem('menus:' + this.userCode)
         if (menusCache == null) {
             this.getMenu()

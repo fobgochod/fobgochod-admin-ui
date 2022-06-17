@@ -21,7 +21,7 @@
         <el-button icon='el-icon-plus' size='small' type='success' @click='opDialog("add")'>新增</el-button>
         <fo-data-infrastructure table='Tenant' :success='getByPage' />
         <fo-drop-collection table='Tenant' :success='getByPage' />
-        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>

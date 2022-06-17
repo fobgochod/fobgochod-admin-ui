@@ -83,7 +83,7 @@ export default {
                     localStorage.removeItem('password')
                     localStorage.removeItem('remember')
                 }
-                this.$router.push('/home')
+                this.getVisitPage()
             })
         },
         loginSms() {
@@ -94,7 +94,7 @@ export default {
                 this.setUserName(res.data.userName)
                 this.setTenantCode(res.data.tenantCode)
                 this.setToken(res.data.token)
-                this.$router.push('/home')
+                this.getVisitPage()
             })
         },
         sendSms() {
@@ -102,6 +102,12 @@ export default {
         },
         loginSmsError() {
             this.$message.error('登陆失败')
+        },
+        getVisitPage() {
+            if (this.$cookies.get('activie_index') == null) {
+                this.$cookies.set('activie_index', '/home')
+            }
+            this.$router.push(this.$cookies.get('activie_index'))
         }
     },
     mounted() {

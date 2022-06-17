@@ -24,7 +24,7 @@
                 新增
             </el-button>
         </el-row>
-        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border stripe @selection-change='selection'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='名称' property='name' width='200'></el-table-column>

@@ -51,7 +51,7 @@
 
             <fo-drop-collection table='FileInfo' :success='getByPage' />
         </el-row>
-        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'
+        <el-table :data='tableData' border stripe @selection-change='selection'
                   @cell-dblclick='dblClick'>
             <el-table-column type='selection' width='50'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>

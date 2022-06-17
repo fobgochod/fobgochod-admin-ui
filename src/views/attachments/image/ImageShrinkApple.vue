@@ -13,7 +13,7 @@
             </el-form-item>
         </el-form>
 
-        <el-table :data='tableData' border max-height='520' stripe @selection-change='selection'>
+        <el-table :data='tableData' border stripe @selection-change='selection'>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
             <el-table-column label='原文件ID' property='fileId' width='150'></el-table-column>
