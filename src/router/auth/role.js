@@ -2,13 +2,11 @@ import store from '@/store'
 
 function checkRoles(to, from, next) {
     let needLogin = to.meta.loginState //是否需要验证
-    console.log(to.path + '>>>>>>>>>> ' + needLogin)
     if (needLogin === false) {
         next()
         document.title = to.meta.title
     } else if (needLogin === true) {
         const hasMenu = getMenuPaths().indexOf(to.path) > -1
-        console.log('2>>>>>>>>>> ' + hasMenu)
         if (hasMenu) {
             next()
             document.title = to.meta.title

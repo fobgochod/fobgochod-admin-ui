@@ -104,10 +104,9 @@ export default {
             this.$message.error('登陆失败')
         },
         getVisitPage() {
-            if (this.$cookies.get('activie_index') == null) {
-                this.$cookies.set('activie_index', '/home')
-            }
-            this.$router.push(this.$cookies.get('activie_index'))
+            let index = '/home'
+            this.$cookies.set('activie_index', index)
+            this.$router.push(index)
         }
     },
     mounted() {
