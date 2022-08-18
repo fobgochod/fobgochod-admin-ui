@@ -27,7 +27,7 @@
             <el-table-column label='编号' property='code' width='100'></el-table-column>
             <el-table-column label='标题' property='name' width='200'></el-table-column>
             <el-table-column label='类型' property='type' width='80'></el-table-column>
-            <el-table-column align='center' label='cron表达式' property='cron' width='140'></el-table-column>
+            <el-table-column label='cron表达式' property='cron' width='200'></el-table-column>
             <el-table-column label='bean' property='className' width='200'></el-table-column>
             <el-table-column align='center' label='禁用' width='62'>
                 <template v-slot='scope'>
@@ -68,34 +68,36 @@
         <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' center>
             <el-form ref='form' :model='formData' label-width='80px'>
                 <el-row>
-                    <el-col :span='12'>
+                    <el-col :span='16'>
                         <el-form-item label='标题'>
                             <el-input v-model='formData.name'></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='6'>
+                    <el-col :span='8'>
                         <el-form-item label='编号'>
                             <el-input v-model='formData.code' :disabled="operation !== 'add'"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='6'>
+                </el-row>
+                <el-row>
+                    <el-col :span='16'>
                         <el-form-item label='cron'>
                             <el-input v-model='formData.cron'></el-input>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span='12'>
-                        <el-form-item label='实现类'>
-                            <el-input v-model='formData.className'></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='6'>
+                    <el-col :span='8'>
                         <el-form-item label='禁用'>
                             <el-switch v-model='formData.disable' active-color='#ff4949'></el-switch>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='6'>
+                </el-row>
+                <el-row>
+                    <el-col :span='16'>
+                        <el-form-item label='实现类'>
+                            <el-input v-model='formData.className'></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='8'>
                         <el-form-item label='Lock'>
                             <el-input v-model='formData.hash'></el-input>
                         </el-form-item>

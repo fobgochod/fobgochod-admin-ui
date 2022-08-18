@@ -147,13 +147,31 @@ export const TASKS = [
         code: 'TS004',
         name: '吃药提醒',
         type: '生活',
-        cron: '0 0 8-22/1 * * ?',
+        cron: '0 0/30 7,8,12,13,20,21 * * ?',
         className: 'medicineTask',
         disable: false,
         remark: '吃药提醒'
     },
     {
         code: 'TS005',
+        name: '监护人提醒',
+        type: '生活',
+        cron: '0 0 21,22 * * ?',
+        className: 'guardianTask',
+        disable: false,
+        remark: '吃药提醒'
+    },
+    {
+        code: 'TS006',
+        name: '挂号提醒',
+        type: '生活',
+        cron: '0 0 22 ? * 3',
+        className: 'registrationTask',
+        disable: false,
+        remark: '吃药提醒'
+    },
+    {
+        code: 'TS006',
         name: '生日提醒',
         type: '生活',
         cron: '0 0 9 1/1 * ?',
