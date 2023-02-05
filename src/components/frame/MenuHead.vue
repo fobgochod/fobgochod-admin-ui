@@ -1,59 +1,63 @@
 <template>
     <div>
-        <div style='float:left'>
-            <i :class="asideState===true?'el-icon-s-unfold':'el-icon-s-fold'"
-               :style="{color:head.head_icon_color,padding:'20px',cursor: 'pointer'}"
-               @click='changeAsideState' />
-            <span :style='{color:head.head_icon_color}' @click="to('/settings/appearance')">{{ getLogin }}</span>
-        </div>
+        <el-col :span='4'>
+            <div class='left-panel'>
+                <i :class="asideState===true?'el-icon-s-unfold':'el-icon-s-fold'"
+                   :style="{color:head.head_icon_color,padding:'20px',cursor: 'pointer'}"
+                   @click='changeAsideState' />
+                <bread-crumb />
+            </div>
+        </el-col>
+        <el-col :span='20'>
+            <el-menu :active-text-color='head.head_active_text_color'
+                     :background-color='head.head_background_color'
+                     :style="{float:'right'}"
+                     :text-color='head.head_text_color'
+                     class='el-menu-demo'
+                     mode='horizontal'>
 
-        <el-menu :active-text-color='head.head_active_text_color'
-                 :background-color='head.head_background_color'
-                 :style="{float:'right'}"
-                 :text-color='head.head_text_color'
-                 class='el-menu-demo'
-                 mode='horizontal'>
-
-            <el-menu-item index='4'>
-                <el-link :href='`/medicine/${userCode}`' target='_blank'><i class='el-icon-first-aid-kit' /></el-link>
-            </el-menu-item>
-
-            <el-menu-item index='5'>
-                <el-link :href='`${baseUri}`' target='_blank'><i class='el-icon-link'></i></el-link>
-            </el-menu-item>
-
-            <el-menu-item index='6'>
-                <head-color />
-            </el-menu-item>
-
-            <el-submenu index='9'>
-                <template slot='title'>
-                    {{ userName }}
-                    <el-avatar :src='user.avatar' :key='user.avatar' shape='square'></el-avatar>
-                </template>
-                <el-menu-item index='9-1' @click="to('/settings/profile')">
-                    <i class='el-icon-user'></i>
-                    <span>个人中心</span>
+                <el-menu-item index='4'>
+                    <el-link :href='`/medicine/${userCode}`' target='_blank'><i class='el-icon-first-aid-kit' />
+                    </el-link>
                 </el-menu-item>
-                <el-menu-item index='9-2' @click="to('/settings/security')">
-                    <i class='el-icon-unlock'></i>
-                    <span>修改密码</span>
+
+                <el-menu-item index='5'>
+                    <el-link :href='`${baseUri}`' target='_blank'><i class='el-icon-link'></i></el-link>
                 </el-menu-item>
-                <el-menu-item index='9-3' @click='fullScreen'>
+
+                <el-menu-item index='6'>
+                    <head-color />
+                </el-menu-item>
+
+                <el-submenu index='9'>
                     <template slot='title'>
-                        <i :style='{color:head.head_icon_color}' class='el-icon-full-screen' />
-                        <span>全屏</span>
+                        {{ userName }}
+                        <el-avatar :src='user.avatar' :key='user.avatar' shape='square'></el-avatar>
                     </template>
-                </el-menu-item>
-                <el-menu-item index='9-4' @click="to('/')">
-                    <i class='el-icon-switch-button'></i>
-                    <span>退出</span>
-                </el-menu-item>
-                <el-menu-item index='9-5'>
-                    <head-about />
-                </el-menu-item>
-            </el-submenu>
-        </el-menu>
+                    <el-menu-item index='9-1' @click="to('/settings/profile')">
+                        <i class='el-icon-user'></i>
+                        <span>个人中心</span>
+                    </el-menu-item>
+                    <el-menu-item index='9-2' @click="to('/settings/security')">
+                        <i class='el-icon-unlock'></i>
+                        <span>修改密码</span>
+                    </el-menu-item>
+                    <el-menu-item index='9-3' @click='fullScreen'>
+                        <template slot='title'>
+                            <i :style='{color:head.head_icon_color}' class='el-icon-full-screen' />
+                            <span>全屏</span>
+                        </template>
+                    </el-menu-item>
+                    <el-menu-item index='9-4' @click="to('/')">
+                        <i class='el-icon-switch-button'></i>
+                        <span>退出</span>
+                    </el-menu-item>
+                    <el-menu-item index='9-5'>
+                        <head-about />
+                    </el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </el-col>
     </div>
 </template>
 
@@ -63,6 +67,7 @@ import {mapGetters, mapMutations, mapState} from 'vuex'
 
 export default {
     components: {
+        BreadCrumb: () => import('@/components/frame/BreadCrumb'),
         HeadAbout: () => import('@/components/frame/head/HeadAbout'),
         HeadColor: () => import('@/components/frame/head/HeadColor')
     },
@@ -131,9 +136,22 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-menu {
-    /* 去除右侧边框线 */
-    border-bottom: 0 !important;
+<style lang='scss' scoped>
+.left-panel {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  height: 60px;
+
+  .fold-unfold {
+    color: rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+  }
+
+  ::v-deep {
+    .breadcrumb-container {
+      margin-left: 10px;
+    }
+  }
 }
 </style>

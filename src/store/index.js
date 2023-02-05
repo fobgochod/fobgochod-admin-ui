@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import persistedState from 'vuex-persistedstate'
 import console from '@/store/modules/console'
+import tabsBar from '@/store/modules/tabsBar'
 
 Vue.use(Vuex)
 
@@ -40,12 +41,21 @@ const store = new Vuex.Store({
         }
     },
     modules: {
-        console
+        console,
+        tabsBar
     },
     plugins: [
         persistedState({
             key: 'UserDetails',
-            storage: window.sessionStorage
+            storage: window.sessionStorage,
+            paths: [
+                'baseUri',
+                'userCode',
+                'userName',
+                'tenantCode',
+                'token',
+                'console'
+            ]
         })
     ]
 })

@@ -5,13 +5,14 @@
             <el-header :height='head_height' :style='{backgroundColor:head_background_color}'>
                 <menu-head />
             </el-header>
-            <el-main id='main' :style='{backgroundColor:main_background_color}'>
+            <el-main id='main' :style='`padding:0px; backgroundColor:${main_background_color}`'>
+                <el-row>
+                    <tabs-bar />
+                </el-row>
                 <el-card class='card' shadow='hover'>
-                    <div slot='header'>
-                        <bread-crumb />
-                    </div>
                     <slot></slot>
                 </el-card>
+                <bottom-space />
             </el-main>
         </el-container>
     </el-container>
@@ -27,9 +28,10 @@ export default {
         }
     },
     components: {
-        BreadCrumb: () => import('@/components/frame/BreadCrumb'),
+        TabsBar: () => import('@/components/tools/TabsBar'),
         MenuAside: () => import('@/components/frame/MenuAside'),
-        MenuHead: () => import('@/components/frame/MenuHead')
+        MenuHead: () => import('@/components/frame/MenuHead'),
+        BottomSpace: () => import('@/components/frame/BottomSpace')
     }
 }
 </script>

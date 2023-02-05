@@ -56,6 +56,8 @@
                 </el-descriptions>
             </el-main>
         </el-container>
+
+        <bottom-space />
     </div>
 </template>
 
@@ -70,6 +72,9 @@ export default {
             userName: '',
             tableData: []
         }
+    },
+    components: {
+        BottomSpace: () => import('@/components/frame/BottomSpace')
     },
     computed: {
         ...mapState(['userCode']),

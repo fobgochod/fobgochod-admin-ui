@@ -27,6 +27,7 @@
                     </el-tabs>
                 </el-form>
             </div>
+            <bottom-space />
         </div>
     </div>
 </template>
@@ -58,7 +59,8 @@ export default {
     },
     components: {
         AccountLogin: () => import('@/views/login/sub/AccountLogin.vue'),
-        PhoneLogin: () => import('@/views/login/sub/PhoneLogin.vue')
+        PhoneLogin: () => import('@/views/login/sub/PhoneLogin.vue'),
+        BottomSpace: () => import('@/components/frame/BottomSpace')
     },
     computed: {
         ...mapState(['baseUri', 'tenantCode'])

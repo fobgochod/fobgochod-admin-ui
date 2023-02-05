@@ -58,7 +58,8 @@ const baseRoutes = [
         meta: {
             title: '主页',
             loginState: false,
-            roles: []
+            roles: [],
+            affix: true,
         }
     },
     {
@@ -99,7 +100,7 @@ const baseRoutes = [
     ...attachments
 ]
 
-const routes = baseRoutes.concat(demos)
+export const routes = baseRoutes.concat(demos)
 
 const router = new VueRouter({
     mode: 'history',
