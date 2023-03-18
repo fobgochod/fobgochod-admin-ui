@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Docker - Run" type="docker-deploy" factoryName="docker-image" server-name="47.100.125.75">
+    <deployment type="docker-image">
+      <settings>
+        <option name="imageTag" value="fobgochod/fobgochod-admin-ui:1.0.0" />
+        <option name="containerName" value="fobgochod-admin-ui" />
+        <option name="commandLineOptions" value="-idt --restart=always --privileged=true --name dmc-admin -p 7002:80" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
