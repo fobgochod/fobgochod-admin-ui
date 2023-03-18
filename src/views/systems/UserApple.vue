@@ -219,7 +219,7 @@ export default {
     methods: {
         addData() {
             this.formData.contacts = this.dynamicTags
-            this.formData.pwdHash = Secret.encode(this.formData.password)
+            this.formData.password = Secret.sha256(this.formData.password)
             User.addData(this.formData).then(() => {
                 this.getByPage()
             })

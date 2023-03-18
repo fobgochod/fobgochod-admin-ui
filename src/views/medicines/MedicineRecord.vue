@@ -80,7 +80,7 @@
                        @current-change='pageNumChange'>
         </el-pagination>
 
-        <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' center>
+        <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' :close-on-click-modal='false' center>
             <el-form ref='form' :model='formData' label-width='60px'>
                 <el-row>
                     <el-col :span='8'>
@@ -125,7 +125,7 @@
             </span>
         </el-dialog>
 
-        <el-dialog title='补吃药记录' :visible.sync='eatDialogVisible' center>
+        <el-dialog title='补吃药记录' :visible.sync='eatDialogVisible' :close-on-click-modal='false' center>
             <el-form ref='form' :model='eatForm' label-width='60px'>
                 <el-row>
                     <el-col :span='12'>

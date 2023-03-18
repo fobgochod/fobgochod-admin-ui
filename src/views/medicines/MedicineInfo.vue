@@ -78,7 +78,7 @@
                        @current-change='pageNumChange'>
         </el-pagination>
 
-        <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' center>
+        <el-dialog :title='opDialogTitle' :visible.sync='opDialogVisible' :close-on-click-modal='false' center>
             <el-form ref='form' :model='formData' label-width='100px'>
                 <el-row>
                     <el-col :span='6'>
@@ -123,7 +123,8 @@
             </span>
         </el-dialog>
 
-        <el-dialog :title='addItemDialogTitle' :visible.sync='addItemDialogVisible' center>
+        <el-dialog :title='addItemDialogTitle' :visible.sync='addItemDialogVisible' :close-on-click-modal='false'
+                   center>
             <el-form ref='form' :model='itemFormData' label-width='60px'>
                 <el-row>
                     <el-col :span='12'>
