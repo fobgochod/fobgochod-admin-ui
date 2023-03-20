@@ -171,10 +171,10 @@ export const TASKS = [
         remark: '吃药提醒'
     },
     {
-        code: 'TS006',
+        code: 'TS007',
         name: '生日提醒',
         type: '生活',
-        cron: '0 0 9 1/1 * ?',
+        cron: '0 0 9,21 1/1 * ?',
         className: 'birthdayTask',
         disable: false,
         remark: '生日提醒'
