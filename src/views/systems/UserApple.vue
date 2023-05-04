@@ -25,7 +25,7 @@
             <el-table-column :index='getIndex' align='center' label='序号' type='index'
                              width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
-            <el-table-column label='租户' property='tenantCode' width='100'></el-table-column>
+            <el-table-column label='租户ID' property='tenantCode' width='100'></el-table-column>
             <el-table-column label='账号' property='code' width='160'></el-table-column>
             <el-table-column label='姓名' property='name' width='120'></el-table-column>
             <el-table-column align='center' label='农历' width='50'>

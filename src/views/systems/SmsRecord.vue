@@ -1,8 +1,11 @@
 <template>
     <frame-space>
         <el-form ref='formCondData' :inline='true' :model='pageData.filter' class='demo-form-inline' size='small'>
+<!--            <el-form-item label='分类' prop='type'>-->
+<!--                <el-input v-model='pageData.filter.like.type' @change='searchData'></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item label='分类' prop='type'>
-                <el-input v-model='pageData.filter.like.type' @change='searchData'></el-input>
+                <fo-sms-type :option.sync='pageData.filter.like.type' :success='searchData' />
             </el-form-item>
             <el-form-item label='手机' prop='telephone'>
                 <el-input v-model='pageData.filter.eq.telephone' @change='searchData'></el-input>
@@ -30,6 +33,7 @@
             <el-table-column align='center' type='selection' width='40'></el-table-column>
             <el-table-column :index='getIndex' align='center' label='序号' type='index' width='60'></el-table-column>
             <el-table-column label='ID' property='id' width='150'></el-table-column>
+            <el-table-column label='租户ID' property='tenantCode' width='100'></el-table-column>
             <el-table-column label='分类' property='type' width='120'></el-table-column>
             <el-table-column align='center' label='手机' property='telephone' width='150'></el-table-column>
             <el-table-column align='center' label='状态' property='status' width='80'>

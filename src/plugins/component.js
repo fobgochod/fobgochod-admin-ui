@@ -12,6 +12,7 @@ export default {
     FoRoleOption: () => import('@/components/comm/system/RoleOption.vue'),
     FoRoleRadio: () => import('@/components/comm/system/RoleRadio.vue'),
     FoRoleTag: () => import('@/components/comm/system/RoleTag.vue'),
+    FoSmsType: () => import('@/components/comm/system/SmsType.vue'),
 
 
     FoFileUpload: () => import('@/components/comm/file/FileUpload.vue'),
